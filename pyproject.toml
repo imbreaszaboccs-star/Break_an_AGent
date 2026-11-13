@@ -1,0 +1,12 @@
+[project]
+name = "break-the-agent-triage"
+version = "0.1.0"
+description = "Budgeted incident-triage RL environment (MCP) with a replay-based verifier"
+requires-python = ">=3.10"
+dependencies = []          # simulator, baselines and evaluator are stdlib-only
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.2,<2"]      # only needed for the MCP server (mcp 2.x renamed FastMCP)
+
+[tool.setuptools]
+packages = ["triage_env"]
