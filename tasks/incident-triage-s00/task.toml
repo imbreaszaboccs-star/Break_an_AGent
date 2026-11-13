@@ -1,0 +1,42 @@
+schema_version = "1.4"
+artifacts = []
+
+[task]
+name = "break-the-agent/incident-triage-s00"
+version = "1.0.0"
+description = "Budgeted incident triage (seed 0)"
+authors = []
+keywords = ["incident-response", "mcp", "rl-environment"]
+
+[metadata]
+seed = 0
+
+[verifier]
+timeout_sec = 120.0
+environment_mode = "separate"
+collect = []
+
+[verifier.env]
+TRIAGE_SEED = "0"
+
+[agent]
+timeout_sec = 1800.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+os = "linux"
+
+[[environment.mcp_servers]]
+name = "incident-triage"
+transport = "stdio"
+command = "python"
+args = ["-m", "triage_env.mcp_server"]
+
+[environment.env]
+TRIAGE_SEED = "0"
+TRIAGE_TRACE = "/logs/agent/triage_trace.json"
+PYTHONPATH = "/opt/triage"
+
+[solution.env]
+TRIAGE_SEED = "0"
