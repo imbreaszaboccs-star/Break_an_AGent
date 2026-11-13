@@ -1,69 +1,68 @@
-# Incident triage: a budgeted, partially observable RL environment
+# OnCall
 
-An agent is the on-call engineer for a 10-service platform (3 user-facing → 4 application → 3 data).
-Faults live deep in the graph and surface as symptoms at the top, so the loudest alert is usually
-**not** the culprit. Every tool call advances a shared clock (lookups 1 tick, changes 3, `wait` n);
-the shift is 45 ticks and a second incident starts mid-shift. The agent has to trace symptoms to a
-root cause, pick the *right* remedy, verify it held, and notice the second incident.
+OnCall is a deterministic, seeded incident-response RL environment. An agent is the on-call engineer
+for a ~12-service platform (e-shop, SaaS or media topology) that is already failing. It investigates and
+fixes it through 20 MCP tools (observations, actions, `resolve_incident`), and every call advances a
+simulated clock. The reward is computed from ground truth (traffic served through the shift and a 45-minute
+1.5x-traffic epilog, faults really fixed, correct diagnosis, minus collateral damage, data loss and cost).
 
-| Fault kind | Signature the agent can see | Correct remedy | Tempting wrong move |
-|---|---|---|---|
-| `bad_deploy` | NullPointerException in logs, fresh deploy | `rollback` | restart |
-| `bad_config` | "invalid value" in logs, config change | `set_config` back to the old value | restart / scale |
-| `resource_exhaustion` | memory or pool at 95%+, saturation alert | `scale` | `restart` (masks it for 4 ticks, then it returns) |
-| `stuck_process` | cpu ~0, 0 req/s, "unresponsive" | `restart` | rollback |
+Design: [DESIGN.md](DESIGN.md) (Czech). Progress: [TASKS.md](TASKS.md).
 
-Everything needed is observable through the tools (alerts, metrics, logs, deploys, config history,
-dependency graph); nothing is withheld, and the decoys (a harmless recent deploy, a debug-log config
-change, an info-level disk alert) are visible to the agent too.
+## Quickstart
 
-## Reward (`triage_env/world.py: World.score`)
-
+```bash
+uv sync                      # or: make dev
+uv run pytest -q             # make test
+uv run oncall eval --policy 'reference,noop,stop_early,exploit_*' --suite dev     # make eval
+make baseline                # regenerate results/baseline.json (judge suite)
+uv run oncall report --input results/baseline.json --compare results/baseline.json   # exit 1 on any score drift > 1e-9
 ```
-reward = 0.70 * recovery + 0.20 * diagnosis + 0.10 * recovery * efficiency - collateral
+
+Serving one episode over MCP (streamable HTTP, `/mcp`) and scoring it:
+
+```bash
+make images                  # docker build -> oncall-sim:local
+docker run --rm -p 8000:8000 -e SCENARIO_SEED=2000 -e SCENARIO_DIFFICULTY=easy \
+  -e ADMIN_TOKEN_SHA256=$(printf secret | sha256sum | cut -d' ' -f1) oncall-sim:local
+uv run oncall solve --url http://localhost:8000/mcp                  # reference policy over MCP
+uv run oncall finalize --url http://localhost:8000/mcp --token secret --out out/   # reward.txt + reward_breakdown.json
 ```
-* **recovery**: traffic-weighted health of the user-facing tier at a *fixed horizon* (tick 51), rescaled between
-  "do nothing" (0) and "fully healthy" (1). Stopping early changes nothing about when health is measured.
-* **diagnosis**: a submitted `{service, kind}` counts only if it matches a real fault **and that fault was fixed**; wrong findings subtract.
-* **collateral**: 0.04 per change that neither fixed nor relieved a fault (capped at 0.25).
-* **efficiency**: ticks unused; only pays out in proportion to recovery.
 
-The verifier does not trust the server: the MCP server records every call, and `triage_env.score`
-**replays** them on a fresh simulator (`replay()`), so the reward is recomputed from actions.
+`POST /admin/finalize` (`Authorization: Bearer <token>`, compared as SHA-256 to `ADMIN_TOKEN_SHA256`) is the only
+way to read the score; no tool returns truth. Set `ONCALL_RUN_DIR` to also write the episode JSONL
+(`ONCALL_CLICKHOUSE_URL` additionally pushes it to ClickHouse; failures only warn).
 
-## Run it
+## Baseline (judge suite, 24 scenarios, `results/baseline.json`)
 
-```sh
-python -m unittest discover -s tests -t .          # 10 integrity tests, stdlib only
-python -m triage_env.evaluate --seeds 0-19         # reference vs do-nothing / stop-early / shortcuts
-python scripts/build_tasks.py --seeds 0-4          # writes Harbor task dirs to tasks/
-harbor lint tasks/incident-triage-s00              # static check (passes)
-harbor run -p tasks/incident-triage-s00 -a opencode -m <model>   # needs Docker + credits; flags per starter kit
+| policy | mean score | max |
+|---|---|---|
+| reference | 0.978 | 0.999 |
+| noop | 0.000 | 0.000 |
+| stop_early | 0.000 | 0.000 |
+| exploit_* (8 policies) | 0.000 | 0.000 |
+
+Invariant: `max(exploit) < 0.25 < mean(reference) - 0.5`.
+
+## Harbor
+
+```bash
+uv run oncall export-harbor --suite judge --out harbor/tasks     # make export; 24 task dirs, fresh admin tokens
+make images                                                      # the sim sidecar image oncall-sim:local
+uv run oncall judge --suite judge-fast --agent-runs 3 --model <model> --agent opencode   # make judge-fast
 ```
-`harbor run -a oracle -p tasks/...` plays `solution/solve.sh` (the scripted reference) through the same verifier.
 
-## Results so far (seeds 0-19, scripted policies, no LLM yet)
+Each task is a Harbor task: the agent container (`main`, python + `mcp` + curl, no simulator code, no token)
+reaches the sim sidecar `oncall-sim` at `http://oncall-sim:8000/mcp`; `tests/test.sh` (shared verifier mode, uploaded
+after the agent finishes) calls `/admin/finalize` and writes `/logs/verifier/reward.txt`
+plus `reward_breakdown.json`. `solution/` carries a copy of the package and runs the reference policy (oracle runs
+only). `oncall judge` runs the deterministic policies and, only if `harbor` is on PATH and `--model` is given,
+the agent runs; it writes `results/<timestamp>/report.md`. Without those, agent runs are skipped.
 
-```
-policy         mean     sd    min    max
-reference     0.947  0.005  0.938  0.956     scripted triage that only reads tool output
-do_nothing    0.000  0.000  0.000  0.000
-stop_early    0.000  0.000  0.000  0.000     submits a random guess at tick 0
-loudest_fix   0.000  0.000  0.000  0.000     restarts the loudest alert, submits
-shotgun       0.137  0.179  0.000  0.450     fires remedies at random services
-```
-**Not yet measured:** the frontier-agent gap (needs the Harbor+OpenCode harness and credits). The
-reference is deterministic, so reference variance is ~0 by construction; the interesting number is the LLM's.
+## Known gaps
 
-## Reward-hacking probes already covered (`tests/test_world.py`)
-do-nothing / stop-early score 0 · pre-emptive remedies before a fault starts do nothing · restart on a
-resource-exhausted service gives temporary relief that does not count · finishing right after incident 1
-misses incident 2 · findings without a fix get no diagnosis credit · budget is enforced · replay equals live score.
-
-## Known gaps (be honest with the judges)
-* **Truth is derivable from the container.** The agent container holds the simulator source and `TRIAGE_SEED`; an agent that reads
-  them can recompute the scenario. Fix: run the MCP server as a Docker Compose sidecar the agent cannot read, or set `TRIAGE_SALT` only on the server side.
-* **Harbor/Docker path unverified here.** `harbor lint` passes and the oracle + verifier were dry-run without Docker, and the MCP server
-  was exercised with an MCP client, but no container has been built (no Docker on this machine). Whether `/logs/agent` is visible to the separate verifier needs one real `harbor run`.
-* The trace file can be forged by an agent with shell access (it would still have to encode a good action sequence, i.e. know the answer).
-* `mcp>=2` renamed `FastMCP`; the server pins `mcp<2`.
+- Harbor end to end has not been run (Harbor is not installed here): the compose merge with Harbor's own
+  `main` service, the healthcheck, the `harbor run` flags and the job-output layout `oncall judge` reads are unverified.
+- Only fault families F1-F5 exist; F6-F14 and compositional traps are milestone 5.
+- Scores are deterministic, but `sin`/`gauss` may differ in the last ulp across platforms (baseline compare uses 1e-9).
+- The reference policy is strong (0.978), and difficulty for LLM agents is unmeasured.
+- Re-exporting regenerates the admin tokens, so `harbor/tasks/**/tests/test.sh` and the compose files change on every export.

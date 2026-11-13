@@ -1,0 +1,26 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: craci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --frozen
+      - run: uv run pytest -q
+
+  eval:
+    runs-on: craci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --frozen --no-dev
+      - run: uv run oncall eval --policy 'reference,noop,stop_early,exploit_*' --suite judge --out results/ci.json
+      - run: uv run oncall report --input results/ci.json --compare results/baseline.json
+
+  images:
+    runs-on: craci
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t oncall-sim:local -f docker/sim.Dockerfile .

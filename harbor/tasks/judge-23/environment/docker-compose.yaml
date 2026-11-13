@@ -1,0 +1,20 @@
+services:
+  main:
+    build:
+      context: ${CONTEXT_DIR}
+    command: ["sh", "-c", "sleep infinity"]
+    depends_on:
+      oncall-sim:
+        condition: service_healthy
+  oncall-sim:
+    image: oncall-sim:local
+    environment:
+      SCENARIO_SEED: "2023"
+      SCENARIO_DIFFICULTY: "hard"
+      ONCALL_SALT: ""
+      ADMIN_TOKEN_SHA256: "f089fbc1a4d826cd8d24b595799768c76506562f1b4b9494ab626493e31489d9"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('localhost', 8000), 2)"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

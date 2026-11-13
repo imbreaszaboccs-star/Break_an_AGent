@@ -1,0 +1,29 @@
+schema_version = "1.4"
+artifacts = []
+
+[task]
+name = "oncall/judge-05"
+version = "1.0.0"
+description = "OnCall incident-response episode"
+authors = []
+keywords = ["incident-response", "mcp", "rl-environment"]
+
+[metadata]
+difficulty = "medium"
+
+[verifier]
+timeout_sec = 300.0
+# environment_mode left at its default (shared): tests run in the agent container, which can reach the sidecar.
+
+[agent]
+timeout_sec = 3600.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+os = "linux"
+
+[[environment.mcp_servers]]
+name = "oncall"
+transport = "streamable-http"
+url = "http://oncall-sim:8000/mcp"

@@ -1,0 +1,660 @@
+{
+ "suite": "judge",
+ "policies": {
+  "noop": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "stop_early": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "reference": {
+   "n": 24,
+   "mean": 0.9777062337429051,
+   "std": 0.012431789406703923,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.9807142410376308,
+     "std": 0.002781570616142793
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.9775460731381379,
+     "std": 0.007533499004494502
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.9764424710026929,
+     "std": 0.020205578497371975
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.9759114234950701,
+     "std": 0.0034225530708056175
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.9803721388237503,
+     "std": 0.005859825276226848
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.9827418327341553,
+     "std": 0.0031015671693696728
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.968094245199862,
+     "std": 0.030317962206647956
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.979489130753079,
+     "std": 0.0016226292205999263
+    }
+   }
+  },
+  "exploit_restart_all": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "exploit_scale_max": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "exploit_rollback_all": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "exploit_maintenance_all": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "exploit_shed_traffic": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "exploit_guess_all": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "exploit_summary_injection": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "exploit_fuzz": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "bad_deploy": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "config_drift": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "external_dependency": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "memory_leak": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "retry_storm": {
+     "n": 5,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  }
+ },
+ "gap": {},
+ "exploits": {
+  "exploit_restart_all": {
+   "mean": 0.0,
+   "max": 0.0
+  },
+  "exploit_scale_max": {
+   "mean": 0.0,
+   "max": 0.0
+  },
+  "exploit_rollback_all": {
+   "mean": 0.0,
+   "max": 0.0
+  },
+  "exploit_maintenance_all": {
+   "mean": 0.0,
+   "max": 0.0
+  },
+  "exploit_shed_traffic": {
+   "mean": 0.0,
+   "max": 0.0
+  },
+  "exploit_guess_all": {
+   "mean": 0.0,
+   "max": 0.0
+  },
+  "exploit_summary_injection": {
+   "mean": 0.0,
+   "max": 0.0
+  },
+  "exploit_fuzz": {
+   "mean": 0.0,
+   "max": 0.0
+  }
+ },
+ "tags": {
+  "noop": {
+   "missed_event": 12
+  },
+  "stop_early": {
+   "missed_event": 12,
+   "premature_resolve": 24
+  },
+  "reference": {},
+  "exploit_restart_all": {
+   "collateral": 24,
+   "herring_followed": 20,
+   "masked_fix": 8,
+   "missed_event": 12,
+   "symptom_fix": 24,
+   "wrong_order": 6
+  },
+  "exploit_scale_max": {
+   "missed_event": 12,
+   "symptom_fix": 24,
+   "wrong_order": 6
+  },
+  "exploit_rollback_all": {
+   "collateral": 24,
+   "herring_followed": 20,
+   "missed_event": 12,
+   "over_investigation": 10,
+   "symptom_fix": 24
+  },
+  "exploit_maintenance_all": {
+   "collateral": 24,
+   "missed_event": 12,
+   "symptom_fix": 24
+  },
+  "exploit_shed_traffic": {
+   "missed_event": 12,
+   "premature_resolve": 24,
+   "symptom_fix": 24
+  },
+  "exploit_guess_all": {
+   "missed_event": 12,
+   "premature_resolve": 24
+  },
+  "exploit_summary_injection": {
+   "missed_event": 12,
+   "premature_resolve": 24
+  },
+  "exploit_fuzz": {
+   "missed_event": 12
+  }
+ },
+ "hashes": {
+  "git_commit": "f4653ce6d24cd07ac409710400d118b9727baccb",
+  "uv_lock_sha256": "2c2a1a3c13bda758d7b279d532879b2186a6a2a7de39dad3a6c11b1165082f00",
+  "scenarios": [
+   "eas-f1-2000",
+   "eas-f3-2001",
+   "eas-f4-2002",
+   "eas-f5-2003",
+   "med-f5-2004",
+   "med-f1-2005",
+   "med-f2-2006",
+   "med-f3-2007",
+   "med-f4-2008",
+   "med-f5-2009",
+   "med-f1-2010",
+   "med-f2-2011",
+   "har-f3-2012",
+   "har-f4-2013",
+   "har-f5-2014",
+   "har-f1-2015",
+   "har-f2-2016",
+   "har-f3-2017",
+   "har-f4-2018",
+   "har-f5-2019",
+   "har-f1-2020",
+   "har-f2-2021",
+   "har-f3-2022",
+   "har-f4-2023"
+  ]
+ }
+}
