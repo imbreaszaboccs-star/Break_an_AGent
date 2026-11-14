@@ -9,22 +9,53 @@ from . import faults
 
 T, E, WARM = 120, 45, 30            # episode ticks, epilog ticks, warm-up history ticks
 FAMILIES = ("bad_deploy", "memory_leak", "retry_storm", "config_drift", "external_dependency", "cert_expiry",
-            "disk_full", "cache_stampede", "poison_message", "bad_canary", "thread_starvation", "under_provisioned")
-LABELS = tuple(f"F{i}" for i in range(1, 15))     # report labels; F8 (second fault) and F13 (misleading message) are axes
-# (label, primary, trap, add-on) per difficulty; the slot is seed % len(slots) so consecutive seeds cover every slot.
-# trap: "herring" = innocent deploy, "message" = herring + misleading team message; add-on: "bomb" = F6, "second" = F8.
+            "disk_full", "cache_stampede", "poison_message", "bad_canary", "thread_starvation", "under_provisioned",
+            "duplicate_charges", "replica_lag_stale_reads", "migration_lock", "pool_sync_recycle", "progressive_gray",
+            "clock_skew", "expired_cert_dismissed_alert", "mail_backlog_ramp", "cache_invalidation_loop",
+            "bad_config_push", "redis_maxmemory", "duplicate_events", "stuck_failover", "abusive_client")
+# report labels = the primary mechanism of a scenario; F1, F3, F5, F6, F7, F8 only ever appear as components (F6 = bomb, F8 = second fault)
+LABELS = tuple(f"F{i}" for i in range(1, 15)) + tuple(f"R{i}" for i in range(1, 15))
+# (label, primary, components, trap, add-on) per difficulty; the recipe is seed % len(recipes) so consecutive seeds cover every one.
+# components: further concurrent root causes, each a tuple of alternatives tried in order (a role-bound node may be taken already).
+# trap: "herring" = innocent deploy, "message" = herring + misleading team message, "inherent" = the mechanism brings its own
+# (R4 bot signups + cron, R5 provider banner, R7 dismissed alert, R14 heavy partner client, F12 loud caller); add-on: "bomb" = F6, "second" = F8.
+SILENT = ("clock_skew", "expired_cert_dismissed_alert", "duplicate_charges", "replica_lag_stale_reads")
+LOUD = ("bad_deploy", "config_drift", "memory_leak")
 SLOTS = {
-    "easy": (("F1", "bad_deploy", None, None), ("F3", "retry_storm", None, None),
-             ("F5", "external_dependency", None, None), ("F7", "disk_full", None, None)),
-    "medium": (("F1", "bad_deploy", "herring", None), ("F2", "memory_leak", "herring", None),
-               ("F4", "config_drift", "herring", None), ("F11", "bad_canary", None, None),
-               ("F12", "thread_starvation", None, None), ("F13", "retry_storm", "message", None),
-               ("F13", "config_drift", "message", None), ("F11", "bad_canary", None, None)),
-    "hard": (("F9", "cache_stampede", None, "bomb"), ("F10", "poison_message", None, "second"),
-             ("F14", "cascade", None, "bomb"), ("F8", "memory_leak", "herring", "second"),
-             ("F9", "cache_stampede", None, "second"), ("F10", "poison_message", None, "bomb"),
-             ("F14", "cascade", None, "second"), ("F6", "memory_leak", "herring", "bomb")),
+    "medium": (("R2", "replica_lag_stale_reads", (), "herring", None), ("R4", "pool_sync_recycle", (), "inherent", None),
+               ("R5", "progressive_gray", (), "inherent", None), ("R6", "clock_skew", (), "herring", None),
+               ("R7", "expired_cert_dismissed_alert", (), "inherent", None), ("R10", "bad_config_push", (), "herring", None),
+               ("R11", "redis_maxmemory", (), "message", None), ("R14", "abusive_client", (), "inherent", None),
+               ("F11", "bad_canary", (), "herring", None), ("F12", "thread_starvation", (), "inherent", None),
+               ("F13", "config_drift", (), "message", None), ("F2", "memory_leak", (), "herring", None)),
+    "hard": (("R1", "duplicate_charges", (), None, "second"), ("R3", "migration_lock", (), None, "bomb"),
+             ("R8", "mail_backlog_ramp", (), None, "second"), ("R9", "cache_invalidation_loop", (), None, "bomb"),
+             ("R12", "duplicate_events", (), None, "second"), ("R13", "stuck_failover", (), None, "bomb"),
+             ("F9", "cache_stampede", (), None, "bomb"), ("F10", "poison_message", (), None, "second"),
+             ("F14", "cascade", (), None, "second"),
+             ("R2", "replica_lag_stale_reads", (("disk_full",) + LOUD,), None, None),
+             ("R4", "pool_sync_recycle", (("clock_skew", "expired_cert_dismissed_alert", "duplicate_charges"),), None, None),
+             ("R5", "progressive_gray", (LOUD + ("disk_full",),), None, None),
+             ("R6", "clock_skew", (("bad_deploy", "retry_storm", "memory_leak"),), None, None),
+             ("R7", "expired_cert_dismissed_alert", (("retry_storm", "bad_deploy", "config_drift"),), None, None),
+             ("R14", "abusive_client", (("disk_full", "bad_deploy", "memory_leak"),), None, None),
+             ("R10", "bad_config_push", (("clock_skew", "expired_cert_dismissed_alert", "replica_lag_stale_reads"),), None, None),
+             ("R11", "redis_maxmemory", (("expired_cert_dismissed_alert", "clock_skew"),), None, None)),
+    "expert": (("R9", "cache_invalidation_loop", (("clock_skew", "expired_cert_dismissed_alert"), LOUD), "herring", None),
+               ("F14", "cascade", (("replica_lag_stale_reads", "clock_skew", "expired_cert_dismissed_alert"),), "herring", None),
+               ("R3", "migration_lock", (("expired_cert_dismissed_alert", "duplicate_events", "mail_backlog_ramp", "duplicate_charges"),),
+                "message", "bomb"),
+               ("R8", "mail_backlog_ramp", (("progressive_gray",), ("config_drift", "bad_deploy")), "herring", None),
+               ("R12", "duplicate_events", (("pool_sync_recycle", "clock_skew"), ("memory_leak", "bad_deploy")), "message", None),
+               ("R13", "stuck_failover", (SILENT, ("bad_deploy", "config_drift")), "herring", None),
+               ("R11", "redis_maxmemory", (("replica_lag_stale_reads", "expired_cert_dismissed_alert"),
+                                           ("external_dependency", "bad_deploy")), "herring", None),
+               ("F9", "cache_stampede", (SILENT,), "herring", "second"),
+               ("F10", "poison_message", (("progressive_gray", "duplicate_charges", "clock_skew"), ("config_drift", "bad_deploy")),
+                "message", None),
+               ("R1", "duplicate_charges", (("clock_skew", "progressive_gray"), ("migration_lock", "bad_deploy")), "message", None)),
 }
+DB_FAULTS = ("replica_lag_stale_reads", "migration_lock", "pool_sync_recycle", "stuck_failover", "cache_invalidation_loop")     # a retry storm on top would blur the picture
 SECOND_POOL = ("bad_deploy", "config_drift", "external_dependency", "retry_storm", "memory_leak")
 Edge = namedtuple("Edge", "caller callee fanout critical fallback_ok via_cache")
 
@@ -109,6 +140,12 @@ WARN_TEXTS = ("deprecated API v1 endpoint still receiving ~12 calls/min",
               "config reload took 1.8s",
               "slow query log: 3 queries >500ms in last 10m",
               "clock skew 140ms vs ntp pool")
+# symptom-focused / flapping alerts that fire around the start of every shift (most are unrelated to the incident)
+ALERT_NOISE = ("p99 latency {a}ms above 600ms for 3m (flapping, {b} occurrences in 1h)",
+               "synthetic probe GET /healthz failed from eu-west-1 (1 of 5 probes)",
+               "container restarts: {b} in 30m", "cpu above 80% for 5m",
+               "error budget burn rate above 2x over the 6h window", "5xx ratio {b}% on the load balancer (flapping)",
+               "request queue depth above 200 for 2m", "TLS handshake time above 300ms (p95)")
 ACTORS = ("alice", "bob", "carol", "dave", "ci-bot")
 
 
@@ -147,7 +184,7 @@ class Scenario:
     salt: str = ""
     # derived (deterministic function of the three fields above)
     id: str = field(init=False)
-    family: str = field(init=False)      # report label F1..F14
+    family: str = field(init=False)      # report label: the primary mechanism (F1..F14, R1..R14)
     template: str = field(init=False)
     nodes: dict = field(init=False)      # name -> NodeSpec, in topological order
     order: list = field(init=False)
@@ -170,9 +207,11 @@ class Scenario:
     faults: list = field(init=False)     # truth: fault specs
     herring: dict = field(init=False)    # truth or None
     misleading: dict = field(init=False)  # F13 team message (truth) or None
+    alert_noise: list = field(init=False)  # [(t, service, text, duration)]
+    alert_target: int = field(init=False)
 
     def __post_init__(self):
-        if self.difficulty not in ("easy", "medium", "hard"):
+        if self.difficulty not in SLOTS:
             raise ValueError(f"unknown difficulty {self.difficulty!r}")
         rng = Random(f"{self.seed}|{self.salt}|build")
         tname = rng.choice(sorted(TEMPLATES))
@@ -281,21 +320,38 @@ class Scenario:
             if on:
                 self.flag_audit.append({"t": -rng.randint(300, 3000), "flag": fname, "on": True,
                                         "by": rng.choice(ACTORS)})
-        # faults: primary (+ F14 partner), then the trap and the add-on of the slot
+        # faults: primary (+ F14 partner), concurrent components, then the trap and the add-on of the recipe
         used = []
         diff = self.difficulty
         slots = SLOTS[diff]
-        label, prim, trap, addon = slots[self.seed % len(slots)]
+        label, prim, comps, trap, addon = slots[self.seed % len(slots)]
         self.family = label
         onset = rng.randint(-8, -3)
         if prim == "cascade":
             specs = faults.plan_cascade(self, rng, onset, used)
         else:
             specs = [faults.plan(prim, self, rng, onset, used)]
-        used.extend(n for s in specs for n in (s["node"], s.get("caller")) if n)
+
+        def claim(ss):
+            used.extend(n for s in ss for n in (s["node"], s.get("caller"), s.get("biller"), s.get("deploy_node"),
+                                                *s.get("also", ())) if n)
+        claim(specs)
+        for alts in comps:
+            for f2 in alts:
+                if f2 == "retry_storm" and any(s["fault_class"] in DB_FAULTS for s in specs):
+                    continue
+                try:
+                    s2 = faults.plan(f2, self, rng, onset, used, role="concurrent")
+                except ValueError:
+                    continue
+                specs.append(s2)
+                claim([s2])
+                break
+            else:
+                raise ValueError(f"no component for {alts} in seed {self.seed}")
         self.herring = self.misleading = None
-        if trap:
-            hn = specs[0]["node"] if (prim == "config_drift" and trap == "herring" and rng.random() < .5) else rng.choice(
+        if trap in ("herring", "message"):
+            hn = specs[0]["node"] if (prim in ("config_drift", "clock_skew") and trap == "herring" and rng.random() < .5) else rng.choice(
                 [n for n in self.order if self.nodes[n].kind == "app" and n not in used and self.nodes[n].role != "worker"
                  and not self.nodes[n].entry and self.share[n] >= .2])
             th = onset + rng.randint(-3, 3)
@@ -309,7 +365,7 @@ class Scenario:
         if addon == "bomb":
             specs.append(faults.plan("cert_expiry", self, rng, onset, used, role="bomb"))
         elif addon == "second":
-            others = list(SECOND_POOL)
+            others = [f for f in SECOND_POOL if not (f == "retry_storm" and any(s["fault_class"] in DB_FAULTS for s in specs))]
             rng.shuffle(others)
             t2 = rng.randint(40, 50)
             for f2 in others:
@@ -339,6 +395,9 @@ class Scenario:
         for _ in range(rng.randint(5, 8)):
             self.warns.append((rng.randint(-28, T - 5), rng.choice(self.order[:-1]), rng.choice(WARN_TEXTS)))
         self.warns.sort()
+        self.alert_noise = sorted((rng.randint(-25, -1), rng.choice(self.order), rng.choice(ALERT_NOISE).format(
+            a=rng.randint(610, 980), b=rng.randint(2, 7)), rng.randint(28, 60)) for _ in range(rng.randint(6, 8)))
+        self.alert_target = rng.randint(6, 10)      # get_status pads the real alerts with noise up to this many
 
     @property
     def key(self):
@@ -348,28 +407,41 @@ class Scenario:
         return [e for e in self.edges if e.caller == n]
 
 
+# recipe indices per suite (see SLOTS); stratified so every R mechanism and every v1 hard mechanism is a primary or a component
+DEV_MEDIUM = tuple(range(10))
+DEV_HARD = tuple(range(10))
+DEV_EXPERT = tuple(range(10))
+JUDGE_MEDIUM = (1, 3, 5, 7, 8, 9)
+JUDGE_HARD = tuple(range(10))
+JUDGE_EXPERT = tuple(range(8))
+FAST = (0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22)       # 3 medium, 5 hard, 4 expert
+
+
 def _plan(diff, seeds, salt=""):
     return [Scenario(s, diff, salt) for s in seeds]
 
 
+def _slots(diff, base, idxs):
+    """One scenario per requested recipe index of `diff` (seed % len(recipes) == index), seeds close to `base`."""
+    n = len(SLOTS[diff])
+    return _plan(diff, [base + (i - base) % n for i in idxs])
+
+
+MIX = ["medium"] * 25 + ["hard"] * 40 + ["expert"] * 35
+
+
 def suite(name):
-    if name == "dev":
-        return (_plan("easy", range(1000, 1010)) + _plan("medium", range(1010, 1020))
-                + _plan("hard", range(1020, 1030)))
-    if name == "judge":
-        return (_plan("easy", range(2000, 2004)) + _plan("medium", range(2004, 2012))
-                + _plan("hard", range(2012, 2024)))
-    if name == "judge-fast":
-        return (_plan("easy", (2000, 2001)) + _plan("medium", range(2004, 2008))
-                + _plan("hard", range(2012, 2018)))
+    if name == "dev":       # 10 / 10 / 10; every R1..R14 and the v1 hard mechanisms appear
+        return (_slots("medium", 1000, DEV_MEDIUM) + _slots("hard", 1010, DEV_HARD) + _slots("expert", 1030, DEV_EXPERT))
+    if name in ("judge", "judge-fast"):      # 6 / 10 / 8
+        sc = (_slots("medium", 2000, JUDGE_MEDIUM) + _slots("hard", 2010, JUDGE_HARD) + _slots("expert", 2030, JUDGE_EXPERT))
+        return sc if name == "judge" else [sc[i] for i in FAST]
     if name == "heldout":
         salt = os.environ.get("ONCALL_HELDOUT_SALT")
         if not salt:
             raise RuntimeError("ONCALL_HELDOUT_SALT is not set")
         rng = Random(f"heldout|{salt}")
-        diffs = ["easy"] * 20 + ["medium"] * 30 + ["hard"] * 50
-        return [Scenario(rng.randrange(10 ** 6), d, salt) for d in diffs]
+        return [Scenario(rng.randrange(10 ** 6), d, salt) for d in MIX]
     if name == "train":
-        diffs = ["easy"] * 20 + ["medium"] * 30 + ["hard"] * 50
-        return [Scenario(10000 + i, d) for i, d in enumerate(diffs)]
+        return [Scenario(10000 + i, d) for i, d in enumerate(MIX)]
     raise ValueError(f"unknown suite {name!r}")

@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS oncall_rollouts
     -- derived from the episode id: `<policy>[-r<run>]-<scenario>`, e.g. agent_vllm_gemma-ft-r2-eas-f1-10000
     policy     LowCardinality(String) MATERIALIZED replaceRegexpOne(replaceOne(episode, concat('-', scenario), ''), '-r[0-9]+$', ''),
     run        UInt16 MATERIALIZED toUInt16OrZero(extract(replaceOne(episode, concat('-', scenario), ''), '-r([0-9]+)$')),
-    difficulty LowCardinality(String) MATERIALIZED multiIf(startsWith(scenario, 'eas'), 'easy', startsWith(scenario, 'med'), 'medium', 'hard'),
+    difficulty LowCardinality(String) MATERIALIZED multiIf(startsWith(scenario, 'med'), 'medium', startsWith(scenario, 'exp'), 'expert', 'hard'),
     -- ponytail: family label is parsed from the scenario id (`<diff>-f<N>-<seed>`); adjust if the id format changes.
     family     LowCardinality(String) MATERIALIZED upper(extract(scenario, '-(f[0-9]+)-'))
 )

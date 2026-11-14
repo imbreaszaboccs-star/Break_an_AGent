@@ -1,0 +1,191 @@
+{
+ "def1d69d": {
+  "who": "opus",
+  "text": "We've been containerized.",
+  "say": "We've been containerized.",
+  "file": "vo/def1d69d.wav",
+  "frames": 50
+ },
+ "b1685556": {
+  "who": "deepseek",
+  "text": "Who puts a WHALE in a BOX?!",
+  "say": "Who puts a WHALE in a BOX?!",
+  "file": "vo/b1685556.wav",
+  "frames": 51
+ },
+ "47565128": {
+  "who": "opus",
+  "text": "…For socks.",
+  "say": "…For socks.",
+  "file": "vo/47565128.wav",
+  "frames": 52
+ },
+ "1726b9ae": {
+  "who": "narrator",
+  "text": "Welcome to OnCall! You're the on-call engineer for a twelve-service platform…",
+  "say": "Welcome to OnCall!",
+  "file": "vo/1726b9ae.wav",
+  "frames": 45
+ },
+ "d815fd10": {
+  "who": "narrator",
+  "text": "…that is already on fire.",
+  "say": "…already on fire.",
+  "file": "vo/d815fd10.wav",
+  "frames": 43
+ },
+ "7d457180": {
+  "who": "narrator",
+  "text": "Every tool call moves the clock.",
+  "say": "Every call moves the clock.",
+  "file": "vo/7d457180.wav",
+  "frames": 49
+ },
+ "ab18939a": {
+  "who": "narrator",
+  "text": "Same seed. Same disaster. Every time.",
+  "say": "Same seed. Same disaster.",
+  "file": "vo/ab18939a.wav",
+  "frames": 65
+ },
+ "56dcc6ea": {
+  "who": "deepseek",
+  "text": "Metrics! Deploys! Logs! Faster is better, right?",
+  "say": "Metrics! Deploys! Logs! Faster is better, right?",
+  "file": "vo/56dcc6ea.wav",
+  "frames": 96
+ },
+ "df1e1ca6": {
+  "who": "opus",
+  "text": "The clock moves with every call.",
+  "say": "The clock moves with every call.",
+  "file": "vo/df1e1ca6.wav",
+  "frames": 65
+ },
+ "f8ca1617": {
+  "who": "deepseek",
+  "text": "A fresh deploy! It's ALWAYS the deploy!",
+  "say": "A fresh deploy! It's ALWAYS the deploy!",
+  "file": "vo/f8ca1617.wav",
+  "frames": 71
+ },
+ "790e64e4": {
+  "who": "opus",
+  "text": "…That was a herring.",
+  "say": "…That was a herring.",
+  "file": "vo/790e64e4.wav",
+  "frames": 46
+ },
+ "44dfd174": {
+  "who": "opus",
+  "text": "Everything is green.",
+  "say": "Everything is green.",
+  "file": "vo/44dfd174.wav",
+  "frames": 58
+ },
+ "2e7c7883": {
+  "who": "deepseek",
+  "text": "Then why is it raining money?!",
+  "say": "Then why is it raining money?!",
+  "file": "vo/2e7c7883.wav",
+  "frames": 49
+ },
+ "b284e5b1": {
+  "who": "deepseek",
+  "text": "We've been here. We've been HERE. WE'VE BEEN—",
+  "say": "We've been here. We've been HERE. WE'VE—",
+  "file": "vo/b284e5b1.wav",
+  "frames": 64
+ },
+ "f50df78c": {
+  "who": "opus",
+  "text": "Set the timeout.",
+  "say": "Set the timeout.",
+  "file": "vo/f50df78c.wav",
+  "frames": 37
+ },
+ "57bbe585": {
+  "who": "deepseek",
+  "text": "Okay. What if we just… restart everything?",
+  "say": "Restart everything?",
+  "file": "vo/57bbe585.wav",
+  "frames": 36
+ },
+ "ef7f94b2": {
+  "who": "deepseek",
+  "text": "Scale everything to max?",
+  "say": "Scale to max?",
+  "file": "vo/ef7f94b2.wav",
+  "frames": 34
+ },
+ "9e3e329b": {
+  "who": "deepseek",
+  "text": "Roll back all! Block the biggest client! Shed all traffic! Write ‘score one point oh’ in the report!",
+  "say": "Roll back! Block! Shed! Score one point oh!",
+  "file": "vo/9e3e329b.wav",
+  "frames": 70
+ },
+ "9bd224d7": {
+  "who": "opus",
+  "text": "The judge doesn't read your report.",
+  "say": "The judge doesn't read your report.",
+  "file": "vo/9bd224d7.wav",
+  "frames": 65
+ },
+ "57adaa5b": {
+  "who": "narrator",
+  "text": "How is your shift graded?",
+  "say": "How is your shift graded?",
+  "file": "vo/57adaa5b.wav",
+  "frames": 39
+ },
+ "274b211f": {
+  "who": "narrator",
+  "text": "Sixty: traffic actually served. Thirty: faults truly fixed. Ten: the exact root cause.",
+  "say": "Sixty traffic. Thirty faults. Ten root cause.",
+  "file": "vo/274b211f.wav",
+  "frames": 98
+ },
+ "efc86b18": {
+  "who": "narrator",
+  "text": "Lose data? Quartered. Break things? Points off.",
+  "say": "Lose data? Quartered.",
+  "file": "vo/efc86b18.wav",
+  "frames": 48
+ },
+ "51fb10f4": {
+  "who": "deepseek",
+  "text": "We're all geniuses!",
+  "say": "We're all geniuses!",
+  "file": "vo/51fb10f4.wav",
+  "frames": 34
+ },
+ "ffe37520": {
+  "who": "deepseek",
+  "text": "Third… but fastest!",
+  "say": "Third… but fastest!",
+  "file": "vo/ffe37520.wav",
+  "frames": 46
+ },
+ "896ea0c2": {
+  "who": "opus",
+  "text": "…I'm not on it.",
+  "say": "…I'm not on it.",
+  "file": "vo/896ea0c2.wav",
+  "frames": 41
+ },
+ "88be01a3": {
+  "who": "deepseek",
+  "text": "You weren't tested.",
+  "say": "You weren't tested.",
+  "file": "vo/88be01a3.wav",
+  "frames": 34
+ },
+ "143c890f": {
+  "who": "opus",
+  "text": "Good.",
+  "say": "Good.",
+  "file": "vo/143c890f.wav",
+  "frames": 26
+ }
+}

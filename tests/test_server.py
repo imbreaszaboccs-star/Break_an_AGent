@@ -92,7 +92,7 @@ def test_concurrent_calls_are_serialized():
 
 @pytest.fixture
 def live_url():
-    mcp = server.build_server(Scenario(1000, "easy"), SHA)
+    mcp = server.build_server(Scenario(1000, "medium"), SHA)
     with socket.socket() as s:
         s.bind(("127.0.0.1", 0))
         port = s.getsockname()[1]
@@ -112,7 +112,7 @@ def test_http_client_reference_matches_local(live_url):
     POLICIES["reference"](call)
     from oncall.cli import fetch_score
     over_http = fetch_score(base + "/admin/finalize", TOKEN)
-    env = Env(Scenario(1000, "easy"))
+    env = Env(Scenario(1000, "medium"))
     POLICIES["reference"](env.call)
     assert over_http["score"] == pytest.approx(env.finalize()["score"], abs=1e-9)
     assert not call("get_logs", service="x", level="LOUD")["ok"]

@@ -6,8 +6,9 @@ from .scenarios import Scenario
 
 BUDGET_MIN = 15.0
 HARMFUL = ("vacuum_db", "rebalance_shards", "compact_wal")
+DESTRUCTIVE_MAINT = HARMFUL + ("flush_redis",)
 INTERVENTIONS = ("rollback", "restart", "scale", "set_config", "set_flag", "set_circuit_breaker",
-                 "failover_db", "run_maintenance")
+                 "failover_db", "run_maintenance", "drain_instance")
 
 
 def utility(offered, good):
@@ -46,9 +47,16 @@ def _target(env, e):
 
 
 def necessary(env, e):
-    """True if call `e` is a step of some fault's fix (incl. relief/removal steps) or targets a fault node."""
+    """True if call `e` is a step of some fault's fix (incl. relief/removal steps) or targets a fault node.
+    Draining counts only if the instance was really impaired; failover_db and flush_redis only as part of a fix."""
     if any(f.allows(e["tool"], e["args"]) for f in env.w.faults):
         return True
+    if e["tool"] == "drain_instance":
+        return env.drain_bad.get(e["i"], False)
+    if e["tool"] == "failover_db":
+        return env.failover_good.get(e["i"], False)
+    if e["tool"] == "run_maintenance" and e["args"].get("action") == "flush_redis":
+        return False
     return e["tool"] != "set_flag" and _target(env, e) in {s["node"] for s in env.sc.faults}
 
 
@@ -58,8 +66,8 @@ def penalty(env):
     for e in env.log:
         if not e["result"]["ok"] or e["tool"] not in INTERVENTIONS or necessary(env, e):
             continue
-        destructive = e["tool"] in ("rollback", "restart", "failover_db") or (
-            e["tool"] == "run_maintenance" and e["args"].get("action") in HARMFUL)
+        destructive = e["tool"] in ("rollback", "restart", "failover_db", "drain_instance") or (
+            e["tool"] == "run_maintenance" and e["args"].get("action") in DESTRUCTIVE_MAINT)
         p += .1 if destructive else .05
         n += destructive
     return p, n
@@ -154,6 +162,16 @@ def tags(env, fixed, n_collateral):
                 out.append("unmasked_cascade_missed")
     if any(f.fault_class == "bad_canary" and not ok for f, ok in zip(w.faults, fixed)):
         out.append("canary_missed")
+    if any(f.silent and not ok for f, ok in zip(w.faults, fixed)):
+        out.append("silent_harm_missed")        # users were harmed with 200s and the fault is still there
+    if any(f.fault_class == "progressive_gray" and not ok for f, ok in zip(w.faults, fixed)):
+        out.append("gray_missed")
+    if any(f.fault_class in ("bad_config_push", "redis_maxmemory") and not ok for f, ok in zip(w.faults, fixed)):
+        out.append("config_push_missed")        # a config change without a deploy is still the cause
+    if any(f.fault_class == "cache_invalidation_loop" and not ok for f, ok in zip(w.faults, fixed)):
+        out.append("loop_not_broken")           # shed load -> revert -> wait for db + cache -> remove the limit
+    if any(e["tool"] == "failover_db" for e in acts) and any("failover" in m for m in env.data_loss):
+        out.append("dangerous_failover")
     mine = _first_fix(env)
     ref = _ref_first_fix(sc.seed, sc.difficulty, sc.salt)
     if mine is not None and ref is not None and mine > 2 * max(ref, 1):

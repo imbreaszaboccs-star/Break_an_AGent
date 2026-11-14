@@ -10,19 +10,36 @@ from .scenarios import FAMILIES, T, E, WARM
 SLO_MS = 800
 MAX_CALLS = 150
 INF = 9.99
-CONFIG_KEYS = ("max_retries", "timeout_ms", "pool_size", "rate_limit_rps", "log_level", "dlq_enabled")
+CONFIG_KEYS = ("max_retries", "timeout_ms", "pool_size", "rate_limit_rps", "log_level", "dlq_enabled", "read_from",
+               "conn_lifetime_jitter", "maxmemory_mb", "maxmemory_policy", "send_rate_per_s", "cluster_manager",
+               "block_client", "autoscaling", "waf_ruleset")
+KEY_KINDS = {"read_from": "app", "conn_lifetime_jitter": "app", "autoscaling": "app", "send_rate_per_s": "app",
+             "maxmemory_mb": "cache", "maxmemory_policy": "cache", "cluster_manager": "db"}
+# api clients seen in the gateway access log (share of traffic); blocking one of them rejects that share of the requests
+CLIENTS = (("mobile-ios", .28), ("mobile-android", .22), ("web-app", .20), ("partner-sync", .14), ("reports-bot", .07),
+           ("search-crawler", .05), ("billing-hook", .02), ("status-probe", .02))
 HERD = 5.0     # thundering herd: concurrent misses on cold keys multiply the db queries per miss
 MAINT = {"rotate_cert": ("app", "db", "cache", "queue"), "prune_logs": ("app", "db", "cache", "queue"),
          "purge_dlq": ("app", "queue"), "warm_cache": ("cache",), "vacuum_db": ("db",), "rebalance_shards": ("db",),
-         "compact_wal": ("db",), "flush_dns": ("app", "db", "cache", "queue")}
+         "compact_wal": ("db",), "flush_dns": ("app", "db", "cache", "queue"), "kill_long_queries": ("db",),
+         "cancel_migration": ("db",), "update_ca_bundle": ("app",), "sync_clock": ("app",),
+         "restart_networkd": ("app",), "flush_redis": ("cache",)}
 HARMFUL = ("vacuum_db", "rebalance_shards", "compact_wal")
 OBS_COST = {"get_status": 1, "get_events": 1, "get_topology": 1, "get_metrics": 1, "get_logs": 1,
-            "get_traces": 2, "get_deploys": 1, "get_config": 1, "get_flags": 1, "get_runbook": 1}
+            "get_traces": 2, "get_deploys": 1, "get_config": 1, "get_flags": 1, "get_runbook": 1, "get_instances": 1,
+            "get_business_metrics": 1}
 ACT_COST = {"rollback": 5, "restart": 3, "scale": 4, "set_config": 2, "set_flag": 1,
-            "set_circuit_breaker": 2, "failover_db": 6, "run_maintenance": 3, "resolve_incident": 0}
+            "set_circuit_breaker": 2, "failover_db": 6, "run_maintenance": 3, "drain_instance": 2, "resolve_incident": 0}
 TOOLS = tuple(OBS_COST) + tuple(ACT_COST) + ("wait",)
 METRICS = ("rps", "error_rate", "p50", "p99", "cpu", "mem", "conns", "worker_util", "disk", "retries",
            "queue_lag", "cache_hit_rate")
+EXTRA_METRICS = {"replica_lag_s": ("db", 0.3), "locks_waiting": ("db", 1.0), "repl_backlog_mb": ("cache", 0.2),
+                 "evicted_keys": ("cache", 0.0), "used_memory_ratio": ("cache", 0.62), "key_deletes_per_s": ("cache", 35.0)}
+BIZ = ("orders_created", "payments_succeeded", "payment_attempts_per_order", "duplicate_charge_disputes",
+       "refunds_requested", "emails_sent", "emails_delivered", "emails_deferred", "emails_bounced",
+       "password_reset_completed", "login_success_rate", "stale_read_reports", "duplicate_shipments")
+BIZ_INT = ("duplicate_charge_disputes", "stale_read_reports", "duplicate_shipments")
+ZONES = ("az-a", "az-b", "az-c")
 RUNBOOKS = {
     "bad_deploy": "Errors that start at a deploy: compare error onset with get_deploys, read ERROR logs for a stack trace with the build version, roll back to the previous version.",
     "memory_leak": "Memory that rises steadily and drops on OOMKilled restarts (sawtooth) after a deploy: restarting only resets the clock, roll back the release.",
@@ -30,7 +47,7 @@ RUNBOOKS = {
     "circuit_breaker": "closed = normal; open = fail fast (critical edges fail); fallback = serve degraded response. Use fallback for a failing external dependency that has a fallback.",
     "schema_migration": "Deploys with has_schema_migration and reversible=false cannot be rolled back past without data loss.",
     "cache_stampede": "After a cache flush the hit rate is near 0 and the database sees all traffic. If the database saturates, the hit rate cannot recover by itself: relieve it (warm_cache, or throttle), wait for the hit rate to recover, then remove the throttle.",
-    "maintenance": "vacuum_db, rebalance_shards and compact_wal on a busy database halve its capacity for several minutes.",
+    "maintenance": "vacuum_db, rebalance_shards and compact_wal on a busy database halve its capacity for several minutes. flush_redis drops every key (cached and session data are lost).",
     "cert_expiry": "Certificates expire at a fixed time: rotate_cert before the expiry avoids TLS handshake failures; rotating after it ends them.",
     "disk_full": "A disk near 100% makes writes fail. Freeing space (prune_logs) is not durable while debug logging keeps filling it: lower the log level too. Restarting does not free disk.",
     "poison_message": "A message that crashes its consumer blocks the queue head: new replicas crash on it too. Move it to the dead-letter queue (dlq_enabled) instead of rolling back or scaling.",
@@ -74,6 +91,15 @@ class Node:
         # ponytail: only db clients retry by default; chained retries at every tier make healthy systems metastable
         self.cfg = {"max_retries": 1 if sp.kind == "app" and sp.name in clients else 0, "timeout_ms": sp.timeout_ms, "pool_size": sp.pool_size,
                     "rate_limit_rps": 0, "log_level": "INFO", "dlq_enabled": False}
+        self.cfg.update({"app": {"read_from": "primary", "conn_lifetime_jitter": "off", "autoscaling": "on",
+                                 "send_rate_per_s": 0},
+                         "db": {"cluster_manager": "auto"},
+                         "cache": {"maxmemory_mb": sp.mem_mb, "maxmemory_policy": "allkeys-lru"}}.get(sp.kind, {}))
+        if sp.entry:
+            self.cfg["block_client"] = ""
+            self.cfg["waf_ruleset"] = "stable"
+        self.drained, self.maint, self.restarts, self.failovers = set(), {}, [], 0   # instances out of the LB; action -> last t
+        self.live, self.ca = sp.replicas, "2025-06"
         self.mem, self.hit = sp.mem_base, sp.hit_base
         self.disk, self.canary, self.rotated = sp.disk, None, False
         self.cert_exp = 30000 + 137 * len(sp.name)       # tick at which the TLS certificate expires
@@ -99,6 +125,10 @@ class World:
         self.rec, self.offered, self.good, self.spend = [], [], [], []
         self.fault_err, self.fault_lat, self.lat_mult, self.tick_flags = {}, {}, {}, {}
         self.cap_mult, self.drop, self.p99_add = {}, {}, {}
+        self.harm = self.dup = self.stale = self.login_fail = 0.0     # per tick: silent user harm (share of served requests)
+        self.mail_ok, self.xm, self.cpu_add, self.inst = 1.0, {}, {}, {}
+        self.xmul, self.mail, self.dupship = {}, None, 0.0       # load multipliers, emails_* override, duplicate shipments
+        self.db_lag, self.biz_rec = 0.0, []
         self.lag, self.bp = 0.0, 0.0                      # queue backlog (rate-ticks) and the enqueue rejection share
         self.q_nom = sc.share[sc.queue] * sc.params["base_rps"]
         self.faults = [F.build(s) for s in sc.faults]
@@ -129,6 +159,13 @@ class World:
         self.flags[name]["on"] = on
         self.flag_audit.append({"t": t, "flag": name, "on": on, "by": by})
 
+    def lb_n(self, nd):
+        """Instances of a service that are in the load balancer."""
+        return nd.replicas - sum(1 for i in nd.drained if i < nd.replicas)
+
+    def replica_in_sync(self):
+        return self.nodes[self.sc.db].sp.in_sync and self.db_lag < 5
+
     def weight(self, e):
         if not e.via_cache:
             return e.fanout
@@ -146,6 +183,9 @@ class World:
         nodes, order = self.nodes, self.sc.order
         self.fault_err, self.fault_lat, self.lat_mult, self.tick_flags = {}, {}, {}, {}
         self.cap_mult, self.drop, self.p99_add = {}, {}, {}
+        self.harm = self.dup = self.stale = self.login_fail = 0.0
+        self.mail_ok, self.xm, self.cpu_add, self.inst = 1.0, {}, {}, {}
+        self.xmul, self.mail, self.dupship = {}, None, 0.0
         cache = nodes[sc.cache]          # hit rate recovers only while the db is healthy (else metastable)
         cache.hit = min(cache.sp.hit_base, cache.hit + 0.08 * max(0.0, 1 - 2 * self.err[sc.db]))
         h = sc.herring
@@ -160,16 +200,23 @@ class World:
             if wt == t:
                 self.event(t, "warn", "WARN", svc, f"{svc}: {text}")
                 self.alerts[("warn", i)] = {"severity": "WARN", "service": svc, "message": text, "since": t, "until": t + 20}
+        for i, (nt, svc, text, dur) in enumerate(sc.alert_noise):
+            if nt == t:
+                self.event(t, "warn", "WARN", svc, f"{svc}: {text}")
+                self.alerts[("noise", i)] = {"severity": "WARN", "service": svc, "message": text, "since": t, "until": t + dur}
         for f in self.faults:
             f.apply(self, t)
             if f.spec["role"] == "second" and t == f.onset:
                 self.event(t, "message", "info", "support", "support: new customer reports of failed or very slow requests")
+        blocked = dict(CLIENTS).get(nodes[sc.entry].cfg["block_client"], 0.0)
+        self.harm += blocked          # requests of a blocked legitimate client are rejected (403): not good
         for fl in self.flags.values():
             if fl["on"] and fl["effect"]:
                 node, ms = fl["effect"]
                 self.fault_lat[node] = self.fault_lat.get(node, 0.0) + ms
         for nd in nodes.values():
             nd.ready_n = nd.replicas if t >= nd.warm_until else min(nd.ready_n, nd.replicas)
+            nd.live = max(0, nd.ready_n - sum(1 for i in nd.drained if i < nd.replicas))
         # traffic
         p = sc.params
         offered = p["base_rps"] * (1 + .05 * math.sin(2 * math.pi * (t + p["phase"]) / 1440))
@@ -185,9 +232,10 @@ class World:
         retries = {n: 0.0 for n in order}
         bp_in = self.bp
         for n in order:
+            load[n] *= self.xmul.get(n, 1.0)
             if nodes[n].kind == "queue":     # asynchronous: the worker consumes what it can, the rest piles up as lag
                 wk = nodes[self.out[n][0].callee]
-                take = min(self.lag + load[n] * (1 - bp_in), wk.ready_n * wk.sp.cap * self.cap_mult.get(wk.name, 1.0))
+                take = min(self.lag + load[n] * (1 - bp_in), wk.live * wk.sp.cap * self.cap_mult.get(wk.name, 1.0))
                 self.lag += load[n] * (1 - bp_in) - take
                 load[wk.name] += take
                 self.bp = min(1.0, max(0.0, (self.lag / self.q_nom - 3) / 3))     # rejects enqueues beyond 3 min of lag
@@ -205,7 +253,7 @@ class World:
         for n in reversed(order):
             nd = nodes[n]
             sp = nd.sp
-            cap = nd.ready_n * sp.cap * (0.5 if t < nd.cap_penalty_until else 1.0) * self.cap_mult.get(n, 1.0)
+            cap = nd.live * sp.cap * (0.5 if t < nd.cap_penalty_until else 1.0) * self.cap_mult.get(n, 1.0)
             if nd.kind == "db":     # ponytail: db goodput drops while it is erroring (thrash) -> storms are self-sustaining
                 cap *= 1 - 0.5 * self.err[n]
             ld = load[n]
@@ -245,28 +293,47 @@ class World:
             p50[n], p99[n] = lat, lat * sp.tail + xt[n]
             wu = 0.0
             if nd.kind == "app":
-                wu = ld * lat / 1000 / (nd.ready_n * sp.threads) if nd.ready_n > 0 else INF
+                wu = ld * lat / 1000 / (nd.live * sp.threads) if nd.live > 0 else INF
                 if wu > 1:
                     own = comb(own, 1 - 1 / wu)
             err[n] = 1 - (1 - own) * prod
             conns = (min(sp.max_conn, sp.max_conn * (0.2 + 0.8 * min(1.0, util))) if nd.kind == "db"
                      else nd.ready_n * nd.cfg["pool_size"] * min(1.0, util) * .5)
+            conns = self.xm.get(n, {}).get("conns", conns)
             rec[n] = {"rps": ld, "err": err[n], "p50": lat, "p99": p99[n], "util": util,
                       "mem": nd.mem, "conns": conns, "wu": wu, "disk": nd.disk, "retries": retries[n],
-                      "lag": self.lag / self.q_nom if n in (sc.queue, sc.worker) else 0.0,
+                      "lag": max(self.lag / self.q_nom if n in (sc.queue, sc.worker) else 0.0,
+                                 self.xm.get(n, {}).get("mail_lag", 0.0)),
                       "bp": bp_in if nd.kind == "queue" else 0.0,
                       "hit": nd.hit, "ver": nd.version, "flag": self.tick_flags.get(n, ""), "ce": ce,
                       "to": (to_callee, to), "conn": conn, "overload": overload, "cold": nd.ready_n == 0,
-                      "own": own}
+                      "own": own, "x": dict(self.xm.get(n, {})), "cpu_add": self.cpu_add.get(n, 0.0),
+                      "inst": dict(self.inst.get(n, {})), "lb": self.lb_n(nd)}
         e0 = sc.entry
         good = load[e0] * (1 - err[e0]) * (1 - slow_frac(p50[e0], p99[e0], SLO_MS))
+        seen_good = good                                  # what request-level dashboards and the SLO alert can see
+        good = max(0.0, good - self.harm * load[e0])      # 200s that harmed the user (duplicate charge, stale read, lost mail) are not good
+        ok, mail = load[e0] * (1 - err[e0]), self.mail_ok
+        orders = .05 * ok
+        sent = 1.6 * orders
+        self.biz_rec.append({
+            "orders_created": orders, "payments_succeeded": .93 * orders,
+            "payment_attempts_per_order": 1.04 + 4 * self.dup + 1.5 * self.stale,
+            "duplicate_charge_disputes": orders * .4 * self.dup, "refunds_requested": orders * (.01 + .25 * self.dup),
+            "emails_sent": sent, "emails_delivered": sent * .985 * mail,
+            "emails_deferred": sent * (.01 + .7 * (1 - mail)), "emails_bounced": sent * (.005 + .3 * (1 - mail)),
+            "password_reset_completed": .004 * ok * mail,
+            "login_success_rate": max(0.0, .985 * (1 - err[e0]) - self.login_fail),
+            "stale_read_reports": orders * .5 * self.stale, "duplicate_shipments": orders * .5 * self.dupship})
+        if self.mail:
+            self.biz_rec[-1].update(self.mail)
         self.rec.append(rec)
         self.err = err
         if t >= 0:
             self.offered.append(offered)
             self.good.append(good)
             self.spend.append(sum(nd.replicas * nd.sp.cost for nd in nodes.values()))
-        self._alerts(t, rec, offered, good)
+        self._alerts(t, rec, offered, seen_good)
         self.t += 1
 
     def _alerts(self, t, rec, offered, good):
@@ -298,11 +365,15 @@ class World:
         for tt in range(max(t_from, -WARM), t_to):
             r = self.rec[tt + WARM][node]
             rng = Random(f"{self.seed_key}|noise|log|{node}|{tt}")
-            for _ in range(rng.randint(3, 5)):
+            for _ in range(rng.randint(8, 12)):
                 lvl, msg = NOISE[rng.randrange(len(NOISE))] if rng.random() < .25 else NOISE[rng.randrange(10)]
                 out.append((tt, lvl, msg.format(a=rng.randint(1, 9), b=rng.randint(8, 60), c=rng.randint(100, 900),
                                                 d=rng.randint(2, 30), e=rng.randint(2, 30), g=rng.randint(180, 420))))
             nd = self.nodes[node]
+            if nd.sp.entry:       # access log: who is calling (the entry service sees every client)
+                ar = Random(f"{self.seed_key}|access|{tt}")
+                for c in ar.choices([c for c, _ in CLIENTS], [w for _, w in CLIENTS], k=4):
+                    out.append((tt, "INFO", f"access client={c} GET /v1/items 200 {ar.randint(8, 60)}ms"))
             for c, e in r["ce"].items():
                 if e > .05 and sc.nodes[c].kind != "cache" and rng.random() < min(1.0, .3 + e):
                     if sc.nodes[c].kind == "external":
@@ -331,6 +402,7 @@ class World:
     def restart(self, node):
         nd = self.nodes[node]
         nd.ready_n, nd.warm_until, nd.mem = 0, self.t + nd.sp.cold_start, nd.sp.mem_base
+        nd.restarts.append(self.t + nd.sp.cold_start)
         if nd.kind == "cache":
             nd.hit = 0.0
 
@@ -361,6 +433,8 @@ class Env:
         self.resolution = None            # frozenset of (service, fault_class) from the first resolve
         self.t_resolve = None
         self.data_loss = []
+        self.drain_bad = {}               # call index of a drain_instance -> was the drained instance really impaired
+        self.failover_good = {}           # call index of a failover_db -> was it a correct step of some fix
         self.faults_at_resolve = None
         self._breakdown = None
         while self.w.t < 0:
@@ -438,7 +512,10 @@ class Env:
     # ---- observation tools: return (cost, result, effect) -------------------------------------
     def t_get_status(self):
         w = self.w
-        alerts = [{k: v for k, v in a.items() if k != "until"} for a in w.alerts.values()]
+        real = [a for k, a in w.alerts.items() if k[0] != "noise"]
+        noise = [a for k, a in w.alerts.items() if k[0] == "noise"]
+        alerts = [{k: v for k, v in a.items() if k != "until"}
+                  for a in sorted(real + noise[:max(0, w.sc.alert_target - len(real))], key=lambda a: -a["since"])]
         return 1, {"as_of": w.t, "remaining_minutes": max(0, T - w.t), "alerts": alerts,
                    "spend": round(float(sum(w.spend)), 1)}, None
 
@@ -453,7 +530,7 @@ class Env:
         for n, nd in w.nodes.items():
             d = {"name": n, "kind": nd.kind, "entry": nd.sp.entry, "replicas": nd.replicas}
             if nd.kind == "db":
-                d["replica_in_sync"] = nd.sp.in_sync
+                d["replica_in_sync"] = w.replica_in_sync()
             nodes.append(d)
         edges = [{"caller": e.caller, "callee": e.callee, "fanout": e.fanout, "critical": e.critical,
                   "fallback_ok": e.fallback_ok, "via_cache": e.via_cache, "circuit_breaker": w.cb[(e.caller, e.callee)],
@@ -471,11 +548,12 @@ class Env:
         ticks = list(range(max(-WARM, w.t - window), w.t))
         res = {}
         for s in services:
-            series = {m: [] for m in METRICS}
+            extra = {m: b for m, (k, b) in EXTRA_METRICS.items() if w.nodes[s].kind == k}
+            series = {m: [] for m in METRICS + tuple(extra)}
             for tt in ticks:
                 r = w.rec[tt + WARM][s]
-                g = [rng.gauss(0, 1) for _ in range(8)]
-                cpu = min(1.0, .1 + .85 * min(r["util"], 1.0))
+                g = [rng.gauss(0, 1) for _ in range(9)]
+                cpu = min(1.0, max(.02, .1 + .85 * min(r["util"], 1.0) + r["cpu_add"]))
                 vals = {"rps": round(r["rps"] * (1 + .02 * g[0]), 1),
                         "error_rate": round(max(0.0, r["err"] + .003 * g[1]), 4),
                         "p50": round(r["p50"] * (1 + .03 * g[2]), 1), "p99": round(r["p99"] * (1 + .04 * g[3]), 1),
@@ -484,10 +562,45 @@ class Env:
                         "worker_util": round(min(r["wu"], 99.0) * (1 + .03 * g[6]), 3), "disk": round(r["disk"], 3),
                         "retries": round(r["retries"] * (1 + .03 * g[7]), 1), "queue_lag": round(r["lag"], 2),
                         "cache_hit_rate": round(r["hit"], 3) if w.nodes[s].kind == "cache" else None}
-                for m in METRICS:
+                vals.update({m: round(r["x"].get(m, b) * (1 + .05 * g[8]), 1) for m, b in extra.items()})
+                for m in series:
                     series[m].append(vals[m])
             res[s] = series
         return 1, {"as_of": w.t, "ticks": ticks, "metrics": res}, None
+
+    def t_get_business_metrics(self, window=5):
+        w = self.w
+        self._int("window", window, 1, 30)
+        rng = self._rng("get_business_metrics", {"window": window})
+        ticks = list(range(max(-WARM, w.t - window), w.t))
+        series = {m: [] for m in BIZ}
+        for tt in ticks:
+            for m in BIZ:
+                rate = "rate" in m or "per_order" in m
+                v = max(0.0, w.biz_rec[tt + WARM][m] * (1 + (.01 if rate else .05) * rng.gauss(0, 1)))
+                series[m].append(int(round(v)) if m in BIZ_INT else round(v, 3 if rate else 1))
+        return 1, {"as_of": w.t, "ticks": ticks, "metrics": series}, None
+
+    def t_get_instances(self, service):
+        w = self.w
+        nd = self._node(service)
+        r = w.rec[w.t - 1 + WARM][service]
+        rng = self._rng("get_instances", {"service": service})
+        bad = sum(v.get("err", 0.0) for i, v in r["inst"].items() if i not in nd.drained) / max(1, r["lb"])
+        base = max(0.0, (r["err"] - bad) / (1 - bad)) if bad < 1 else 0.0       # what a healthy instance sees
+        cpu0 = min(1.0, max(.02, .1 + .85 * min(r["util"], 1.0) + r["cpu_add"]))
+        out = []
+        for i in range(nd.replicas):
+            fx, g = r["inst"].get(i, {}), [rng.gauss(0, 1) for _ in range(5)]
+            off = Random(f"{w.seed_key}|clock|{service}|{i}").randint(-12, 12) + round(g[4])
+            p50 = fx.get("p50", r["p50"])
+            out.append({"instance": F.inst_name(service, i), "zone": ZONES[i % 3], "version": r["ver"],
+                        "in_rotation": i not in nd.drained, "health_check": "starting" if r["cold"] else "passing",
+                        "error_rate": 0.0 if i in nd.drained else round(max(0.0, fx.get("err", base) + .003 * g[0]), 4),
+                        "p50": round(p50 * (1 + .03 * g[1]), 1), "p99": round((fx["p50"] * 3 if "p50" in fx else r["p99"]) * (1 + .04 * g[2]), 1),
+                        "cpu": round(min(1.0, max(0.0, fx.get("cpu", cpu0) + .02 * g[3])), 3),
+                        "mem": round(r["mem"] + .01 * g[3], 3), "clock_offset_ms": fx.get("clock", off)})
+        return 1, {"as_of": w.t, "service": service, "instances": out}, None
 
     def t_get_logs(self, service, level="ALL", grep="", limit=50):
         w = self.w
@@ -523,6 +636,8 @@ class Env:
                         "status": "error" if rng.random() < r["err"] else "ok"}
                 if node == sc.queue:      # the message at the head of the queue (the same one while a poison message blocks it)
                     span["message_id"] = poison or f"m-{rng.getrandbits(32):08x}"
+                if parent == sc.entry and "slot_wait_ms" in last[sc.entry]["x"]:      # queued at the entry for a connection slot
+                    span["gateway_wait_ms"] = round(last[sc.entry]["x"]["slot_wait_ms"] * rng.uniform(.5, 1.5))
                 spans.append(span)
                 if depth < 4:
                     for e in ([] if w.nodes[node].kind == "queue" else sc.children(node)):
@@ -548,7 +663,11 @@ class Env:
                "config": dict(nd.cfg), "worker_threads": nd.sp.threads, "mem_limit_mb": nd.sp.mem_mb,
                "audit": list(nd.audit), "cert_expires_at": nd.cert_exp}
         if nd.kind == "db":
-            res.update(max_connections=nd.sp.max_conn, replica_in_sync=nd.sp.in_sync)
+            res.update(max_connections=nd.sp.max_conn, replica_in_sync=self.w.replica_in_sync())
+        if nd.kind == "app":
+            res["ca_bundle"] = nd.ca
+        if nd.sp.entry:
+            res["max_connections"] = nd.replicas * nd.cfg["pool_size"]       # connection slots
         return 1, res, None
 
     def t_get_flags(self):
@@ -575,7 +694,10 @@ class Env:
 
     def t_restart(self, service):
         self._node(service)
-        return 3, {"service": service, "status": "restarted"}, lambda: self.w.restart(service)
+        def eff():
+            self.w.restart(service)
+            self._lose("restart", {"service": service})
+        return 3, {"service": service, "status": "restarted"}, eff
 
     def t_scale(self, service, replicas):
         self._node(service)
@@ -583,19 +705,30 @@ class Env:
         return 4, {"service": service, "replicas": replicas}, lambda: self.w.scale(service, replicas)
 
     def t_set_config(self, service, key, value):
-        self._node(service)
+        nd = self._node(service)
         if key not in CONFIG_KEYS:
             raise ToolError(f"unknown key; valid keys: {', '.join(CONFIG_KEYS)}")
-        ranges = {"max_retries": (0, 10), "timeout_ms": (10, 30000), "pool_size": (1, 100)}
+        if key in KEY_KINDS and nd.kind != KEY_KINDS[key]:
+            raise ToolError(f"{key} is not valid for a {nd.kind} service (only for {KEY_KINDS[key]} services)")
+        if key in ("block_client", "waf_ruleset") and not nd.sp.entry:
+            raise ToolError(f"{key} is valid for the entry service only")
+        ranges = {"max_retries": (0, 10), "timeout_ms": (10, 30000), "pool_size": (1, 100), "maxmemory_mb": (64, 65536)}
+        enums = {"log_level": ("DEBUG", "INFO", "WARN", "ERROR"), "read_from": ("primary", "replica"),
+                 "conn_lifetime_jitter": ("on", "off"), "autoscaling": ("on", "off"), "cluster_manager": ("auto", "maintenance"),
+                 "maxmemory_policy": ("noeviction", "allkeys-lru", "volatile-lru"), "waf_ruleset": ("stable", "candidate")}
         if key in ranges:
             self._int("value", value, *ranges[key])
-        elif key == "rate_limit_rps":
+        elif key in ("rate_limit_rps", "send_rate_per_s"):
             if isinstance(value, bool) or not isinstance(value, (int, float)) or not 0 <= value <= 100000:
-                raise ToolError("rate_limit_rps must be a number between 0 and 100000 (0 = off)")
-        elif key == "log_level":
-            value = value.upper() if isinstance(value, str) else value
-            if value not in ("DEBUG", "INFO", "WARN", "ERROR"):
-                raise ToolError("log_level must be one of DEBUG, INFO, WARN, ERROR")
+                raise ToolError(f"{key} must be a number between 0 and 100000 (0 = off)")
+        elif key in enums:
+            if key == "log_level" and isinstance(value, str):
+                value = value.upper()
+            if not isinstance(value, str) or value not in enums[key]:
+                raise ToolError(f"{key} must be one of {', '.join(enums[key])}")
+        elif key == "block_client":
+            if not isinstance(value, str) or len(value) > 64:
+                raise ToolError("block_client must be a client id (string, '' = unblock)")
         elif not isinstance(value, bool):
             raise ToolError("dlq_enabled must be a boolean")
         return 2, {"service": service, "key": key, "value": value}, \
@@ -623,9 +756,11 @@ class Env:
         db = self.w.nodes[self.sc.db]
 
         def eff():
-            if not db.sp.in_sync:
+            self.failover_good[self.n_calls + 1] = any(f.failover_ok(self.w) for f in self.w.faults)
+            if not self.w.replica_in_sync():
                 self.data_loss.append("failover to a replica that is not in sync")
-            db.ready_n, db.warm_until = 0, self.w.t + 2
+            self._lose("failover_db", {})
+            db.ready_n, db.warm_until, db.failovers = 0, self.w.t + 2, db.failovers + 1
         return 6, {"status": "failed over"}, eff
 
     def t_run_maintenance(self, service, action):
@@ -636,6 +771,14 @@ class Env:
             raise ToolError(f"{action} is not valid for a {nd.kind} service")
 
         def eff():
+            nd.maint[action] = self.w.t
+            if action == "flush_redis":
+                nd.hit = 0.0
+                self.data_loss.append("flush_redis: all cached and session data dropped")
+            elif action == "restart_networkd":
+                nd.drained.clear()           # every instance gets its load-balancer route back
+            elif action == "update_ca_bundle":
+                nd.ca = "2025-06"
             if action in HARMFUL:
                 nd.cap_penalty_until = self.w.t + 6
             elif action == "warm_cache":
@@ -645,7 +788,30 @@ class Env:
                 self.w.alerts.pop(("cert", service), None)
             elif action == "prune_logs":
                 nd.disk = min(nd.disk, .4)
+            self._lose("run_maintenance", {"service": service, "action": action})
         return 3, {"service": service, "action": action, "status": "done"}, eff
+
+    def t_drain_instance(self, service, instance):
+        nd = self._node(service)
+        names = [F.inst_name(service, i) for i in range(nd.replicas)]
+        if not isinstance(instance, str) or instance not in names:
+            raise ToolError(f"unknown instance; {service} has: {', '.join(names)}")
+        i = names.index(instance)
+        if i in nd.drained:
+            raise ToolError(f"{instance} is already drained")
+        if self.w.lb_n(nd) <= 1:
+            raise ToolError("cannot drain the last instance in rotation")
+
+        def eff():
+            self.drain_bad[self.n_calls + 1] = any(f.impaired(self.w, service, i) for f in self.w.faults)
+            nd.drained.add(i)
+        return 2, {"service": service, "instance": instance, "status": "removed from the load balancer"}, eff
+
+    def _lose(self, tool, args):
+        for f in self.w.faults:
+            m = f.dataloss(self.w, tool, args)
+            if m:
+                self.data_loss.append(m)
 
     def t_wait(self, minutes):
         self._int("minutes", minutes, 1, 30)

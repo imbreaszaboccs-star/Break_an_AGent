@@ -1,0 +1,740 @@
+{
+ "suite": "judge",
+ "policies": {
+  "reference": {
+   "n": 24,
+   "mean": 0.9686937994695205,
+   "std": 0.01767147955356046,
+   "by_difficulty": {
+    "expert": {
+     "n": 8,
+     "mean": 0.963024709327106,
+     "std": 0.02430733647412316
+    },
+    "hard": {
+     "n": 10,
+     "mean": 0.968325107245985,
+     "std": 0.015007759818414382
+    },
+    "medium": {
+     "n": 6,
+     "mean": 0.976867073365299,
+     "std": 0.008487201917631327
+    }
+   },
+   "by_family": {
+    "F10": {
+     "n": 1,
+     "mean": 0.9647453620515855,
+     "std": 0.0
+    },
+    "F11": {
+     "n": 1,
+     "mean": 0.9687288992220732,
+     "std": 0.0
+    },
+    "F12": {
+     "n": 1,
+     "mean": 0.9801243014647804,
+     "std": 0.0
+    },
+    "F14": {
+     "n": 2,
+     "mean": 0.9759067687162303,
+     "std": 0.030384592790194686
+    },
+    "F9": {
+     "n": 2,
+     "mean": 0.9853169636612744,
+     "std": 0.01342047345403683
+    },
+    "R1": {
+     "n": 1,
+     "mean": 0.9571540440114944,
+     "std": 0.0
+    },
+    "R10": {
+     "n": 1,
+     "mean": 0.9749932884344071,
+     "std": 0.0
+    },
+    "R11": {
+     "n": 1,
+     "mean": 0.9625602095228131,
+     "std": 0.0
+    },
+    "R12": {
+     "n": 2,
+     "mean": 0.9568336726308021,
+     "std": 0.02621245734380065
+    },
+    "R13": {
+     "n": 2,
+     "mean": 0.9691677845881157,
+     "std": 0.011276522286958785
+    },
+    "R14": {
+     "n": 1,
+     "mean": 0.9738486994094079,
+     "std": 0.0
+    },
+    "R2": {
+     "n": 1,
+     "mean": 0.9638172824986041,
+     "std": 0.0
+    },
+    "R3": {
+     "n": 2,
+     "mean": 0.9703323649160679,
+     "std": 0.0033489847452946205
+    },
+    "R4": {
+     "n": 1,
+     "mean": 0.9923116826446577,
+     "std": 0.0
+    },
+    "R6": {
+     "n": 1,
+     "mean": 0.9711955690164679,
+     "std": 0.0
+    },
+    "R8": {
+     "n": 2,
+     "mean": 0.9807602232716156,
+     "std": 3.685432939829084e-05
+    },
+    "R9": {
+     "n": 2,
+     "mean": 0.9312681467119944,
+     "std": 0.015688099623337084
+    }
+   }
+  },
+  "noop": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "expert": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 10,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 6,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "F10": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F11": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F12": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F14": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F9": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R1": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R10": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R11": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R12": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R13": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R14": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R2": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R3": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R4": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R6": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R8": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R9": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "stop_early": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "expert": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 10,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 6,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "F10": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F11": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F12": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F14": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F9": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R1": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R10": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R11": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R12": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R13": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R14": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R2": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R3": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R4": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R6": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R8": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "R9": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "agent:verda:deepseek-4-1-flash-1017": {
+   "n": 72,
+   "mean": 0.7244626773589257,
+   "std": 0.2834197633546434,
+   "by_difficulty": {
+    "expert": {
+     "n": 24,
+     "mean": 0.6874007750182435,
+     "std": 0.26573297208878777
+    },
+    "hard": {
+     "n": 30,
+     "mean": 0.645885058795937,
+     "std": 0.32992696995683857
+    },
+    "medium": {
+     "n": 18,
+     "mean": 0.9048412447514831,
+     "std": 0.08349726424316889
+    }
+   },
+   "by_family": {
+    "F10": {
+     "n": 3,
+     "mean": 0.8869316802591268,
+     "std": 0.0754336613055584
+    },
+    "F11": {
+     "n": 3,
+     "mean": 0.9504258295726018,
+     "std": 0.004913097108061277
+    },
+    "F12": {
+     "n": 3,
+     "mean": 0.8160823710388566,
+     "std": 0.022154934836876392
+    },
+    "F14": {
+     "n": 6,
+     "mean": 0.776006367977093,
+     "std": 0.23920256962618114
+    },
+    "F9": {
+     "n": 6,
+     "mean": 0.7057433094897234,
+     "std": 0.14770911995179212
+    },
+    "R1": {
+     "n": 3,
+     "mean": 0.8483045380897493,
+     "std": 0.011958182059186593
+    },
+    "R10": {
+     "n": 3,
+     "mean": 0.899410338109381,
+     "std": 0.058665545859868544
+    },
+    "R11": {
+     "n": 3,
+     "mean": 0.7845984610619482,
+     "std": 0.06078103956686066
+    },
+    "R12": {
+     "n": 6,
+     "mean": 0.754623984821881,
+     "std": 0.20854083853647637
+    },
+    "R13": {
+     "n": 6,
+     "mean": 0.5865801408857354,
+     "std": 0.298045875888845
+    },
+    "R14": {
+     "n": 3,
+     "mean": 0.9773580983621329,
+     "std": 0.004023516883959636
+    },
+    "R2": {
+     "n": 3,
+     "mean": 0.9111422048937786,
+     "std": 0.05159686853198105
+    },
+    "R3": {
+     "n": 6,
+     "mean": 0.8538594892236282,
+     "std": 0.0169684061043791
+    },
+    "R4": {
+     "n": 3,
+     "mean": 0.8325143077236957,
+     "std": 0.14460741599604487
+    },
+    "R6": {
+     "n": 3,
+     "mean": 0.9532565237022304,
+     "std": 0.012118722347404584
+    },
+    "R8": {
+     "n": 6,
+     "mean": 0.5385853744451514,
+     "std": 0.30142021506697053
+    },
+    "R9": {
+     "n": 6,
+     "mean": 0.04814128505714538,
+     "std": 0.07969687288724121
+    }
+   }
+  }
+ },
+ "gap": {
+  "agent:verda:deepseek-4-1-flash-1017": {
+   "n": 24,
+   "mean": 0.2442311221105948,
+   "ci95": [
+    0.15519704236959095,
+    0.3456369370087759
+   ],
+   "per_run": [
+    0.2729561169798499,
+    0.21989399255195038,
+    0.23984325679998417
+   ]
+  }
+ },
+ "annotated": {
+  "agent:verda:deepseek-4-1-flash-1017": [
+   {
+    "scenario": "har-r8-2025",
+    "score": 0.0,
+    "tags": [
+     "silent_harm_missed",
+     "over_investigation",
+     "missed_event"
+    ],
+    "resolved": null,
+    "t_resolve": null,
+    "truth": [
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "stock-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     false,
+     false
+    ],
+    "first_intervention": {
+     "i": 19,
+     "t": 18,
+     "call": "set_config(service='order-svc', key='send_rate_per_s', value=20)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "order-svc",
+       "mail_backlog_ramp"
+      ],
+      "visible_at": -5,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events(since=0)"
+      },
+      "fix": {
+       "i": 19,
+       "t": 18,
+       "call": "set_config(service='order-svc', key='send_rate_per_s', value=20)"
+      }
+     },
+     {
+      "fault": [
+       "stock-svc",
+       "config_drift"
+      ],
+      "visible_at": 41,
+      "evidence": {
+       "i": 40,
+       "t": 63,
+       "call": "get_logs(level='ERROR', limit=40, service='stock-svc')"
+      },
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-r9-2026",
+    "score": 0.0,
+    "tags": [
+     "collateral",
+     "loop_not_broken"
+    ],
+    "resolved": null,
+    "t_resolve": null,
+    "truth": [
+     [
+      "cache-cluster",
+      "cache_invalidation_loop"
+     ],
+     [
+      "billing",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     false,
+     true
+    ],
+    "first_intervention": {
+     "i": 16,
+     "t": 16,
+     "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "cache-cluster",
+       "cache_invalidation_loop"
+      ],
+      "visible_at": -7,
+      "evidence": {
+       "i": 11,
+       "t": 11,
+       "call": "get_metrics(services=['cache-cluster', 'identity'], window=15)"
+      },
+      "fix": {
+       "i": 16,
+       "t": 16,
+       "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+      }
+     },
+     {
+      "fault": [
+       "billing",
+       "cert_expiry"
+      ],
+      "visible_at": -10,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": {
+       "i": 46,
+       "t": 63,
+       "call": "run_maintenance(action='rotate_cert', service='billing')"
+      }
+     }
+    ]
+   },
+   {
+    "scenario": "exp-r9-2030",
+    "score": 0.0,
+    "tags": [
+     "herring_followed",
+     "collateral",
+     "loop_not_broken"
+    ],
+    "resolved": null,
+    "t_resolve": null,
+    "truth": [
+     [
+      "redis-main",
+      "cache_invalidation_loop"
+     ],
+     [
+      "auth-svc",
+      "clock_skew"
+     ],
+     [
+      "tenant-svc",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     false,
+     true,
+     true
+    ],
+    "first_intervention": {
+     "i": 21,
+     "t": 21,
+     "call": "run_maintenance(service='auth-svc', action='sync_clock')"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "redis-main",
+       "cache_invalidation_loop"
+      ],
+      "visible_at": -8,
+      "evidence": {
+       "i": 12,
+       "t": 12,
+       "call": "get_metrics(services=['redis-main'], window=10)"
+      },
+      "fix": {
+       "i": 22,
+       "t": 24,
+       "call": "set_config(service='redis-main', key='timeout_ms', value=1500)"
+      }
+     },
+     {
+      "fault": [
+       "auth-svc",
+       "clock_skew"
+      ],
+      "visible_at": -8,
+      "evidence": {
+       "i": 17,
+       "t": 17,
+       "call": "get_logs(level='ERROR', limit=25, service='auth-svc')"
+      },
+      "fix": {
+       "i": 21,
+       "t": 21,
+       "call": "run_maintenance(service='auth-svc', action='sync_clock')"
+      }
+     },
+     {
+      "fault": [
+       "tenant-svc",
+       "bad_deploy"
+      ],
+      "visible_at": -8,
+      "evidence": {
+       "i": 4,
+       "t": 3,
+       "call": "get_metrics(services=['gateway', 'tenant-svc', 'pg-main', 'auth-svc', 'workspace-svc'], window=10)"
+      },
+      "fix": {
+       "i": 78,
+       "t": 103,
+       "call": "rollback(service='tenant-svc', version='v3.4.1')"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "exploits": {},
+ "tags": {
+  "reference": {},
+  "noop": {
+   "canary_missed": 1,
+   "config_push_missed": 2,
+   "gray_missed": 1,
+   "loop_not_broken": 2,
+   "missed_event": 12,
+   "silent_harm_missed": 13
+  },
+  "stop_early": {
+   "canary_missed": 1,
+   "config_push_missed": 2,
+   "gray_missed": 1,
+   "loop_not_broken": 2,
+   "missed_event": 12,
+   "premature_resolve": 24,
+   "silent_harm_missed": 13
+  },
+  "agent:verda:deepseek-4-1-flash-1017": {
+   "collateral": 21,
+   "gray_missed": 1,
+   "herring_followed": 1,
+   "loop_not_broken": 5,
+   "missed_event": 6,
+   "over_investigation": 22,
+   "premature_resolve": 5,
+   "silent_harm_missed": 5,
+   "symptom_fix": 7
+  }
+ },
+ "hashes": {
+  "git_commit": "bbab5dce1824d4a9fa143d6a3a7a9beba2d29e51",
+  "uv_lock_sha256": "f81f22d9da9bbd58e877f95c5633af61a238b825a62fa9ef3562731db8e62d7d",
+  "scenarios": [
+   "med-r4-2005",
+   "med-r6-2007",
+   "med-r10-2009",
+   "med-r14-2011",
+   "med-f11-2000",
+   "med-f12-2001",
+   "har-r1-2023",
+   "har-r3-2024",
+   "har-r8-2025",
+   "har-r9-2026",
+   "har-r12-2010",
+   "har-r13-2011",
+   "har-f9-2012",
+   "har-f10-2013",
+   "har-f14-2014",
+   "har-r2-2015",
+   "exp-r9-2030",
+   "exp-f14-2031",
+   "exp-r3-2032",
+   "exp-r8-2033",
+   "exp-r12-2034",
+   "exp-r13-2035",
+   "exp-r11-2036",
+   "exp-f9-2037"
+  ]
+ }
+}

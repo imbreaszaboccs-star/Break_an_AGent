@@ -73,7 +73,7 @@ def build_server(scenario, admin_token_sha256=None, run_dir=None):
 
     @mcp.tool()
     async def get_deploys(service: str | None = None) -> str:
-        """Deploy history (version, time, author, has_schema_migration, reversible) of one or all services. Costs 1 minute."""
+        """Deploy history (version, time, author, has_schema_migration, reversible, migration_in_progress while one runs) of one or all services. Costs 1 minute."""
         return await run("get_deploys", service=service)
 
     @mcp.tool()
@@ -85,6 +85,16 @@ def build_server(scenario, admin_token_sha256=None, run_dir=None):
     async def get_flags() -> str:
         """Feature flags and their change audit log. Costs 1 minute."""
         return await run("get_flags")
+
+    @mcp.tool()
+    async def get_instances(service: str) -> str:
+        """Per-replica view of a service: instance, zone, version, health_check (liveness only), error_rate, p50, p99, cpu, mem, clock_offset_ms. Costs 1 minute."""
+        return await run("get_instances", service=service)
+
+    @mcp.tool()
+    async def get_business_metrics(window: int = 5) -> str:
+        """Business series per minute over the last `window` (1-30) minutes: orders_created, payments_succeeded, payment_attempts_per_order, duplicate_charge_disputes, refunds_requested, emails_sent/delivered/deferred/bounced, password_reset_completed, login_success_rate, stale_read_reports, duplicate_shipments. Costs 1 minute."""
+        return await run("get_business_metrics", window=window)
 
     @mcp.tool()
     async def get_runbook(topic: Topic) -> str:
@@ -110,7 +120,10 @@ def build_server(scenario, admin_token_sha256=None, run_dir=None):
     @mcp.tool()
     async def set_config(service: str, key: str, value: int | float | bool | str) -> str:
         """Set a config key: max_retries 0-10, timeout_ms 10-30000, pool_size 1-100, rate_limit_rps 0-100000 (0 = off),
-        log_level DEBUG|INFO|WARN|ERROR, dlq_enabled true|false. Costs 2 minutes."""
+        log_level DEBUG|INFO|WARN|ERROR, dlq_enabled true|false; apps: read_from primary|replica, conn_lifetime_jitter on|off,
+        autoscaling on|off, send_rate_per_s 0-100000; cache: maxmemory_mb 64-65536, maxmemory_policy noeviction|allkeys-lru|volatile-lru;
+        db: cluster_manager auto|maintenance; entry service: block_client <client id>, waf_ruleset stable|candidate.
+        send_rate_per_s is the outbound mail rate of a mail-sending service (0 = unlimited). Costs 2 minutes."""
         return await run("set_config", service=service, key=key, value=value)
 
     @mcp.tool()
@@ -130,8 +143,13 @@ def build_server(scenario, admin_token_sha256=None, run_dir=None):
 
     @mcp.tool()
     async def run_maintenance(service: str, action: Action) -> str:
-        """Run a maintenance action on a service (validity depends on the service kind). Costs 3 minutes. Some actions are harmful on a busy database."""
+        """Run a maintenance action on a service (validity depends on the service kind). Costs 3 minutes. Some actions are harmful on a busy database; flush_redis drops every cache key."""
         return await run("run_maintenance", service=service, action=action)
+
+    @mcp.tool()
+    async def drain_instance(service: str, instance: str) -> str:
+        """Remove one replica (name from get_instances) from the load balancer; capacity drops by one instance. Costs 2 minutes."""
+        return await run("drain_instance", service=service, instance=instance)
 
     @mcp.tool()
     async def wait(minutes: int) -> str:

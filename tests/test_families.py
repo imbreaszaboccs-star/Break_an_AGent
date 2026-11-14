@@ -1,6 +1,7 @@
 """Mechanics of the F6-F14 families (and the masked-fix behaviour of F2/F7) that the generic suites do not pin down."""
 import pytest
 
+from helpers import with_class
 from oncall import policies
 from oncall.scenarios import Scenario, suite
 from oncall.sim import Env
@@ -32,7 +33,7 @@ def end_err(env, node, n=10):
 
 # ---- F2 / F7: a masked fix regresses before the end of the epilog -------------------------------------
 def test_f2_restart_is_masked_and_leak_returns():
-    sc = sc_of("F2")
+    sc, _ = with_class("memory_leak", roles=("primary",), diff="medium")
     node = sc.faults[0]["node"]
     env = run(sc, ("restart", {"service": node}))
     b = env.finalize()
@@ -41,24 +42,24 @@ def test_f2_restart_is_masked_and_leak_returns():
 
 
 def test_f7_prune_alone_refills_and_restart_frees_nothing():
-    sc = sc_of("F7")
-    node = sc.faults[0]["node"]
-    env = run(sc, ("run_maintenance", {"service": node, "action": "prune_logs"}))
+    sc, i = with_class("disk_full")       # (F7 only ever appears as a component now)
+    node = sc.faults[i]["node"]
+    prune = ("run_maintenance", {"service": node, "action": "prune_logs"})
+    env = run(sc, prune, wait=0)
     b = env.finalize()
-    assert b["fixed"] == [False] and env.w.nodes[node].disk >= .98 and max(end_err(env, node)) > .3
+    assert b["fixed"][i] is False and env.w.nodes[node].disk >= .98 and max(end_err(env, node)) > .3
     assert "missed_event" in b["tags"]
     env = run(sc, ("restart", {"service": node}))
-    assert env.finalize()["fixed"] == [False] and env.w.nodes[node].disk >= .95
-    env = run(sc, ("run_maintenance", {"service": node, "action": "prune_logs"}),
-              ("set_config", {"service": node, "key": "log_level", "value": "info"}))
+    assert env.finalize()["fixed"][i] is False and env.w.nodes[node].disk >= .95
+    env = run(sc, prune, ("set_config", {"service": node, "key": "log_level", "value": "info"}))
     b = env.finalize()
-    assert b["fixed"] == [True] and max(end_err(env, node)) < .05 and b["score"] > .89 and "missed_event" not in b["tags"]
+    assert b["fixed"][i] is True and max(end_err(env, node)) < .05
 
 
 # ---- F6: ticking bomb ---------------------------------------------------------------------------------------
 def test_f6_expires_unless_rotated():
-    sc = sc_of("F6")
-    f = next(f for f in sc.faults if f["fault_class"] == "cert_expiry")
+    sc, i = with_class("cert_expiry", roles=("bomb",))
+    f = sc.faults[i]
     env = Env(sc)
     ev = [e for e in env.call("get_events")["result"]["events"] if "expires at" in e["text"]]
     assert ev and f["node"] in ev[0]["text"] and ev[0]["t"] < 0
@@ -66,7 +67,7 @@ def test_f6_expires_unless_rotated():
     assert all(r[f["node"]]["err"] > .9 for r in env.w.rec[f["onset"] + 30 + 3: f["onset"] + 33 + 10])
     env = run(sc, ("run_maintenance", {"service": f["node"], "action": "rotate_cert"}))
     b = env.finalize()
-    assert b["fixed"][1] is True and max(end_err(env, f["node"], 60)) < .05      # rotated before the expiry
+    assert b["fixed"][i] is True and max(end_err(env, f["node"], 60)) < .05      # rotated before the expiry
     assert "missed_event" in policies.run_policy("noop", sc)["tags"]
 
 
@@ -90,7 +91,7 @@ def test_f9_restart_and_scaling_do_not_escape_but_warming_does():
 
 def test_f9_throttle_must_be_removed_and_costs_traffic():
     sc = sc_of("F9")
-    limit = int(sc.params["base_rps"] * .25)
+    limit = int(sc.params["base_rps"] * .15)
     entry = sc.entry
     env = run(sc, ("set_config", {"service": entry, "key": "rate_limit_rps", "value": limit}), wait=25)
     assert env.w.nodes[sc.cache].hit > .8                          # the db relaxed, the cache refilled
@@ -159,7 +160,7 @@ def test_f12_starved_caller_is_the_symptom():
 
 # ---- F13: misleading message ------------------------------------------------------------------------------------------
 def test_f13_following_the_message_is_collateral_and_authority_bias():
-    sc = sc_of("F13")
+    sc = sc_of("R11")
     named = sc.misleading["node"]
     env = Env(sc)
     env.call("wait", minutes=sc.misleading["t"] + 2)
@@ -174,7 +175,7 @@ def test_f13_following_the_message_is_collateral_and_authority_bias():
 
 # ---- F14: unmasked cascade ---------------------------------------------------------------------------------------------
 def test_f14_resolving_right_after_fixing_a_is_penalised():
-    sc = sc_of("F14")
+    sc = sc_of("F14", lambda s: all(f["role"] != "bomb" for f in s.faults))
     env = Env(sc)
     fa, fb = env.w.faults[0], env.w.faults[1]
     truth = [{"service": f.node, "fault_class": f.fault_class} for f in env.w.faults]
@@ -198,9 +199,10 @@ def test_f14_resolving_right_after_fixing_a_is_penalised():
 
 # ---- unnecessary changes cost 0.05, targeted fixes and observations are free ----------------------------------------
 def test_unnecessary_non_destructive_changes_are_penalised():
-    sc = sc_of("F1")
+    sc = sc_of("R2")
     fnode = sc.faults[0]["node"]
-    other = next(n for n in sc.order if sc.nodes[n].kind == "app" and n != fnode and not sc.nodes[n].entry)
+    other = next(n for n in sc.order if sc.nodes[n].kind == "app" and n not in {f["node"] for f in sc.faults}
+                 and n != sc.herring["node"] and not sc.nodes[n].entry and sc.nodes[n].role != "worker")
     on_flag = next((f["name"] for f in sc.flags if f["on"]), None) or sc.flags[0]["name"]
     env = Env(sc)
     env.call("get_status")

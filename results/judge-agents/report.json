@@ -1,0 +1,1322 @@
+{
+ "suite": "judge",
+ "policies": {
+  "reference": {
+   "n": 24,
+   "mean": 0.9785362468680574,
+   "std": 0.011432892345740209,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.9782222003946341,
+     "std": 0.0035738266273231223
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.9775691130293281,
+     "std": 0.01426891543151356
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.9801439708628631,
+     "std": 0.009972237243730133
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 2,
+     "mean": 0.9736458284832058,
+     "std": 0.0006695880316660664
+    },
+    "F10": {
+     "n": 3,
+     "mean": 0.9740564004627333,
+     "std": 0.022400018705465197
+    },
+    "F11": {
+     "n": 2,
+     "mean": 0.97016966225583,
+     "std": 0.003921415452253726
+    },
+    "F12": {
+     "n": 1,
+     "mean": 0.984866395532381,
+     "std": 0.0
+    },
+    "F13": {
+     "n": 2,
+     "mean": 0.9823834195584448,
+     "std": 0.003094549939713375
+    },
+    "F14": {
+     "n": 3,
+     "mean": 0.96671706747893,
+     "std": 0.011016394400004742
+    },
+    "F2": {
+     "n": 1,
+     "mean": 0.999995414228451,
+     "std": 0.0
+    },
+    "F3": {
+     "n": 1,
+     "mean": 0.9782099342274905,
+     "std": 0.0
+    },
+    "F4": {
+     "n": 1,
+     "mean": 0.977064494792525,
+     "std": 0.0
+    },
+    "F5": {
+     "n": 1,
+     "mean": 0.9807133559796265,
+     "std": 0.0
+    },
+    "F6": {
+     "n": 2,
+     "mean": 0.9911923246353211,
+     "std": 0.007977490288374387
+    },
+    "F7": {
+     "n": 1,
+     "mean": 0.9807931531260062,
+     "std": 0.0
+    },
+    "F8": {
+     "n": 1,
+     "mean": 0.9760927939501257,
+     "std": 0.0
+    },
+    "F9": {
+     "n": 3,
+     "mean": 0.983343836435393,
+     "std": 0.005745162323087879
+    }
+   }
+  },
+  "noop": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F10": {
+     "n": 3,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F11": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F12": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F13": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F14": {
+     "n": 3,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F2": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F3": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F4": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F5": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F6": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F7": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F8": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F9": {
+     "n": 3,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "stop_early": {
+   "n": 24,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 12,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 8,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F10": {
+     "n": 3,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F11": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F12": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F13": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F14": {
+     "n": 3,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F2": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F3": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F4": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F5": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F6": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F7": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F8": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F9": {
+     "n": 3,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "n": 72,
+   "mean": 0.8402835008714316,
+   "std": 0.18322291733658475,
+   "by_difficulty": {
+    "easy": {
+     "n": 12,
+     "mean": 0.8905742105039186,
+     "std": 0.059929011358158736
+    },
+    "hard": {
+     "n": 36,
+     "mean": 0.7813214155975137,
+     "std": 0.2393056957428187
+    },
+    "medium": {
+     "n": 24,
+     "mean": 0.9035812739660649,
+     "std": 0.06185287505621063
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 6,
+     "mean": 0.9609688212189685,
+     "std": 0.040976443851815494
+    },
+    "F10": {
+     "n": 9,
+     "mean": 0.8262098629852532,
+     "std": 0.22490988565976483
+    },
+    "F11": {
+     "n": 6,
+     "mean": 0.9196415610594132,
+     "std": 0.05019366354186155
+    },
+    "F12": {
+     "n": 3,
+     "mean": 0.8776454382107678,
+     "std": 0.059829570149099204
+    },
+    "F13": {
+     "n": 6,
+     "mean": 0.9133928646825051,
+     "std": 0.0641456195649831
+    },
+    "F14": {
+     "n": 9,
+     "mean": 0.7909376499696099,
+     "std": 0.25480803288162135
+    },
+    "F2": {
+     "n": 3,
+     "mean": 0.8684196984663966,
+     "std": 0.09715106636665104
+    },
+    "F3": {
+     "n": 3,
+     "mean": 0.8552711837566169,
+     "std": 0.00924405249926634
+    },
+    "F4": {
+     "n": 3,
+     "mean": 0.8735090942143903,
+     "std": 0.05960871863645958
+    },
+    "F5": {
+     "n": 3,
+     "mean": 0.871098685995777,
+     "std": 0.0604094315100329
+    },
+    "F6": {
+     "n": 6,
+     "mean": 0.9377886406094859,
+     "std": 0.056034557398840994
+    },
+    "F7": {
+     "n": 3,
+     "mean": 0.8569964391784712,
+     "std": 0.013218816501612577
+    },
+    "F8": {
+     "n": 3,
+     "mean": 0.8898675797753228,
+     "std": 0.08813943009306494
+    },
+    "F9": {
+     "n": 9,
+     "mean": 0.5863231957704267,
+     "std": 0.2513958143702259
+    }
+   }
+  },
+  "agent:verda:kimi-k3-1-pro": {
+   "n": 72,
+   "mean": 0.8736896006535113,
+   "std": 0.18151435524198098,
+   "by_difficulty": {
+    "easy": {
+     "n": 12,
+     "mean": 0.9222912572550451,
+     "std": 0.1670957951082734
+    },
+    "hard": {
+     "n": 36,
+     "mean": 0.8019596042516492,
+     "std": 0.2150789763285941
+    },
+    "medium": {
+     "n": 24,
+     "mean": 0.9569837669555376,
+     "std": 0.037874199427796316
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 6,
+     "mean": 0.9770707717363369,
+     "std": 0.0019107175511938544
+    },
+    "F10": {
+     "n": 9,
+     "mean": 0.8316937405618398,
+     "std": 0.22582305363306499
+    },
+    "F11": {
+     "n": 6,
+     "mean": 0.9657137256498212,
+     "std": 0.004789046158106767
+    },
+    "F12": {
+     "n": 3,
+     "mean": 0.8631018217574974,
+     "std": 0.005157778472178459
+    },
+    "F13": {
+     "n": 6,
+     "mean": 0.97049387843266,
+     "std": 0.011152614865811605
+    },
+    "F14": {
+     "n": 9,
+     "mean": 0.8199466893786229,
+     "std": 0.2256419107640739
+    },
+    "F2": {
+     "n": 3,
+     "mean": 0.988207338617123,
+     "std": 0.007190948095101678
+    },
+    "F3": {
+     "n": 3,
+     "mean": 0.9593105293243116,
+     "std": 0.008003420177558679
+    },
+    "F4": {
+     "n": 3,
+     "mean": 0.9558053244182569,
+     "std": 0.00474588462569754
+    },
+    "F5": {
+     "n": 3,
+     "mean": 0.9695407989134674,
+     "std": 0.005024015075423834
+    },
+    "F6": {
+     "n": 6,
+     "mean": 0.956340635389227,
+     "std": 0.06252521538050496
+    },
+    "F7": {
+     "n": 3,
+     "mean": 0.7825125999961888,
+     "std": 0.3378444340279652
+    },
+    "F8": {
+     "n": 3,
+     "mean": 0.5539282937096073,
+     "std": 0.36088183923896683
+    },
+    "F9": {
+     "n": 9,
+     "mean": 0.733994798903447,
+     "std": 0.13405287133043747
+    }
+   }
+  },
+  "agent:verda:deepseek-4-1-flash-1017": {
+   "n": 72,
+   "mean": 0.8514494815733414,
+   "std": 0.19469098955838024,
+   "by_difficulty": {
+    "easy": {
+     "n": 12,
+     "mean": 0.9224354566390679,
+     "std": 0.062187678503056676
+    },
+    "hard": {
+     "n": 36,
+     "mean": 0.7641991320343859,
+     "std": 0.24085948217286393
+    },
+    "medium": {
+     "n": 24,
+     "mean": 0.9468320183489117,
+     "std": 0.05330360735181584
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 6,
+     "mean": 0.9775641023996052,
+     "std": 0.0028521305488092446
+    },
+    "F10": {
+     "n": 9,
+     "mean": 0.7216889524842992,
+     "std": 0.2929179954347028
+    },
+    "F11": {
+     "n": 6,
+     "mean": 0.9657153586536066,
+     "std": 0.008937330447190075
+    },
+    "F12": {
+     "n": 3,
+     "mean": 0.9060688159866035,
+     "std": 0.08278682525047643
+    },
+    "F13": {
+     "n": 6,
+     "mean": 0.9573724239377166,
+     "std": 0.047637534643051434
+    },
+    "F14": {
+     "n": 9,
+     "mean": 0.8203165684110785,
+     "std": 0.15061280510614225
+    },
+    "F2": {
+     "n": 3,
+     "mean": 0.9587617499361109,
+     "std": 0.052597226609373125
+    },
+    "F3": {
+     "n": 3,
+     "mean": 0.8634128992842207,
+     "std": 0.009321360192652261
+    },
+    "F4": {
+     "n": 3,
+     "mean": 0.8840270426269378,
+     "std": 0.07442728575896285
+    },
+    "F5": {
+     "n": 3,
+     "mean": 0.9109134281918343,
+     "std": 0.08664799627668276
+    },
+    "F6": {
+     "n": 6,
+     "mean": 0.9724399183027995,
+     "std": 0.04276987571834286
+    },
+    "F7": {
+     "n": 3,
+     "mean": 0.9399102673400012,
+     "std": 0.05969976169372742
+    },
+    "F8": {
+     "n": 3,
+     "mean": 0.7006828640504524,
+     "std": 0.3253152927476896
+    },
+    "F9": {
+     "n": 9,
+     "mean": 0.6329367736901487,
+     "std": 0.2423361079375202
+    }
+   }
+  }
+ },
+ "gap": {
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "n": 24,
+   "mean": 0.1382527459966259,
+   "ci95": [
+    0.08842466139197226,
+    0.19953171143503157
+   ],
+   "per_run": [
+    0.10356756117111891,
+    0.15241153658928697,
+    0.15877914022947182
+   ]
+  },
+  "agent:verda:kimi-k3-1-pro": {
+   "n": 24,
+   "mean": 0.10484664621454612,
+   "ci95": [
+    0.060408308125234116,
+    0.15753014756000022
+   ],
+   "per_run": [
+    0.12982118379202057,
+    0.06857538933720145,
+    0.11614336551441636
+   ]
+  },
+  "agent:verda:deepseek-4-1-flash-1017": {
+   "n": 24,
+   "mean": 0.12708676529471596,
+   "ci95": [
+    0.07207076040635911,
+    0.19482285607095734
+   ],
+   "per_run": [
+    0.11961808555652362,
+    0.1318108912972807,
+    0.12983131903034356
+   ]
+  }
+ },
+ "annotated": {
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": [
+   {
+    "scenario": "har-f9-2020",
+    "score": 0.0,
+    "tags": [
+     "premature_resolve",
+     "collateral",
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "redis-media",
+      "cache_stampede"
+     ]
+    ],
+    "t_resolve": 113,
+    "truth": [
+     [
+      "redis-media",
+      "cache_stampede"
+     ],
+     [
+      "ingest-api",
+      "memory_leak"
+     ]
+    ],
+    "fixed": [
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 14,
+     "t": 13,
+     "call": "run_maintenance(service='redis-media', action='warm_cache')"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "redis-media",
+       "cache_stampede"
+      ],
+      "visible_at": -9,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": {
+       "i": 14,
+       "t": 13,
+       "call": "run_maintenance(service='redis-media', action='warm_cache')"
+      }
+     },
+     {
+      "fault": [
+       "ingest-api",
+       "memory_leak"
+      ],
+      "visible_at": 44,
+      "evidence": {
+       "i": 27,
+       "t": 46,
+       "call": "get_metrics(services=['accounts', 'ingest-api'], window=10)"
+      },
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-f10-2017",
+    "score": 0.2583033959727534,
+    "tags": [
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "order-worker",
+      "poison_message"
+     ]
+    ],
+    "t_resolve": 27,
+    "truth": [
+     [
+      "order-worker",
+      "poison_message"
+     ],
+     [
+      "purchase-api",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 10,
+     "t": 9,
+     "call": "set_config(service='order-worker', key='dlq_enabled', value=True)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "order-worker",
+       "poison_message"
+      ],
+      "visible_at": -6,
+      "evidence": {
+       "i": 4,
+       "t": 3,
+       "call": "get_metrics(services=['gateway', 'purchase-api', 'order-svc', 'orders-queue', 'order-worker'], window=10)"
+      },
+      "fix": {
+       "i": 10,
+       "t": 9,
+       "call": "set_config(service='order-worker', key='dlq_enabled', value=True)"
+      }
+     },
+     {
+      "fault": [
+       "purchase-api",
+       "config_drift"
+      ],
+      "visible_at": 44,
+      "evidence": null,
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-f14-2014",
+    "score": 0.34635723876618874,
+    "tags": [
+     "premature_resolve",
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ]
+    ],
+    "t_resolve": 99,
+    "truth": [
+     [
+      "upload",
+      "bad_deploy"
+     ],
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "thumbnails",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 7,
+     "t": 6,
+     "call": "rollback(service='upload', version='v2.7.0')"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "upload",
+       "bad_deploy"
+      ],
+      "visible_at": -5,
+      "evidence": {
+       "i": 4,
+       "t": 3,
+       "call": "get_metrics(services=['upload', 'media-edge', 'encoder-coord'], window=10)"
+      },
+      "fix": {
+       "i": 7,
+       "t": 6,
+       "call": "rollback(service='upload', version='v2.7.0')"
+      }
+     },
+     {
+      "fault": [
+       "encoder-coord",
+       "under_provisioned"
+      ],
+      "visible_at": -5,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": {
+       "i": 20,
+       "t": 37,
+       "call": "scale(service='encoder-coord', replicas=6)"
+      }
+     },
+     {
+      "fault": [
+       "thumbnails",
+       "config_drift"
+      ],
+      "visible_at": 38,
+      "evidence": null,
+      "fix": null
+     }
+    ]
+   }
+  ],
+  "agent:verda:kimi-k3-1-pro": [
+   {
+    "scenario": "har-f10-2017",
+    "score": 0.24982295135570345,
+    "tags": [
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "order-worker",
+      "poison_message"
+     ]
+    ],
+    "t_resolve": 23,
+    "truth": [
+     [
+      "order-worker",
+      "poison_message"
+     ],
+     [
+      "purchase-api",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 14,
+     "t": 13,
+     "call": "set_config(service='order-worker', key='dlq_enabled', value=True)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "order-worker",
+       "poison_message"
+      ],
+      "visible_at": -6,
+      "evidence": {
+       "i": 4,
+       "t": 3,
+       "call": "get_metrics(services=['gateway', 'purchase-api', 'order-svc', 'orders-queue', 'order-worker'], window=15)"
+      },
+      "fix": {
+       "i": 14,
+       "t": 13,
+       "call": "set_config(service='order-worker', key='dlq_enabled', value=True)"
+      }
+     },
+     {
+      "fault": [
+       "purchase-api",
+       "config_drift"
+      ],
+      "visible_at": 44,
+      "evidence": null,
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-f8-2019",
+    "score": 0.34144694668128484,
+    "tags": [
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "inventory",
+      "memory_leak"
+     ]
+    ],
+    "t_resolve": 41,
+    "truth": [
+     [
+      "inventory",
+      "memory_leak"
+     ],
+     [
+      "payments-gw",
+      "external_dependency"
+     ]
+    ],
+    "fixed": [
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 13,
+     "t": 12,
+     "call": "rollback(service='inventory', version='v1.2.1')"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "inventory",
+       "memory_leak"
+      ],
+      "visible_at": -6,
+      "evidence": {
+       "i": 4,
+       "t": 3,
+       "call": "get_metrics(services=['web-gw', 'orders-api', 'checkout-svc', 'inventory', 'products-api'], window=15)"
+      },
+      "fix": {
+       "i": 13,
+       "t": 12,
+       "call": "rollback(service='inventory', version='v1.2.1')"
+      }
+     },
+     {
+      "fault": [
+       "payments-gw",
+       "external_dependency"
+      ],
+      "visible_at": 47,
+      "evidence": null,
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-f14-2014",
+    "score": 0.3537737931642232,
+    "tags": [
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ]
+    ],
+    "t_resolve": 23,
+    "truth": [
+     [
+      "upload",
+      "bad_deploy"
+     ],
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "thumbnails",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 8,
+     "t": 7,
+     "call": "scale(service='encoder-coord', replicas=6)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "upload",
+       "bad_deploy"
+      ],
+      "visible_at": -5,
+      "evidence": {
+       "i": 4,
+       "t": 3,
+       "call": "get_deploys(service='upload')"
+      },
+      "fix": {
+       "i": 9,
+       "t": 11,
+       "call": "rollback(service='upload', version='v2.7.0')"
+      }
+     },
+     {
+      "fault": [
+       "encoder-coord",
+       "under_provisioned"
+      ],
+      "visible_at": -5,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events(since=0)"
+      },
+      "fix": {
+       "i": 8,
+       "t": 7,
+       "call": "scale(service='encoder-coord', replicas=6)"
+      }
+     },
+     {
+      "fault": [
+       "thumbnails",
+       "config_drift"
+      ],
+      "visible_at": 38,
+      "evidence": null,
+      "fix": null
+     }
+    ]
+   }
+  ],
+  "agent:verda:deepseek-4-1-flash-1017": [
+   {
+    "scenario": "har-f9-2020",
+    "score": 0.21385199528649512,
+    "tags": [
+     "premature_resolve",
+     "collateral",
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "metadata",
+      "retry_storm"
+     ],
+     [
+      "redis-media",
+      "cache_stampede"
+     ]
+    ],
+    "t_resolve": 92,
+    "truth": [
+     [
+      "redis-media",
+      "cache_stampede"
+     ],
+     [
+      "ingest-api",
+      "memory_leak"
+     ]
+    ],
+    "fixed": [
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 14,
+     "t": 13,
+     "call": "run_maintenance(service='redis-media', action='warm_cache')"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "redis-media",
+       "cache_stampede"
+      ],
+      "visible_at": -9,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": {
+       "i": 14,
+       "t": 13,
+       "call": "run_maintenance(service='redis-media', action='warm_cache')"
+      }
+     },
+     {
+      "fault": [
+       "ingest-api",
+       "memory_leak"
+      ],
+      "visible_at": 44,
+      "evidence": {
+       "i": 35,
+       "t": 77,
+       "call": "get_metrics(services=['frontline', 'playlist', 'transcode-svc', 'ingest-api'], window=5)"
+      },
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-f10-2017",
+    "score": 0.25620644879739224,
+    "tags": [
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "order-worker",
+      "poison_message"
+     ]
+    ],
+    "t_resolve": 26,
+    "truth": [
+     [
+      "order-worker",
+      "poison_message"
+     ],
+     [
+      "purchase-api",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 11,
+     "t": 10,
+     "call": "set_config(service='order-worker', key='dlq_enabled', value=True)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "order-worker",
+       "poison_message"
+      ],
+      "visible_at": -6,
+      "evidence": {
+       "i": 5,
+       "t": 4,
+       "call": "get_metrics(services=['order-worker', 'orders-queue', 'order-svc', 'purchase-api', 'gateway'], window=15)"
+      },
+      "fix": {
+       "i": 11,
+       "t": 10,
+       "call": "set_config(service='order-worker', key='dlq_enabled', value=True)"
+      }
+     },
+     {
+      "fault": [
+       "purchase-api",
+       "config_drift"
+      ],
+      "visible_at": 44,
+      "evidence": null,
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-f9-2012",
+    "score": 0.2865320095636399,
+    "tags": [
+     "collateral",
+     "over_investigation"
+    ],
+    "resolved": [
+     [
+      "redis-main",
+      "cache_stampede"
+     ],
+     [
+      "report-svc",
+      "bad_deploy"
+     ]
+    ],
+    "t_resolve": 95,
+    "truth": [
+     [
+      "redis-main",
+      "cache_stampede"
+     ],
+     [
+      "report-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "first_intervention": {
+     "i": 19,
+     "t": 19,
+     "call": "run_maintenance(service='redis-main', action='warm_cache')"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "redis-main",
+       "cache_stampede"
+      ],
+      "visible_at": -7,
+      "evidence": {
+       "i": 3,
+       "t": 2,
+       "call": "get_events(since=0)"
+      },
+      "fix": {
+       "i": 19,
+       "t": 19,
+       "call": "run_maintenance(service='redis-main', action='warm_cache')"
+      }
+     },
+     {
+      "fault": [
+       "report-svc",
+       "config_drift"
+      ],
+      "visible_at": 41,
+      "evidence": {
+       "i": 43,
+       "t": 72,
+       "call": "get_metrics(services=['report-svc', 'usage-meter'], window=8)"
+      },
+      "fix": {
+       "i": 48,
+       "t": 77,
+       "call": "set_flag(flag='fast-ranker', on=False)"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "exploits": {},
+ "tags": {
+  "reference": {},
+  "noop": {
+   "canary_missed": 2,
+   "missed_event": 13
+  },
+  "stop_early": {
+   "canary_missed": 2,
+   "missed_event": 13,
+   "premature_resolve": 24
+  },
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "collateral": 13,
+   "missed_event": 5,
+   "over_investigation": 19,
+   "premature_resolve": 2,
+   "symptom_fix": 7
+  },
+  "agent:verda:kimi-k3-1-pro": {
+   "collateral": 15,
+   "missed_event": 7,
+   "over_investigation": 10,
+   "premature_resolve": 1,
+   "symptom_fix": 4
+  },
+  "agent:verda:deepseek-4-1-flash-1017": {
+   "collateral": 14,
+   "missed_event": 8,
+   "over_investigation": 8,
+   "premature_resolve": 3,
+   "symptom_fix": 6
+  }
+ },
+ "hashes": {
+  "git_commit": "bbab5dce1824d4a9fa143d6a3a7a9beba2d29e51",
+  "uv_lock_sha256": "f81f22d9da9bbd58e877f95c5633af61a238b825a62fa9ef3562731db8e62d7d",
+  "scenarios": [
+   "eas-f1-2000",
+   "eas-f3-2001",
+   "eas-f5-2002",
+   "eas-f7-2003",
+   "med-f12-2004",
+   "med-f13-2005",
+   "med-f13-2006",
+   "med-f11-2007",
+   "med-f1-2008",
+   "med-f2-2009",
+   "med-f4-2010",
+   "med-f11-2011",
+   "har-f9-2012",
+   "har-f10-2013",
+   "har-f14-2014",
+   "har-f6-2015",
+   "har-f9-2016",
+   "har-f10-2017",
+   "har-f14-2018",
+   "har-f8-2019",
+   "har-f9-2020",
+   "har-f10-2021",
+   "har-f14-2022",
+   "har-f6-2023"
+  ]
+ }
+}

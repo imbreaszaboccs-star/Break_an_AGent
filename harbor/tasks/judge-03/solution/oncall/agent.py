@@ -32,6 +32,9 @@ PROVIDERS = {
     "nemotron": {"base_url": "https://integrate.api.nvidia.com/v1", "key_env": "NVIDIA_API_KEY",
                  "extra": {"chat_template_kwargs": {"enable_thinking": True}, "max_tokens": 16384}},
     "vllm": {"base_url": "http://localhost:8000/v1", "base_url_env": "VLLM_BASE_URL", "key_env": None},
+    # Verda serverless inference (e.g. kimi-k3-1-pro): VERDA_INFERENCE_BASE_URL is the host *without* /v1.
+    "verda": {"base_url": None, "base_url_env": "VERDA_INFERENCE_BASE_URL", "base_url_suffix": "/v1",
+              "key_env": "VERDA_INFERENCE_API_KEY"},
     "openai-compatible": {"base_url": None, "key_env": None},     # needs --base-url [--api-key-env]
 }
 KICKOFF = "The incident is in progress. Start investigating with the tools."
@@ -62,7 +65,7 @@ def tool_schemas():
     """OpenAI `tools` array built from FastMCP's list_tools()."""
     from .server import build_server
     # ponytail: any scenario gives the same tool list; the cache assumes the schema is scenario independent.
-    tools = asyncio.run(build_server(Scenario(1000, "easy")).list_tools())
+    tools = asyncio.run(build_server(Scenario(1000, "medium")).list_tools())
     out = []
     for t in tools:
         schema = t.inputSchema
@@ -150,8 +153,10 @@ def run_agent(scenario, *, base_url, model, api_key=None, temperature=0.0, max_t
             # ponytail: kept in the transcript for analysis/SFT; sent back too, backends ignore unknown fields.
             a_msg["reasoning_content"] = reasoning
         if calls:
-            a_msg["tool_calls"] = [{"id": c.get("id") or f"call_{turn}_{i}", "type": "function",
-                                    "function": {"name": (c.get("function") or {}).get("name", ""),
+            # keep provider extras on each call (Gemini 3 `extra_content.google.thought_signature` must be echoed back)
+            a_msg["tool_calls"] = [{**c, "id": c.get("id") or f"call_{turn}_{i}", "type": "function",
+                                    "function": {**(c.get("function") or {}),
+                                                 "name": (c.get("function") or {}).get("name", ""),
                                                  "arguments": (c.get("function") or {}).get("arguments") or "{}"}}
                                    for i, c in enumerate(calls)]
         messages.append(a_msg)
@@ -192,7 +197,10 @@ def resolve_provider(provider, base_url=None, api_key_env=None):
     if provider not in PROVIDERS:
         sys.exit(f"unknown provider {provider!r}; known: {', '.join(PROVIDERS)}")
     p = PROVIDERS[provider]
-    base = base_url or os.environ.get(p.get("base_url_env", ""), "") or p["base_url"]
+    env_base = os.environ.get(p.get("base_url_env", ""), "")
+    if env_base:
+        env_base = env_base.rstrip("/") + p.get("base_url_suffix", "")
+    base = base_url or env_base or p["base_url"]
     if not base:
         print(f"error: provider {provider!r} needs --base-url", file=sys.stderr)
         sys.exit(2)

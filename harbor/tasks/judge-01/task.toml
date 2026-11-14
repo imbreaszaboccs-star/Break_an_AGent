@@ -9,7 +9,7 @@ authors = []
 keywords = ["incident-response", "mcp", "rl-environment"]
 
 [metadata]
-difficulty = "easy"
+difficulty = "medium"
 
 [verifier]
 timeout_sec = 300.0

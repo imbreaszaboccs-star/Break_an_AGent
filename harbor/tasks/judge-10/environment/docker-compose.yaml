@@ -10,9 +10,9 @@ services:
     image: oncall-sim:local
     environment:
       SCENARIO_SEED: "2010"
-      SCENARIO_DIFFICULTY: "medium"
+      SCENARIO_DIFFICULTY: "hard"
       ONCALL_SALT: ""
-      ADMIN_TOKEN_SHA256: "221690edb49b55f86cf20f32f711ba5944c1d0fef8a9205d583753851754375b"
+      ADMIN_TOKEN_SHA256: "87174725125e197fbd5a22f7bdc3b66a15adc3ec084506beb52adf1ac79c9b38"
     healthcheck:
       test: ["CMD", "python", "-c", "import socket; socket.create_connection(('localhost', 8000), 2)"]
       interval: 2s

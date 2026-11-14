@@ -1,0 +1,6971 @@
+{
+ "suite": "judge",
+ "scenarios": [
+  "med-r4-2005",
+  "med-r6-2007",
+  "med-r10-2009",
+  "med-r14-2011",
+  "med-f11-2000",
+  "med-f12-2001",
+  "har-r1-2023",
+  "har-r3-2024",
+  "har-r8-2025",
+  "har-r9-2026",
+  "har-r12-2010",
+  "har-r13-2011",
+  "har-f9-2012",
+  "har-f10-2013",
+  "har-f14-2014",
+  "har-r2-2015",
+  "exp-r9-2030",
+  "exp-f14-2031",
+  "exp-r3-2032",
+  "exp-r8-2033",
+  "exp-r12-2034",
+  "exp-r13-2035",
+  "exp-r11-2036",
+  "exp-f9-2037"
+ ],
+ "policies": {
+  "agent:verda:deepseek-4-1-flash-1017": [
+   {
+    "scenario": "med-r4-2005",
+    "family": "R4",
+    "salt": "",
+    "seed": 2005,
+    "difficulty": "medium",
+    "template": "media",
+    "score": 0.9581254150478969,
+    "score_raw": 0.9581254150478969,
+    "R_avail": 0.9302090250798283,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9943063775838531,
+    "U_noop": 0.9184189299166635,
+    "U_oracle": 1.0,
+    "spend_mean": 81.0,
+    "spend_noop_mean": 81.0,
+    "n_calls": 34,
+    "t_resolve": 75,
+    "faults": [
+     [
+      "pg-primary",
+      "pool_sync_recycle"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "pg-primary",
+      "pool_sync_recycle"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "pg-primary",
+        "pool_sync_recycle"
+       ],
+       "visible_at": -6,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 18,
+        "t": 18,
+        "call": "set_config(service='metadata', key='conn_lifetime_jitter', value='on')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 18,
+      "t": 18,
+      "call": "set_config(service='metadata', key='conn_lifetime_jitter', value='on')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "med-r6-2007",
+    "family": "R6",
+    "salt": "",
+    "seed": 2007,
+    "difficulty": "medium",
+    "template": "eshop",
+    "score": 0.9393826463155052,
+    "score_raw": 0.9393826463155052,
+    "R_avail": 0.8989710771925088,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9896334481049704,
+    "U_noop": 0.9099999999999999,
+    "U_oracle": 0.9985828811686202,
+    "spend_mean": 89.0,
+    "spend_noop_mean": 89.0,
+    "n_calls": 39,
+    "t_resolve": 98,
+    "faults": [
+     [
+      "basket-api",
+      "clock_skew"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "basket-api",
+      "clock_skew"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "basket-api",
+        "clock_skew"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 15,
+        "t": 15,
+        "call": "get_instances(service='basket-api')"
+       },
+       "fix": {
+        "i": 19,
+        "t": 19,
+        "call": "run_maintenance(service='basket-api', action='sync_clock')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 19,
+      "t": 19,
+      "call": "run_maintenance(service='basket-api', action='sync_clock')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "med-r10-2009",
+    "family": "R10",
+    "salt": "",
+    "seed": 2009,
+    "difficulty": "medium",
+    "template": "saas",
+    "score": 0.862294305471867,
+    "score_raw": 0.862294305471867,
+    "R_avail": 0.937157175786445,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9351613077861998,
+    "U_noop": 0.1079055776241834,
+    "U_oracle": 0.9906344853634841,
+    "spend_mean": 98.0,
+    "spend_noop_mean": 98.0,
+    "n_calls": 24,
+    "t_resolve": 75,
+    "faults": [
+     [
+      "gateway",
+      "bad_config_push"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "gateway",
+      "config_drift"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "gateway",
+        "bad_config_push"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['gateway'], window=15)"
+       },
+       "fix": {
+        "i": 12,
+        "t": 12,
+        "call": "set_config(service='gateway', key='waf_ruleset', value='stable')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 12,
+      "t": 12,
+      "call": "set_config(service='gateway', key='waf_ruleset', value='stable')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "med-r14-2011",
+    "family": "R14",
+    "salt": "",
+    "seed": 2011,
+    "difficulty": "medium",
+    "template": "saas",
+    "score": 0.9817494201774867,
+    "score_raw": 0.9817494201774867,
+    "R_avail": 0.9695823669624778,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.981881670215954,
+    "U_noop": 0.5336964499460004,
+    "U_oracle": 0.9959420884202591,
+    "spend_mean": 93.0,
+    "spend_noop_mean": 93.0,
+    "n_calls": 25,
+    "t_resolve": 114,
+    "faults": [
+     [
+      "api-edge",
+      "abusive_client"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "api-edge",
+      "abusive_client"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "api-edge",
+        "abusive_client"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['api-edge', 'auth', 'task-queue', 'redis-main', 'usage-svc'], window=15)"
+       },
+       "fix": {
+        "i": 8,
+        "t": 7,
+        "call": "set_config(service='api-edge', key='block_client', value='data-6b05')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 8,
+      "t": 7,
+      "call": "set_config(service='api-edge', key='block_client', value='data-6b05')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "med-f11-2000",
+    "family": "F11",
+    "salt": "",
+    "seed": 2000,
+    "difficulty": "medium",
+    "template": "saas",
+    "score": 0.9557657699407024,
+    "score_raw": 0.9557657699407024,
+    "R_avail": 0.926276283234504,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9789378979889302,
+    "U_noop": 0.7316760937567923,
+    "U_oracle": 0.9986178353381634,
+    "spend_mean": 98.0,
+    "spend_noop_mean": 98.0,
+    "n_calls": 38,
+    "t_resolve": 99,
+    "faults": [
+     [
+      "workspace-svc",
+      "bad_canary"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "workspace-svc",
+      "bad_canary"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "workspace-svc",
+        "bad_canary"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['public-api', 'billing-svc', 'workspace-svc', 'accounts', 'jobs-queue'], window=15)"
+       },
+       "fix": {
+        "i": 14,
+        "t": 14,
+        "call": "set_flag(flag='workspace-svc-canary', on=False)"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 14,
+      "t": 14,
+      "call": "set_flag(flag='workspace-svc-canary', on=False)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "med-f12-2001",
+    "family": "F12",
+    "salt": "",
+    "seed": 2001,
+    "difficulty": "medium",
+    "template": "media",
+    "score": 0.7967926245493742,
+    "score_raw": 0.7967926245493742,
+    "R_avail": 0.8279877075822902,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9206737610984623,
+    "U_noop": 0.5597825869402998,
+    "U_oracle": 0.9956479637488016,
+    "spend_mean": 68.0,
+    "spend_noop_mean": 68.0,
+    "n_calls": 51,
+    "t_resolve": 119,
+    "faults": [
+     [
+      "discover",
+      "thread_starvation"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "discover",
+      "pool_sync_recycle"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "discover",
+        "thread_starvation"
+       ],
+       "visible_at": -10,
+       "evidence": {
+        "i": 6,
+        "t": 5,
+        "call": "get_metrics(services=['cdn-origin', 'catalog', 'discover'], window=15)"
+       },
+       "fix": {
+        "i": 29,
+        "t": 36,
+        "call": "set_circuit_breaker(service='queue-api', dep='discover', mode='fallback')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 21,
+      "t": 21,
+      "call": "set_config(service='discover', key='conn_lifetime_jitter', value='on')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-r1-2023",
+    "family": "R1",
+    "salt": "",
+    "seed": 2023,
+    "difficulty": "hard",
+    "template": "media",
+    "score": 0.835262572161114,
+    "score_raw": 0.835262572161114,
+    "R_avail": 0.8921042869351901,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9203279654371681,
+    "U_noop": 0.41762508043240265,
+    "U_oracle": 0.9811274560703375,
+    "spend_mean": 66.0,
+    "spend_noop_mean": 66.0,
+    "n_calls": 79,
+    "t_resolve": 117,
+    "faults": [
+     [
+      "redis-media",
+      "duplicate_charges"
+     ],
+     [
+      "library-api",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "library-api",
+      "bad_deploy"
+     ],
+     [
+      "profiles",
+      "replica_lag_stale_reads"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-media",
+        "duplicate_charges"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 27,
+        "t": 28,
+        "call": "get_metrics(services=['redis-media'], window=25)"
+       },
+       "fix": {
+        "i": 67,
+        "t": 82,
+        "call": "set_config(service='profiles', key='read_from', value='primary')"
+       }
+      },
+      {
+       "fault": [
+        "library-api",
+        "bad_deploy"
+       ],
+       "visible_at": 40,
+       "evidence": {
+        "i": 44,
+        "t": 45,
+        "call": "get_metrics(services=['playlist-svc', 'library-api'], window=6)"
+       },
+       "fix": {
+        "i": 50,
+        "t": 51,
+        "call": "rollback(service='library-api', version='v2.3.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 50,
+      "t": 51,
+      "call": "rollback(service='library-api', version='v2.3.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-r3-2024",
+    "family": "R3",
+    "salt": "",
+    "seed": 2024,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.8416421193169537,
+    "score_raw": 0.8416421193169537,
+    "R_avail": 0.9027368655282563,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9432491528045881,
+    "U_noop": 0.5707586958636609,
+    "U_oracle": 0.9833822090542474,
+    "spend_mean": 83.0,
+    "spend_noop_mean": 83.0,
+    "n_calls": 32,
+    "t_resolve": 48,
+    "faults": [
+     [
+      "postgres-main",
+      "migration_lock"
+     ],
+     [
+      "order-svc",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "catalog-svc",
+      "bad_deploy"
+     ],
+     [
+      "order-svc",
+      "cert_expiry"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "postgres-main",
+        "migration_lock"
+       ],
+       "visible_at": -10,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['frontdoor', 'purchase-api', 'order-svc', 'catalog-svc', 'postgres-main'], window=20)"
+       },
+       "fix": {
+        "i": 11,
+        "t": 10,
+        "call": "run_maintenance(service='postgres-main', action='cancel_migration')"
+       }
+      },
+      {
+       "fault": [
+        "order-svc",
+        "cert_expiry"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 26,
+        "t": 36,
+        "call": "run_maintenance(service='order-svc', action='rotate_cert')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 11,
+      "t": 10,
+      "call": "run_maintenance(service='postgres-main', action='cancel_migration')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-r8-2025",
+    "family": "R8",
+    "salt": "",
+    "seed": 2025,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.0,
+    "score_raw": 0.0,
+    "R_avail": 0.0,
+    "R_fixed": 0.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.1402996545947528,
+    "U_noop": 0.1490402222513354,
+    "U_oracle": 0.9815636042014666,
+    "spend_mean": 81.72727272727273,
+    "spend_noop_mean": 81.0,
+    "n_calls": 70,
+    "t_resolve": null,
+    "faults": [
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "stock-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     false,
+     false
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [
+     "silent_harm_missed",
+     "over_investigation",
+     "missed_event"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "order-svc",
+        "mail_backlog_ramp"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 19,
+        "t": 18,
+        "call": "set_config(service='order-svc', key='send_rate_per_s', value=20)"
+       }
+      },
+      {
+       "fault": [
+        "stock-svc",
+        "config_drift"
+       ],
+       "visible_at": 41,
+       "evidence": {
+        "i": 40,
+        "t": 63,
+        "call": "get_logs(level='ERROR', limit=40, service='stock-svc')"
+       },
+       "fix": null
+      }
+     ],
+     "first_intervention": {
+      "i": 19,
+      "t": 18,
+      "call": "set_config(service='order-svc', key='send_rate_per_s', value=20)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-r9-2026",
+    "family": "R9",
+    "salt": "",
+    "seed": 2026,
+    "difficulty": "hard",
+    "template": "saas",
+    "score": 0.0,
+    "score_raw": 0.15,
+    "R_avail": 0.0,
+    "R_fixed": 0.5,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.5499999999999999,
+    "P_cost": 0.0,
+    "U": 0.0,
+    "U_noop": 0.0,
+    "U_oracle": 0.9567891651704344,
+    "spend_mean": 78.0,
+    "spend_noop_mean": 78.0,
+    "n_calls": 78,
+    "t_resolve": null,
+    "faults": [
+     [
+      "cache-cluster",
+      "cache_invalidation_loop"
+     ],
+     [
+      "billing",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     false,
+     true
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [
+     "collateral",
+     "loop_not_broken"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "cache-cluster",
+        "cache_invalidation_loop"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 11,
+        "t": 11,
+        "call": "get_metrics(services=['cache-cluster', 'identity'], window=15)"
+       },
+       "fix": {
+        "i": 16,
+        "t": 16,
+        "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+       }
+      },
+      {
+       "fault": [
+        "billing",
+        "cert_expiry"
+       ],
+       "visible_at": -10,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 46,
+        "t": 63,
+        "call": "run_maintenance(action='rotate_cert', service='billing')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 16,
+      "t": 16,
+      "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-r12-2010",
+    "family": "R12",
+    "salt": "",
+    "seed": 2010,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.33266789850055933,
+    "score_raw": 0.33266789850055933,
+    "R_avail": 0.3044464975009323,
+    "R_fixed": 0.5,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.6833476614302119,
+    "U_noop": 0.551502768962914,
+    "U_oracle": 0.9845670135824277,
+    "spend_mean": 76.0,
+    "spend_noop_mean": 76.0,
+    "n_calls": 22,
+    "t_resolve": 37,
+    "faults": [
+     [
+      "order-svc",
+      "duplicate_events"
+     ],
+     [
+      "catalog",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     false
+    ],
+    "resolved": [
+     [
+      "order-svc",
+      "duplicate_events"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "missed_event"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "order-svc",
+        "duplicate_events"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['edge-api', 'order-svc', 'warehouse-api', 'invoicer', 'purchase-api'], window=15)"
+       },
+       "fix": {
+        "i": 9,
+        "t": 8,
+        "call": "rollback(service='order-svc', version='v2.10.0')"
+       }
+      },
+      {
+       "fault": [
+        "catalog",
+        "bad_deploy"
+       ],
+       "visible_at": 48,
+       "evidence": null,
+       "fix": null
+      }
+     ],
+     "first_intervention": {
+      "i": 9,
+      "t": 8,
+      "call": "rollback(service='order-svc', version='v2.10.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-r13-2011",
+    "family": "R13",
+    "salt": "",
+    "seed": 2011,
+    "difficulty": "hard",
+    "template": "saas",
+    "score": 0.7377169343573603,
+    "score_raw": 0.8377169343573603,
+    "R_avail": 0.8961948905956005,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.1,
+    "P_cost": 0.0,
+    "U": 0.8969218350711573,
+    "U_noop": 0.27920432254991245,
+    "U_oracle": 0.9684712654921078,
+    "spend_mean": 93.0,
+    "spend_noop_mean": 93.0,
+    "n_calls": 47,
+    "t_resolve": 77,
+    "faults": [
+     [
+      "pg-main",
+      "stuck_failover"
+     ],
+     [
+      "reports",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "pg-main",
+      "disk_full"
+     ],
+     [
+      "pg-main",
+      "stuck_failover"
+     ],
+     [
+      "reports",
+      "expired_cert_dismissed_alert"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "symptom_fix",
+     "collateral",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "pg-main",
+        "stuck_failover"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_topology()"
+       },
+       "fix": {
+        "i": 27,
+        "t": 35,
+        "call": "set_config(service='pg-main', key='cluster_manager', value='maintenance')"
+       }
+      },
+      {
+       "fault": [
+        "reports",
+        "cert_expiry"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 36,
+        "t": 57,
+        "call": "run_maintenance(service='reports', action='rotate_cert')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 14,
+      "t": 13,
+      "call": "failover_db()"
+     },
+     "first_intervention_necessary": false
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-f9-2012",
+    "family": "F9",
+    "salt": "",
+    "seed": 2012,
+    "difficulty": "hard",
+    "template": "saas",
+    "score": 0.9225961098919996,
+    "score_raw": 0.9225961098919996,
+    "R_avail": 0.8709935164866661,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.8346278136200215,
+    "U_noop": 0.0,
+    "U_oracle": 0.9582480211639999,
+    "spend_mean": 95.0,
+    "spend_noop_mean": 95.0,
+    "n_calls": 45,
+    "t_resolve": 88,
+    "faults": [
+     [
+      "redis-main",
+      "cache_stampede"
+     ],
+     [
+      "invoicing",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "invoicing",
+      "cert_expiry"
+     ],
+     [
+      "redis-main",
+      "cache_stampede"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-main",
+        "cache_stampede"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 19,
+        "t": 19,
+        "call": "run_maintenance(service='redis-main', action='warm_cache')"
+       }
+      },
+      {
+       "fault": [
+        "invoicing",
+        "cert_expiry"
+       ],
+       "visible_at": -20,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 35,
+        "t": 53,
+        "call": "run_maintenance(service='invoicing', action='rotate_cert')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 19,
+      "t": 19,
+      "call": "run_maintenance(service='redis-main', action='warm_cache')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-f10-2013",
+    "family": "F10",
+    "salt": "",
+    "seed": 2013,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.9482051866988556,
+    "score_raw": 0.9482051866988556,
+    "R_avail": 0.9136753111647595,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9450183301457846,
+    "U_noop": 0.5289258634177851,
+    "U_oracle": 0.9843310403373212,
+    "spend_mean": 79.0,
+    "spend_noop_mean": 79.0,
+    "n_calls": 42,
+    "t_resolve": 116,
+    "faults": [
+     [
+      "fulfillment-worker",
+      "poison_message"
+     ],
+     [
+      "warehouse-api",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "fulfillment-worker",
+      "poison_message"
+     ],
+     [
+      "warehouse-api",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "fulfillment-worker",
+        "poison_message"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['web-gw', 'orders-api', 'purchase-api', 'jobs-queue', 'fulfillment-worker'], window=15)"
+       },
+       "fix": {
+        "i": 10,
+        "t": 9,
+        "call": "set_config(service='fulfillment-worker', key='dlq_enabled', value=True)"
+       }
+      },
+      {
+       "fault": [
+        "warehouse-api",
+        "bad_deploy"
+       ],
+       "visible_at": 48,
+       "evidence": {
+        "i": 29,
+        "t": 76,
+        "call": "get_metrics(services=['warehouse-api', 'purchase-api', 'products-api', 'search', 'web-gw'], window=15)"
+       },
+       "fix": {
+        "i": 34,
+        "t": 81,
+        "call": "rollback(service='warehouse-api', version='v1.5.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 10,
+      "t": 9,
+      "call": "set_config(service='fulfillment-worker', key='dlq_enabled', value=True)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-f14-2014",
+    "family": "F14",
+    "salt": "",
+    "seed": 2014,
+    "difficulty": "hard",
+    "template": "media",
+    "score": 0.34951395744309444,
+    "score_raw": 0.34951395744309444,
+    "R_avail": 0.24918992907182405,
+    "R_fixed": 0.6666666666666666,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.5221977620856386,
+    "U_noop": 0.36862368470283036,
+    "U_oracle": 0.9849169592939699,
+    "spend_mean": 90.03636363636363,
+    "spend_noop_mean": 80.0,
+    "n_calls": 23,
+    "t_resolve": 36,
+    "faults": [
+     [
+      "upload",
+      "bad_deploy"
+     ],
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "thumbnails",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     false
+    ],
+    "resolved": [
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "missed_event"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "upload",
+        "bad_deploy"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['upload', 'media-edge', 'encoder-coord', 'profiles', 'origin-storage'], window=15)"
+       },
+       "fix": {
+        "i": 10,
+        "t": 9,
+        "call": "rollback(service='upload', version='v2.7.0')"
+       }
+      },
+      {
+       "fault": [
+        "encoder-coord",
+        "under_provisioned"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 17,
+        "t": 23,
+        "call": "scale(service='encoder-coord', replicas=6)"
+       }
+      },
+      {
+       "fault": [
+        "thumbnails",
+        "config_drift"
+       ],
+       "visible_at": 38,
+       "evidence": null,
+       "fix": null
+      }
+     ],
+     "first_intervention": {
+      "i": 10,
+      "t": 9,
+      "call": "rollback(service='upload', version='v2.7.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "har-r2-2015",
+    "family": "R2",
+    "salt": "",
+    "seed": 2015,
+    "difficulty": "hard",
+    "template": "media",
+    "score": 0.9706905566233303,
+    "score_raw": 0.9706905566233303,
+    "R_avail": 0.9511509277055505,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.937664155262983,
+    "U_noop": 0.2175000000000008,
+    "U_oracle": 0.9746502421810447,
+    "spend_mean": 103.0,
+    "spend_noop_mean": 103.0,
+    "n_calls": 32,
+    "t_resolve": 45,
+    "faults": [
+     [
+      "media-db",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "metadata",
+      "disk_full"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "media-db",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "metadata",
+      "disk_full"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "media-db",
+        "replica_lag_stale_reads"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['media-edge', 'playlist', 'metadata', 'user-svc', 'media-db'], window=15)"
+       },
+       "fix": {
+        "i": 23,
+        "t": 25,
+        "call": "run_maintenance(action='kill_long_queries', service='media-db')"
+       }
+      },
+      {
+       "fault": [
+        "metadata",
+        "disk_full"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 15,
+        "t": 14,
+        "call": "run_maintenance(service='metadata', action='prune_logs')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 15,
+      "t": 14,
+      "call": "run_maintenance(service='metadata', action='prune_logs')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "exp-r9-2030",
+    "family": "R9",
+    "salt": "",
+    "seed": 2030,
+    "difficulty": "expert",
+    "template": "saas",
+    "score": 0.0,
+    "score_raw": 0.19999999999999998,
+    "R_avail": 0.0,
+    "R_fixed": 0.6666666666666666,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.2,
+    "P_cost": 0.0,
+    "U": 0.0,
+    "U_noop": 0.0,
+    "U_oracle": 0.9501717842877098,
+    "spend_mean": 80.0,
+    "spend_noop_mean": 80.0,
+    "n_calls": 83,
+    "t_resolve": null,
+    "faults": [
+     [
+      "redis-main",
+      "cache_invalidation_loop"
+     ],
+     [
+      "auth-svc",
+      "clock_skew"
+     ],
+     [
+      "tenant-svc",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     false,
+     true,
+     true
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [
+     "herring_followed",
+     "collateral",
+     "loop_not_broken"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-main",
+        "cache_invalidation_loop"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 12,
+        "t": 12,
+        "call": "get_metrics(services=['redis-main'], window=10)"
+       },
+       "fix": {
+        "i": 22,
+        "t": 24,
+        "call": "set_config(service='redis-main', key='timeout_ms', value=1500)"
+       }
+      },
+      {
+       "fault": [
+        "auth-svc",
+        "clock_skew"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 17,
+        "t": 17,
+        "call": "get_logs(level='ERROR', limit=25, service='auth-svc')"
+       },
+       "fix": {
+        "i": 21,
+        "t": 21,
+        "call": "run_maintenance(service='auth-svc', action='sync_clock')"
+       }
+      },
+      {
+       "fault": [
+        "tenant-svc",
+        "bad_deploy"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['gateway', 'tenant-svc', 'pg-main', 'auth-svc', 'workspace-svc'], window=10)"
+       },
+       "fix": {
+        "i": 78,
+        "t": 103,
+        "call": "rollback(service='tenant-svc', version='v3.4.1')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 21,
+      "t": 21,
+      "call": "run_maintenance(service='auth-svc', action='sync_clock')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "exp-f14-2031",
+    "family": "F14",
+    "salt": "",
+    "seed": 2031,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.8688141113625174,
+    "score_raw": 0.8688141113625174,
+    "R_avail": 0.9480235189375291,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9202295446576159,
+    "U_noop": 0.28,
+    "U_oracle": 0.9553308666594424,
+    "spend_mean": 96.7090909090909,
+    "spend_noop_mean": 89.0,
+    "n_calls": 39,
+    "t_resolve": null,
+    "faults": [
+     [
+      "upload-svc",
+      "bad_deploy"
+     ],
+     [
+      "transcode",
+      "under_provisioned"
+     ],
+     [
+      "postgres-media",
+      "replica_lag_stale_reads"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "upload-svc",
+        "bad_deploy"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_deploys()"
+       },
+       "fix": {
+        "i": 10,
+        "t": 10,
+        "call": "rollback(service='upload-svc', version='v1.8.0')"
+       }
+      },
+      {
+       "fault": [
+        "transcode",
+        "under_provisioned"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 30,
+        "t": 55,
+        "call": "scale(service='transcode', replicas=6)"
+       }
+      },
+      {
+       "fault": [
+        "postgres-media",
+        "replica_lag_stale_reads"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['upload-svc', 'transcode', 'frontline', 'postgres-media', 'cache-main'], window=15)"
+       },
+       "fix": {
+        "i": 16,
+        "t": 20,
+        "call": "run_maintenance(service='postgres-media', action='kill_long_queries')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 10,
+      "t": 10,
+      "call": "rollback(service='upload-svc', version='v1.8.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "exp-r3-2032",
+    "family": "R3",
+    "salt": "",
+    "seed": 2032,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.8700035275720275,
+    "score_raw": 0.8700035275720275,
+    "R_avail": 0.9500058792867127,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9358471811940952,
+    "U_noop": 0.16870046320510346,
+    "U_oracle": 0.9762183267418891,
+    "spend_mean": 86.0,
+    "spend_noop_mean": 86.0,
+    "n_calls": 46,
+    "t_resolve": 72,
+    "faults": [
+     [
+      "postgres-media",
+      "migration_lock"
+     ],
+     [
+      "event-consumer",
+      "expired_cert_dismissed_alert"
+     ],
+     [
+      "playlist-svc",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "accounts",
+      "bad_deploy"
+     ],
+     [
+      "event-consumer",
+      "expired_cert_dismissed_alert"
+     ],
+     [
+      "postgres-media",
+      "migration_lock"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "postgres-media",
+        "migration_lock"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['stream-gw', 'library-api', 'accounts', 'postgres-media', 'transcode'], window=15)"
+       },
+       "fix": {
+        "i": 9,
+        "t": 8,
+        "call": "run_maintenance(service='postgres-media', action='cancel_migration')"
+       }
+      },
+      {
+       "fault": [
+        "event-consumer",
+        "expired_cert_dismissed_alert"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 33,
+        "t": 45,
+        "call": "run_maintenance(action='update_ca_bundle', service='event-consumer')"
+       }
+      },
+      {
+       "fault": [
+        "playlist-svc",
+        "cert_expiry"
+       ],
+       "visible_at": -12,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 38,
+        "t": 55,
+        "call": "run_maintenance(action='rotate_cert', service='playlist-svc')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 9,
+      "t": 8,
+      "call": "run_maintenance(service='postgres-media', action='cancel_migration')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "exp-r8-2033",
+    "family": "R8",
+    "salt": "",
+    "seed": 2033,
+    "difficulty": "expert",
+    "template": "saas",
+    "score": 0.43752283598529723,
+    "score_raw": 0.43752283598529723,
+    "R_avail": 0.5625380599754954,
+    "R_fixed": 0.3333333333333333,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.5656022685046285,
+    "U_noop": 0.04103154970713552,
+    "U_oracle": 0.973538620998176,
+    "spend_mean": 125.6,
+    "spend_noop_mean": 120.0,
+    "n_calls": 79,
+    "t_resolve": null,
+    "faults": [
+     [
+      "notify-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "public-api",
+      "progressive_gray"
+     ],
+     [
+      "billing-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     false,
+     false,
+     true
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [
+     "silent_harm_missed",
+     "gray_missed",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "notify-svc",
+        "mail_backlog_ramp"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 72,
+        "t": 104,
+        "call": "set_config(key='send_rate_per_s', service='notify-svc', value=30)"
+       }
+      },
+      {
+       "fault": [
+        "public-api",
+        "progressive_gray"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": null
+      },
+      {
+       "fault": [
+        "billing-svc",
+        "config_drift"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['public-api', 'auth', 'notify-svc', 'billing-svc', 'metering'], window=20)"
+       },
+       "fix": {
+        "i": 52,
+        "t": 66,
+        "call": "set_flag(flag='bulk-export', on=False)"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 38,
+      "t": 39,
+      "call": "drain_instance(service='public-api', instance='public-api-2')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "exp-r12-2034",
+    "family": "R12",
+    "salt": "",
+    "seed": 2034,
+    "difficulty": "expert",
+    "template": "eshop",
+    "score": 0.8872671094374137,
+    "score_raw": 0.8872671094374137,
+    "R_avail": 0.8121118490623563,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9437136523276849,
+    "U_noop": 0.7227009417737048,
+    "U_oracle": 0.9948465961058707,
+    "spend_mean": 100.0,
+    "spend_noop_mean": 100.0,
+    "n_calls": 56,
+    "t_resolve": 118,
+    "faults": [
+     [
+      "orders-api",
+      "duplicate_events"
+     ],
+     [
+      "orders-db",
+      "pool_sync_recycle"
+     ],
+     [
+      "finder",
+      "memory_leak"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "finder",
+      "memory_leak"
+     ],
+     [
+      "orders-api",
+      "duplicate_events"
+     ],
+     [
+      "orders-db",
+      "pool_sync_recycle"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "orders-api",
+        "duplicate_events"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['gateway', 'orders-api', 'checkout-svc', 'catalog-svc', 'inventory'], window=15)"
+       },
+       "fix": {
+        "i": 14,
+        "t": 13,
+        "call": "set_flag(flag='order-events-retry', on=False)"
+       }
+      },
+      {
+       "fault": [
+        "orders-db",
+        "pool_sync_recycle"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 45,
+        "t": 71,
+        "call": "set_config(service='catalog-svc', key='conn_lifetime_jitter', value='on')"
+       }
+      },
+      {
+       "fault": [
+        "finder",
+        "memory_leak"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 10,
+        "t": 9,
+        "call": "get_deploys()"
+       },
+       "fix": {
+        "i": 35,
+        "t": 42,
+        "call": "rollback(service='finder', version='v3.7.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 14,
+      "t": 13,
+      "call": "set_flag(flag='order-events-retry', on=False)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "exp-r13-2035",
+    "family": "R13",
+    "salt": "",
+    "seed": 2035,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.8300576703409293,
+    "score_raw": 0.9300576703409292,
+    "R_avail": 0.8834294505682156,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.1,
+    "P_cost": 0.0,
+    "U": 0.8591128566238926,
+    "U_noop": 0.17978269017946125,
+    "U_oracle": 0.9487520357310397,
+    "spend_mean": 90.0,
+    "spend_noop_mean": 90.0,
+    "n_calls": 49,
+    "t_resolve": 77,
+    "faults": [
+     [
+      "media-db",
+      "stuck_failover"
+     ],
+     [
+      "user-svc",
+      "clock_skew"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "media-db",
+      "stuck_failover"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ],
+     [
+      "user-svc",
+      "clock_skew"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "collateral"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "media-db",
+        "stuck_failover"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_topology()"
+       },
+       "fix": {
+        "i": 31,
+        "t": 44,
+        "call": "set_config(service='media-db', key='cluster_manager', value='maintenance')"
+       }
+      },
+      {
+       "fault": [
+        "user-svc",
+        "clock_skew"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 6,
+        "t": 5,
+        "call": "get_logs(service='user-svc', level='ERROR', limit=30)"
+       },
+       "fix": {
+        "i": 9,
+        "t": 8,
+        "call": "run_maintenance(service='user-svc', action='sync_clock')"
+       }
+      },
+      {
+       "fault": [
+        "upload",
+        "bad_deploy"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 22,
+        "t": 31,
+        "call": "get_metrics(services=['queue-api', 'upload', 'ingest-gateway', 'for-you', 'thumb-svc'], window=12)"
+       },
+       "fix": {
+        "i": 27,
+        "t": 36,
+        "call": "rollback(service='upload', version='v1.3.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 9,
+      "t": 8,
+      "call": "run_maintenance(service='user-svc', action='sync_clock')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "exp-r11-2036",
+    "family": "R11",
+    "salt": "",
+    "seed": 2036,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.8374069861242579,
+    "score_raw": 0.8374069861242579,
+    "R_avail": 0.8956783102070964,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.8605616773268696,
+    "U_noop": 0.0,
+    "U_oracle": 0.9607932530239487,
+    "spend_mean": 99.0,
+    "spend_noop_mean": 99.0,
+    "n_calls": 43,
+    "t_resolve": 94,
+    "faults": [
+     [
+      "redis-media",
+      "redis_maxmemory"
+     ],
+     [
+      "media-db",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "cdn-origin",
+      "external_dependency"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "cdn-origin",
+      "external_dependency"
+     ],
+     [
+      "media-db",
+      "migration_lock"
+     ],
+     [
+      "redis-media",
+      "config_drift"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-media",
+        "redis_maxmemory"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 14,
+        "t": 14,
+        "call": "get_metrics(services=['redis-media', 'profiles', 'discover', 'thumbnails'], window=15)"
+       },
+       "fix": {
+        "i": 18,
+        "t": 18,
+        "call": "set_config(service='redis-media', key='maxmemory_policy', value='volatile-lru')"
+       }
+      },
+      {
+       "fault": [
+        "media-db",
+        "replica_lag_stale_reads"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['media-edge', 'queue-api', 'media-db', 'cdn-origin', 'metadata'], window=15)"
+       },
+       "fix": {
+        "i": 30,
+        "t": 41,
+        "call": "run_maintenance(service='media-db', action='kill_long_queries')"
+       }
+      },
+      {
+       "fault": [
+        "cdn-origin",
+        "external_dependency"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 19,
+        "t": 20,
+        "call": "set_circuit_breaker(service='queue-api', dep='cdn-origin', mode='fallback')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 18,
+      "t": 18,
+      "call": "set_config(service='redis-media', key='maxmemory_policy', value='volatile-lru')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "exp-f9-2037",
+    "family": "F9",
+    "salt": "",
+    "seed": 2037,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.5342266224335526,
+    "score_raw": 0.5342266224335526,
+    "R_avail": 0.5570443707225877,
+    "R_fixed": 0.6666666666666666,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.5308837050693725,
+    "U_noop": 0.0,
+    "U_oracle": 0.9530366573505086,
+    "spend_mean": 93.0,
+    "spend_noop_mean": 93.0,
+    "n_calls": 31,
+    "t_resolve": 44,
+    "faults": [
+     [
+      "edge-cache",
+      "cache_stampede"
+     ],
+     [
+      "accounts",
+      "clock_skew"
+     ],
+     [
+      "blob-origin",
+      "external_dependency"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     false
+    ],
+    "resolved": [
+     [
+      "accounts",
+      "clock_skew"
+     ],
+     [
+      "edge-cache",
+      "cache_stampede"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "premature_resolve",
+     "missed_event"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "edge-cache",
+        "cache_stampede"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 16,
+        "t": 15,
+        "call": "run_maintenance(service='edge-cache', action='warm_cache')"
+       }
+      },
+      {
+       "fault": [
+        "accounts",
+        "clock_skew"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 14,
+        "t": 13,
+        "call": "get_instances(service='accounts')"
+       },
+       "fix": {
+        "i": 17,
+        "t": 18,
+        "call": "run_maintenance(service='accounts', action='sync_clock')"
+       }
+      },
+      {
+       "fault": [
+        "blob-origin",
+        "external_dependency"
+       ],
+       "visible_at": 43,
+       "evidence": null,
+       "fix": null
+      }
+     ],
+     "first_intervention": {
+      "i": 16,
+      "t": 15,
+      "call": "run_maintenance(service='edge-cache', action='warm_cache')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 1
+   },
+   {
+    "scenario": "med-r4-2005",
+    "family": "R4",
+    "salt": "",
+    "seed": 2005,
+    "difficulty": "medium",
+    "template": "media",
+    "score": 0.8649856770211669,
+    "score_raw": 0.914985677021167,
+    "R_avail": 0.8583094617019451,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.05,
+    "P_cost": 0.0,
+    "U": 0.9884407342649607,
+    "U_noop": 0.9184189299166635,
+    "U_oracle": 1.0,
+    "spend_mean": 81.0,
+    "spend_noop_mean": 81.0,
+    "n_calls": 40,
+    "t_resolve": 72,
+    "faults": [
+     [
+      "pg-primary",
+      "pool_sync_recycle"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "pg-primary",
+      "pool_sync_recycle"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "collateral",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "pg-primary",
+        "pool_sync_recycle"
+       ],
+       "visible_at": -6,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 30,
+        "t": 30,
+        "call": "set_config(service='accounts', key='conn_lifetime_jitter', value='on')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 30,
+      "t": 30,
+      "call": "set_config(service='accounts', key='conn_lifetime_jitter', value='on')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "med-r6-2007",
+    "family": "R6",
+    "salt": "",
+    "seed": 2007,
+    "difficulty": "medium",
+    "template": "eshop",
+    "score": 0.961774625267365,
+    "score_raw": 0.961774625267365,
+    "R_avail": 0.9362910421122752,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9929393581226752,
+    "U_noop": 0.9099999999999999,
+    "U_oracle": 0.9985828811686202,
+    "spend_mean": 89.0,
+    "spend_noop_mean": 89.0,
+    "n_calls": 35,
+    "t_resolve": 59,
+    "faults": [
+     [
+      "basket-api",
+      "clock_skew"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "basket-api",
+      "clock_skew"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "basket-api",
+        "clock_skew"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 10,
+        "t": 9,
+        "call": "get_logs(service='basket-api', level='WARN', limit=60)"
+       },
+       "fix": {
+        "i": 13,
+        "t": 12,
+        "call": "run_maintenance(service='basket-api', action='sync_clock')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 13,
+      "t": 12,
+      "call": "run_maintenance(service='basket-api', action='sync_clock')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "med-r10-2009",
+    "family": "R10",
+    "salt": "",
+    "seed": 2009,
+    "difficulty": "medium",
+    "template": "saas",
+    "score": 0.9670442788919175,
+    "score_raw": 0.9670442788919175,
+    "R_avail": 0.9450737981531959,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9421495392009863,
+    "U_noop": 0.1079055776241834,
+    "U_oracle": 0.9906344853634841,
+    "spend_mean": 98.0,
+    "spend_noop_mean": 98.0,
+    "n_calls": 32,
+    "t_resolve": 93,
+    "faults": [
+     [
+      "gateway",
+      "bad_config_push"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "gateway",
+      "bad_config_push"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "gateway",
+        "bad_config_push"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['gateway'], window=20)"
+       },
+       "fix": {
+        "i": 15,
+        "t": 19,
+        "call": "set_config(service='gateway', key='waf_ruleset', value='stable')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 15,
+      "t": 19,
+      "call": "set_config(service='gateway', key='waf_ruleset', value='stable')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "med-r14-2011",
+    "family": "R14",
+    "salt": "",
+    "seed": 2011,
+    "difficulty": "medium",
+    "template": "saas",
+    "score": 0.9764761754995043,
+    "score_raw": 0.9764761754995043,
+    "R_avail": 0.9607936258325074,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9778191129609458,
+    "U_noop": 0.5336964499460004,
+    "U_oracle": 0.9959420884202591,
+    "spend_mean": 93.0,
+    "spend_noop_mean": 93.0,
+    "n_calls": 30,
+    "t_resolve": 95,
+    "faults": [
+     [
+      "api-edge",
+      "abusive_client"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "api-edge",
+      "abusive_client"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "api-edge",
+        "abusive_client"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['api-edge'], window=20)"
+       },
+       "fix": {
+        "i": 10,
+        "t": 9,
+        "call": "set_config(service='api-edge', key='block_client', value='data-6b05')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 10,
+      "t": 9,
+      "call": "set_config(service='api-edge', key='block_client', value='data-6b05')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "med-f11-2000",
+    "family": "F11",
+    "salt": "",
+    "seed": 2000,
+    "difficulty": "medium",
+    "template": "saas",
+    "score": 0.9460968534084274,
+    "score_raw": 0.9460968534084274,
+    "R_avail": 0.9101614223473793,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9746361689583796,
+    "U_noop": 0.7316760937567923,
+    "U_oracle": 0.9986178353381634,
+    "spend_mean": 98.0,
+    "spend_noop_mean": 98.0,
+    "n_calls": 40,
+    "t_resolve": 54,
+    "faults": [
+     [
+      "workspace-svc",
+      "bad_canary"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "workspace-svc",
+      "bad_canary"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "workspace-svc",
+        "bad_canary"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['public-api', 'auth', 'workspace-svc', 'accounts', 'billing-svc'], window=20)"
+       },
+       "fix": {
+        "i": 17,
+        "t": 17,
+        "call": "set_flag(flag='workspace-svc-canary', on=False)"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 17,
+      "t": 17,
+      "call": "set_flag(flag='workspace-svc-canary', on=False)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "med-f12-2001",
+    "family": "F12",
+    "salt": "",
+    "seed": 2001,
+    "difficulty": "medium",
+    "template": "media",
+    "score": 0.8111749112093152,
+    "score_raw": 0.8111749112093152,
+    "R_avail": 0.8519581853488587,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9311216624224675,
+    "U_noop": 0.5597825869402998,
+    "U_oracle": 0.9956479637488016,
+    "spend_mean": 68.0,
+    "spend_noop_mean": 68.0,
+    "n_calls": 42,
+    "t_resolve": 63,
+    "faults": [
+     [
+      "discover",
+      "thread_starvation"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "queue-api",
+      "thread_starvation"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "discover",
+        "thread_starvation"
+       ],
+       "visible_at": -10,
+       "evidence": {
+        "i": 9,
+        "t": 8,
+        "call": "get_traces(endpoint='/queue-api', n=5)"
+       },
+       "fix": {
+        "i": 28,
+        "t": 31,
+        "call": "set_circuit_breaker(service='queue-api', dep='discover', mode='fallback')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 23,
+      "t": 23,
+      "call": "set_config(service='discover', key='pool_size', value=40)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-r1-2023",
+    "family": "R1",
+    "salt": "",
+    "seed": 2023,
+    "difficulty": "hard",
+    "template": "media",
+    "score": 0.8508976129978758,
+    "score_raw": 0.8508976129978758,
+    "R_avail": 0.9181626883297931,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9350119365283538,
+    "U_noop": 0.41762508043240265,
+    "U_oracle": 0.9811274560703375,
+    "spend_mean": 66.0,
+    "spend_noop_mean": 66.0,
+    "n_calls": 56,
+    "t_resolve": 95,
+    "faults": [
+     [
+      "redis-media",
+      "duplicate_charges"
+     ],
+     [
+      "library-api",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "library-api",
+      "bad_deploy"
+     ],
+     [
+      "profiles",
+      "replica_lag_stale_reads"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-media",
+        "duplicate_charges"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 6,
+        "t": 5,
+        "call": "get_metrics(services=['postgres-media', 'redis-media', 'events-queue', 'event-consumer'], window=20)"
+       },
+       "fix": {
+        "i": 21,
+        "t": 21,
+        "call": "set_config(service='profiles', key='read_from', value='primary')"
+       }
+      },
+      {
+       "fault": [
+        "library-api",
+        "bad_deploy"
+       ],
+       "visible_at": 40,
+       "evidence": {
+        "i": 40,
+        "t": 58,
+        "call": "get_metrics(services=['media-edge', 'library-api', 'playlist-svc', 'profiles', 'redis-media'], window=20)"
+       },
+       "fix": {
+        "i": 46,
+        "t": 64,
+        "call": "rollback(service='library-api', version='v2.3.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 21,
+      "t": 21,
+      "call": "set_config(service='profiles', key='read_from', value='primary')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-r3-2024",
+    "family": "R3",
+    "salt": "",
+    "seed": 2024,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.8305288946575455,
+    "score_raw": 0.8305288946575455,
+    "R_avail": 0.8842148244292427,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9356065231348527,
+    "U_noop": 0.5707586958636609,
+    "U_oracle": 0.9833822090542474,
+    "spend_mean": 83.0,
+    "spend_noop_mean": 83.0,
+    "n_calls": 38,
+    "t_resolve": 69,
+    "faults": [
+     [
+      "postgres-main",
+      "migration_lock"
+     ],
+     [
+      "order-svc",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "catalog-svc",
+      "bad_deploy"
+     ],
+     [
+      "catalog-svc",
+      "migration_lock"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "postgres-main",
+        "migration_lock"
+       ],
+       "visible_at": -10,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['catalog-svc', 'purchase-api', 'order-svc', 'postgres-main', 'frontdoor'], window=15)"
+       },
+       "fix": {
+        "i": 11,
+        "t": 10,
+        "call": "run_maintenance(service='postgres-main', action='cancel_migration')"
+       }
+      },
+      {
+       "fault": [
+        "order-svc",
+        "cert_expiry"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 27,
+        "t": 38,
+        "call": "run_maintenance(action='rotate_cert', service='order-svc')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 11,
+      "t": 10,
+      "call": "run_maintenance(service='postgres-main', action='cancel_migration')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-r8-2025",
+    "family": "R8",
+    "salt": "",
+    "seed": 2025,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.8322836270921099,
+    "score_raw": 0.8322836270921099,
+    "R_avail": 0.8871393784868498,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.887604497890345,
+    "U_noop": 0.1490402222513354,
+    "U_oracle": 0.9815636042014666,
+    "spend_mean": 81.0,
+    "spend_noop_mean": 81.0,
+    "n_calls": 63,
+    "t_resolve": 114,
+    "faults": [
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "stock-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "edge-api",
+      "bad_config_push"
+     ],
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "order-svc",
+        "mail_backlog_ramp"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 13,
+        "t": 12,
+        "call": "set_config(service='order-svc', key='send_rate_per_s', value=30)"
+       }
+      },
+      {
+       "fault": [
+        "stock-svc",
+        "config_drift"
+       ],
+       "visible_at": 41,
+       "evidence": {
+        "i": 62,
+        "t": 113,
+        "call": "get_metrics(services=['edge-api', 'checkout', 'catalog-svc', 'search-svc', 'stock-svc'], window=4)"
+       },
+       "fix": {
+        "i": 38,
+        "t": 57,
+        "call": "set_flag(flag='pricing-v2', on=False)"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 13,
+      "t": 12,
+      "call": "set_config(service='order-svc', key='send_rate_per_s', value=30)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-r9-2026",
+    "family": "R9",
+    "salt": "",
+    "seed": 2026,
+    "difficulty": "hard",
+    "template": "saas",
+    "score": 0.0,
+    "score_raw": 0.15,
+    "R_avail": 0.0,
+    "R_fixed": 0.5,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.25,
+    "P_cost": 0.0,
+    "U": 0.0,
+    "U_noop": 0.0,
+    "U_oracle": 0.9567891651704344,
+    "spend_mean": 78.0,
+    "spend_noop_mean": 78.0,
+    "n_calls": 77,
+    "t_resolve": null,
+    "faults": [
+     [
+      "cache-cluster",
+      "cache_invalidation_loop"
+     ],
+     [
+      "billing",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     false,
+     true
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [
+     "collateral",
+     "loop_not_broken",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "cache-cluster",
+        "cache_invalidation_loop"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 19,
+        "t": 19,
+        "call": "get_metrics(services=['cache-cluster', 'projects', 'report-svc', 'metering'], window=20)"
+       },
+       "fix": {
+        "i": 26,
+        "t": 27,
+        "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+       }
+      },
+      {
+       "fault": [
+        "billing",
+        "cert_expiry"
+       ],
+       "visible_at": -10,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 54,
+        "t": 75,
+        "call": "run_maintenance(action='rotate_cert', service='billing')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 26,
+      "t": 27,
+      "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-r12-2010",
+    "family": "R12",
+    "salt": "",
+    "seed": 2010,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.8388613459913101,
+    "score_raw": 0.8388613459913101,
+    "R_avail": 0.8981022433188504,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9404387385568826,
+    "U_noop": 0.551502768962914,
+    "U_oracle": 0.9845670135824277,
+    "spend_mean": 76.0,
+    "spend_noop_mean": 76.0,
+    "n_calls": 41,
+    "t_resolve": null,
+    "faults": [
+     [
+      "order-svc",
+      "duplicate_events"
+     ],
+     [
+      "catalog",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "order-svc",
+        "duplicate_events"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['edge-api', 'purchase-api', 'order-svc', 'invoicer', 'payments-gw'], window=20)"
+       },
+       "fix": {
+        "i": 14,
+        "t": 13,
+        "call": "rollback(service='order-svc', version='v2.10.0')"
+       }
+      },
+      {
+       "fault": [
+        "catalog",
+        "bad_deploy"
+       ],
+       "visible_at": 48,
+       "evidence": {
+        "i": 27,
+        "t": 59,
+        "call": "get_metrics(services=['edge-api', 'catalog', 'finder', 'cache-main', 'cart'], window=12)"
+       },
+       "fix": {
+        "i": 34,
+        "t": 66,
+        "call": "rollback(service='catalog', version='v1.5.1')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 14,
+      "t": 13,
+      "call": "rollback(service='order-svc', version='v2.10.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-r13-2011",
+    "family": "R13",
+    "salt": "",
+    "seed": 2011,
+    "difficulty": "hard",
+    "template": "saas",
+    "score": 0.09914317113642551,
+    "score_raw": 0.5991431711364255,
+    "R_avail": 0.4985719518940424,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.49999999999999994,
+    "P_cost": 0.0,
+    "U": 0.6228534876686423,
+    "U_noop": 0.27920432254991245,
+    "U_oracle": 0.9684712654921078,
+    "spend_mean": 93.0,
+    "spend_noop_mean": 93.0,
+    "n_calls": 62,
+    "t_resolve": null,
+    "faults": [
+     [
+      "pg-main",
+      "stuck_failover"
+     ],
+     [
+      "reports",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [
+     "symptom_fix",
+     "collateral",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "pg-main",
+        "stuck_failover"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_topology()"
+       },
+       "fix": {
+        "i": 41,
+        "t": 69,
+        "call": "set_config(service='pg-main', key='cluster_manager', value='maintenance')"
+       }
+      },
+      {
+       "fault": [
+        "reports",
+        "cert_expiry"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 58,
+        "t": 103,
+        "call": "run_maintenance(service='reports', action='rotate_cert')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 17,
+      "t": 16,
+      "call": "set_config(service='projects', key='max_retries', value=0)"
+     },
+     "first_intervention_necessary": false
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-f9-2012",
+    "family": "F9",
+    "salt": "",
+    "seed": 2012,
+    "difficulty": "hard",
+    "template": "saas",
+    "score": 0.59731951931021,
+    "score_raw": 0.69731951931021,
+    "R_avail": 0.6621991988503501,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.1,
+    "P_cost": 0.0,
+    "U": 0.634551071914734,
+    "U_noop": 0.0,
+    "U_oracle": 0.9582480211639999,
+    "spend_mean": 95.0,
+    "spend_noop_mean": 95.0,
+    "n_calls": 64,
+    "t_resolve": 108,
+    "faults": [
+     [
+      "redis-main",
+      "cache_stampede"
+     ],
+     [
+      "invoicing",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "invoicing",
+      "cert_expiry"
+     ],
+     [
+      "redis-main",
+      "redis_maxmemory"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "symptom_fix",
+     "collateral",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-main",
+        "cache_stampede"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 28,
+        "t": 30,
+        "call": "run_maintenance(service='redis-main', action='warm_cache')"
+       }
+      },
+      {
+       "fault": [
+        "invoicing",
+        "cert_expiry"
+       ],
+       "visible_at": -20,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 53,
+        "t": 84,
+        "call": "run_maintenance(action='rotate_cert', service='invoicing')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 26,
+      "t": 26,
+      "call": "set_config(service='auth-svc', key='max_retries', value=0)"
+     },
+     "first_intervention_necessary": false
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-f10-2013",
+    "family": "F10",
+    "salt": "",
+    "seed": 2013,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.8026814463240814,
+    "score_raw": 0.9026814463240814,
+    "R_avail": 0.8378024105401357,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.1,
+    "P_cost": 0.0,
+    "U": 0.9104654184134294,
+    "U_noop": 0.5289258634177851,
+    "U_oracle": 0.9843310403373212,
+    "spend_mean": 79.0,
+    "spend_noop_mean": 79.0,
+    "n_calls": 54,
+    "t_resolve": 95,
+    "faults": [
+     [
+      "fulfillment-worker",
+      "poison_message"
+     ],
+     [
+      "warehouse-api",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "fulfillment-worker",
+      "poison_message"
+     ],
+     [
+      "warehouse-api",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "symptom_fix",
+     "collateral",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "fulfillment-worker",
+        "poison_message"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['jobs-queue', 'fulfillment-worker', 'orders-api', 'purchase-api', 'pg-primary'], window=15)"
+       },
+       "fix": {
+        "i": 29,
+        "t": 37,
+        "call": "set_config(key='dlq_enabled', service='fulfillment-worker', value=True)"
+       }
+      },
+      {
+       "fault": [
+        "warehouse-api",
+        "bad_deploy"
+       ],
+       "visible_at": 48,
+       "evidence": {
+        "i": 41,
+        "t": 64,
+        "call": "get_metrics(services=['warehouse-api', 'products-api', 'search', 'purchase-api', 'web-gw'], window=12)"
+       },
+       "fix": {
+        "i": 45,
+        "t": 68,
+        "call": "rollback(service='warehouse-api', version='v1.5.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 18,
+      "t": 17,
+      "call": "set_config(service='jobs-queue', key='dlq_enabled', value=True)"
+     },
+     "first_intervention_necessary": false
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-f14-2014",
+    "family": "F14",
+    "salt": "",
+    "seed": 2014,
+    "difficulty": "hard",
+    "template": "media",
+    "score": 0.8486169266024521,
+    "score_raw": 0.8486169266024521,
+    "R_avail": 0.9143615443374202,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9321385550227506,
+    "U_noop": 0.36862368470283036,
+    "U_oracle": 0.9849169592939699,
+    "spend_mean": 90.03636363636363,
+    "spend_noop_mean": 80.0,
+    "n_calls": 53,
+    "t_resolve": 76,
+    "faults": [
+     [
+      "upload",
+      "bad_deploy"
+     ],
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "thumbnails",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "thumbnails",
+      "progressive_gray"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "upload",
+        "bad_deploy"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_deploys()"
+       },
+       "fix": {
+        "i": 10,
+        "t": 10,
+        "call": "rollback(service='upload', version='v2.7.0')"
+       }
+      },
+      {
+       "fault": [
+        "encoder-coord",
+        "under_provisioned"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 19,
+        "t": 23,
+        "call": "scale(replicas=6, service='encoder-coord')"
+       }
+      },
+      {
+       "fault": [
+        "thumbnails",
+        "config_drift"
+       ],
+       "visible_at": 38,
+       "evidence": {
+        "i": 38,
+        "t": 53,
+        "call": "get_metrics(services=['thumbnails'], window=12)"
+       },
+       "fix": {
+        "i": 46,
+        "t": 61,
+        "call": "set_flag(flag='async-invoicing', on=False)"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 10,
+      "t": 10,
+      "call": "rollback(service='upload', version='v2.7.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "har-r2-2015",
+    "family": "R2",
+    "salt": "",
+    "seed": 2015,
+    "difficulty": "hard",
+    "template": "media",
+    "score": 0.8797150931479902,
+    "score_raw": 0.8797150931479902,
+    "R_avail": 0.9661918219133172,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9490523719550129,
+    "U_noop": 0.2175000000000008,
+    "U_oracle": 0.9746502421810447,
+    "spend_mean": 103.0,
+    "spend_noop_mean": 103.0,
+    "n_calls": 33,
+    "t_resolve": 45,
+    "faults": [
+     [
+      "media-db",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "metadata",
+      "disk_full"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "media-db",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "metadata",
+      "config_drift"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "media-db",
+        "replica_lag_stale_reads"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['media-edge', 'playlist', 'metadata', 'media-db', 'redis-media'], window=20)"
+       },
+       "fix": {
+        "i": 22,
+        "t": 26,
+        "call": "run_maintenance(service='media-db', action='kill_long_queries')"
+       }
+      },
+      {
+       "fault": [
+        "metadata",
+        "disk_full"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 7,
+        "t": 6,
+        "call": "set_config(service='metadata', key='log_level', value='INFO')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 7,
+      "t": 6,
+      "call": "set_config(service='metadata', key='log_level', value='INFO')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "exp-r9-2030",
+    "family": "R9",
+    "salt": "",
+    "seed": 2030,
+    "difficulty": "expert",
+    "template": "saas",
+    "score": 0.1888477103428723,
+    "score_raw": 0.3888477103428723,
+    "R_avail": 0.3147461839047872,
+    "R_fixed": 0.6666666666666666,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.2,
+    "P_cost": 0.0,
+    "U": 0.2990629431585593,
+    "U_noop": 0.0,
+    "U_oracle": 0.9501717842877098,
+    "spend_mean": 80.0,
+    "spend_noop_mean": 80.0,
+    "n_calls": 74,
+    "t_resolve": 119,
+    "faults": [
+     [
+      "redis-main",
+      "cache_invalidation_loop"
+     ],
+     [
+      "auth-svc",
+      "clock_skew"
+     ],
+     [
+      "tenant-svc",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     false,
+     true
+    ],
+    "resolved": [
+     [
+      "redis-main",
+      "config_drift"
+     ],
+     [
+      "tenant-svc",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "premature_resolve",
+     "collateral",
+     "silent_harm_missed"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-main",
+        "cache_invalidation_loop"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['pg-main', 'redis-main', 'reports', 'metering', 'jobs-runner'], window=10)"
+       },
+       "fix": {
+        "i": 13,
+        "t": 12,
+        "call": "set_config(service='redis-main', key='timeout_ms', value=1500)"
+       }
+      },
+      {
+       "fault": [
+        "auth-svc",
+        "clock_skew"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 26,
+        "t": 35,
+        "call": "get_logs(grep='cache', level='ALL', limit=15, service='auth-svc')"
+       },
+       "fix": null
+      },
+      {
+       "fault": [
+        "tenant-svc",
+        "bad_deploy"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['gateway', 'tenant-svc', 'auth-svc', 'workspace-svc', 'billing'], window=10)"
+       },
+       "fix": {
+        "i": 19,
+        "t": 19,
+        "call": "rollback(service='tenant-svc', version='v3.4.1')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 13,
+      "t": 12,
+      "call": "set_config(service='redis-main', key='timeout_ms', value=1500)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "exp-f14-2031",
+    "family": "F14",
+    "salt": "",
+    "seed": 2031,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.9788869087448909,
+    "score_raw": 0.9788869087448909,
+    "R_avail": 0.9648115145748183,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9315669963008213,
+    "U_noop": 0.28,
+    "U_oracle": 0.9553308666594424,
+    "spend_mean": 98.0909090909091,
+    "spend_noop_mean": 89.0,
+    "n_calls": 35,
+    "t_resolve": 68,
+    "faults": [
+     [
+      "upload-svc",
+      "bad_deploy"
+     ],
+     [
+      "transcode",
+      "under_provisioned"
+     ],
+     [
+      "postgres-media",
+      "replica_lag_stale_reads"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "postgres-media",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "transcode",
+      "under_provisioned"
+     ],
+     [
+      "upload-svc",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "upload-svc",
+        "bad_deploy"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_deploys()"
+       },
+       "fix": {
+        "i": 10,
+        "t": 9,
+        "call": "rollback(service='upload-svc', version='v1.8.0')"
+       }
+      },
+      {
+       "fault": [
+        "transcode",
+        "under_provisioned"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 26,
+        "t": 36,
+        "call": "scale(service='transcode', replicas=6)"
+       }
+      },
+      {
+       "fault": [
+        "postgres-media",
+        "replica_lag_stale_reads"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['upload-svc', 'transcode', 'frontline', 'postgres-media', 'cache-main'], window=10)"
+       },
+       "fix": {
+        "i": 19,
+        "t": 22,
+        "call": "run_maintenance(service='postgres-media', action='kill_long_queries')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 10,
+      "t": 9,
+      "call": "rollback(service='upload-svc', version='v1.8.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "exp-r3-2032",
+    "family": "R3",
+    "salt": "",
+    "seed": 2032,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.8696982173500687,
+    "score_raw": 0.8696982173500687,
+    "R_avail": 0.9494970289167811,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9354362754305081,
+    "U_noop": 0.16870046320510346,
+    "U_oracle": 0.9762183267418891,
+    "spend_mean": 86.0,
+    "spend_noop_mean": 86.0,
+    "n_calls": 33,
+    "t_resolve": 48,
+    "faults": [
+     [
+      "postgres-media",
+      "migration_lock"
+     ],
+     [
+      "event-consumer",
+      "expired_cert_dismissed_alert"
+     ],
+     [
+      "playlist-svc",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "accounts",
+      "migration_lock"
+     ],
+     [
+      "event-consumer",
+      "cert_expiry"
+     ],
+     [
+      "playlist-svc",
+      "cert_expiry"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "postgres-media",
+        "migration_lock"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['postgres-media', 'accounts', 'stream-gw', 'library-api', 'upload'], window=20)"
+       },
+       "fix": {
+        "i": 11,
+        "t": 10,
+        "call": "run_maintenance(service='postgres-media', action='cancel_migration')"
+       }
+      },
+      {
+       "fault": [
+        "event-consumer",
+        "expired_cert_dismissed_alert"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 20,
+        "t": 27,
+        "call": "run_maintenance(service='event-consumer', action='update_ca_bundle')"
+       }
+      },
+      {
+       "fault": [
+        "playlist-svc",
+        "cert_expiry"
+       ],
+       "visible_at": -12,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 29,
+        "t": 42,
+        "call": "run_maintenance(service='playlist-svc', action='rotate_cert')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 11,
+      "t": 10,
+      "call": "run_maintenance(service='postgres-media', action='cancel_migration')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "exp-r8-2033",
+    "family": "R8",
+    "salt": "",
+    "seed": 2033,
+    "difficulty": "expert",
+    "template": "saas",
+    "score": 0.6099621413151537,
+    "score_raw": 0.6099621413151537,
+    "R_avail": 0.6832702355252561,
+    "R_fixed": 0.6666666666666666,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.6781858759371315,
+    "U_noop": 0.04103154970713552,
+    "U_oracle": 0.973538620998176,
+    "spend_mean": 120.0,
+    "spend_noop_mean": 120.0,
+    "n_calls": 70,
+    "t_resolve": 94,
+    "faults": [
+     [
+      "notify-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "public-api",
+      "progressive_gray"
+     ],
+     [
+      "billing-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     false,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "billing-svc",
+      "thread_starvation"
+     ],
+     [
+      "public-api",
+      "config_drift"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "premature_resolve",
+     "silent_harm_missed",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "notify-svc",
+        "mail_backlog_ramp"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": null
+      },
+      {
+       "fault": [
+        "public-api",
+        "progressive_gray"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 50,
+        "t": 63,
+        "call": "run_maintenance(action='restart_networkd', service='public-api')"
+       }
+      },
+      {
+       "fault": [
+        "billing-svc",
+        "config_drift"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 7,
+        "t": 6,
+        "call": "get_logs(limit=40, service='billing-svc')"
+       },
+       "fix": {
+        "i": 22,
+        "t": 24,
+        "call": "set_flag(flag='bulk-export', on=False)"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 22,
+      "t": 24,
+      "call": "set_flag(flag='bulk-export', on=False)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "exp-r12-2034",
+    "family": "R12",
+    "salt": "",
+    "seed": 2034,
+    "difficulty": "expert",
+    "template": "eshop",
+    "score": 0.8309890797390136,
+    "score_raw": 0.8309890797390136,
+    "R_avail": 0.8849817995650229,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9635448926883856,
+    "U_noop": 0.7227009417737048,
+    "U_oracle": 0.9948465961058707,
+    "spend_mean": 100.0,
+    "spend_noop_mean": 100.0,
+    "n_calls": 34,
+    "t_resolve": 68,
+    "faults": [
+     [
+      "orders-api",
+      "duplicate_events"
+     ],
+     [
+      "orders-db",
+      "pool_sync_recycle"
+     ],
+     [
+      "finder",
+      "memory_leak"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "finder",
+      "memory_leak"
+     ],
+     [
+      "jobs-queue",
+      "duplicate_events"
+     ],
+     [
+      "orders-db",
+      "pool_sync_recycle"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "orders-api",
+        "duplicate_events"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['gateway', 'orders-api', 'checkout-svc', 'inventory', 'orders-db'], window=25)"
+       },
+       "fix": {
+        "i": 17,
+        "t": 20,
+        "call": "set_flag(flag='order-events-retry', on=False)"
+       }
+      },
+      {
+       "fault": [
+        "orders-db",
+        "pool_sync_recycle"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 25,
+        "t": 31,
+        "call": "set_config(service='orders-api', key='conn_lifetime_jitter', value='on')"
+       }
+      },
+      {
+       "fault": [
+        "finder",
+        "memory_leak"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 6,
+        "t": 5,
+        "call": "get_metrics(services=['jobs-queue', 'fulfillment-worker', 'session-cache', 'catalog-svc', 'finder'], window=25)"
+       },
+       "fix": {
+        "i": 16,
+        "t": 15,
+        "call": "rollback(service='finder', version='v3.7.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 16,
+      "t": 15,
+      "call": "rollback(service='finder', version='v3.7.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "exp-r13-2035",
+    "family": "R13",
+    "salt": "",
+    "seed": 2035,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.7771869502454873,
+    "score_raw": 0.8771869502454873,
+    "R_avail": 0.795311583742479,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.1,
+    "P_cost": 0.0,
+    "U": 0.7913529182395047,
+    "U_noop": 0.17978269017946125,
+    "U_oracle": 0.9487520357310397,
+    "spend_mean": 90.0,
+    "spend_noop_mean": 90.0,
+    "n_calls": 56,
+    "t_resolve": 101,
+    "faults": [
+     [
+      "media-db",
+      "stuck_failover"
+     ],
+     [
+      "user-svc",
+      "clock_skew"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "media-db",
+      "stuck_failover"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ],
+     [
+      "user-svc",
+      "clock_skew"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "collateral"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "media-db",
+        "stuck_failover"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_topology()"
+       },
+       "fix": {
+        "i": 45,
+        "t": 71,
+        "call": "set_config(service='media-db', key='cluster_manager', value='maintenance')"
+       }
+      },
+      {
+       "fault": [
+        "user-svc",
+        "clock_skew"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 8,
+        "t": 7,
+        "call": "get_logs(service='user-svc', level='ERROR', limit=40)"
+       },
+       "fix": {
+        "i": 13,
+        "t": 16,
+        "call": "run_maintenance(service='user-svc', action='sync_clock')"
+       }
+      },
+      {
+       "fault": [
+        "upload",
+        "bad_deploy"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['media-db', 'user-svc', 'metadata', 'upload', 'queue-api'], window=15)"
+       },
+       "fix": {
+        "i": 12,
+        "t": 11,
+        "call": "rollback(service='upload', version='v1.3.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 12,
+      "t": 11,
+      "call": "rollback(service='upload', version='v1.3.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "exp-r11-2036",
+    "family": "R11",
+    "salt": "",
+    "seed": 2036,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.798228927596766,
+    "score_raw": 0.798228927596766,
+    "R_avail": 0.8303815459946101,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.7978249868272171,
+    "U_noop": 0.0,
+    "U_oracle": 0.9607932530239487,
+    "spend_mean": 99.0,
+    "spend_noop_mean": 99.0,
+    "n_calls": 59,
+    "t_resolve": 96,
+    "faults": [
+     [
+      "redis-media",
+      "redis_maxmemory"
+     ],
+     [
+      "media-db",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "cdn-origin",
+      "external_dependency"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "cdn-origin",
+      "external_dependency"
+     ],
+     [
+      "media-db",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "redis-media",
+      "config_drift"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-media",
+        "redis_maxmemory"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 15,
+        "t": 14,
+        "call": "get_logs(limit=30, service='redis-media', level='ALL')"
+       },
+       "fix": {
+        "i": 21,
+        "t": 20,
+        "call": "set_config(service='redis-media', key='maxmemory_policy', value='volatile-lru')"
+       }
+      },
+      {
+       "fault": [
+        "media-db",
+        "replica_lag_stale_reads"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['media-edge', 'queue-api', 'media-db', 'cdn-origin', 'metadata'], window=15)"
+       },
+       "fix": {
+        "i": 36,
+        "t": 47,
+        "call": "set_config(key='read_from', service='metadata', value='primary')"
+       }
+      },
+      {
+       "fault": [
+        "cdn-origin",
+        "external_dependency"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 30,
+        "t": 37,
+        "call": "set_circuit_breaker(service='queue-api', dep='cdn-origin', mode='fallback')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 21,
+      "t": 20,
+      "call": "set_config(service='redis-media', key='maxmemory_policy', value='volatile-lru')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "exp-f9-2037",
+    "family": "F9",
+    "salt": "",
+    "seed": 2037,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.8097952721297335,
+    "score_raw": 0.8597952721297335,
+    "R_avail": 0.766325453549556,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.05,
+    "P_cost": 0.0,
+    "U": 0.7303362486934812,
+    "U_noop": 0.0,
+    "U_oracle": 0.9530366573505086,
+    "spend_mean": 93.0,
+    "spend_noop_mean": 93.0,
+    "n_calls": 51,
+    "t_resolve": 90,
+    "faults": [
+     [
+      "edge-cache",
+      "cache_stampede"
+     ],
+     [
+      "accounts",
+      "clock_skew"
+     ],
+     [
+      "blob-origin",
+      "external_dependency"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "accounts",
+      "clock_skew"
+     ],
+     [
+      "blob-origin",
+      "external_dependency"
+     ],
+     [
+      "edge-cache",
+      "cache_stampede"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "collateral",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "edge-cache",
+        "cache_stampede"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 23,
+        "t": 25,
+        "call": "run_maintenance(action='warm_cache', service='edge-cache')"
+       }
+      },
+      {
+       "fault": [
+        "accounts",
+        "clock_skew"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 17,
+        "t": 16,
+        "call": "get_logs(service='accounts', level='ERROR', limit=30)"
+       },
+       "fix": {
+        "i": 22,
+        "t": 22,
+        "call": "run_maintenance(service='accounts', action='sync_clock')"
+       }
+      },
+      {
+       "fault": [
+        "blob-origin",
+        "external_dependency"
+       ],
+       "visible_at": 43,
+       "evidence": null,
+       "fix": {
+        "i": 44,
+        "t": 69,
+        "call": "set_circuit_breaker(service='queue-api', dep='blob-origin', mode='fallback')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 21,
+      "t": 20,
+      "call": "set_config(service='edge-cache', key='maxmemory_mb', value=8192)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 2
+   },
+   {
+    "scenario": "med-r4-2005",
+    "family": "R4",
+    "salt": "",
+    "seed": 2005,
+    "difficulty": "medium",
+    "template": "media",
+    "score": 0.6744318311020233,
+    "score_raw": 0.8244318311020233,
+    "R_avail": 0.8740530518367055,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.15000000000000002,
+    "P_cost": 0.0,
+    "U": 0.9897251131951079,
+    "U_noop": 0.9184189299166635,
+    "U_oracle": 1.0,
+    "spend_mean": 81.0,
+    "spend_noop_mean": 81.0,
+    "n_calls": 48,
+    "t_resolve": 75,
+    "faults": [
+     [
+      "pg-primary",
+      "pool_sync_recycle"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "accounts",
+      "retry_storm"
+     ],
+     [
+      "pg-primary",
+      "pool_sync_recycle"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "collateral",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "pg-primary",
+        "pool_sync_recycle"
+       ],
+       "visible_at": -6,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 25,
+        "t": 24,
+        "call": "set_config(service='metadata', key='conn_lifetime_jitter', value='on')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 25,
+      "t": 24,
+      "call": "set_config(service='metadata', key='conn_lifetime_jitter', value='on')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "med-r6-2007",
+    "family": "R6",
+    "salt": "",
+    "seed": 2007,
+    "difficulty": "medium",
+    "template": "eshop",
+    "score": 0.9586122995238208,
+    "score_raw": 0.9586122995238208,
+    "R_avail": 0.9310204992063681,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9924724782467471,
+    "U_noop": 0.9099999999999999,
+    "U_oracle": 0.9985828811686202,
+    "spend_mean": 89.0,
+    "spend_noop_mean": 89.0,
+    "n_calls": 38,
+    "t_resolve": 103,
+    "faults": [
+     [
+      "basket-api",
+      "clock_skew"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "basket-api",
+      "clock_skew"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "basket-api",
+        "clock_skew"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 12,
+        "t": 11,
+        "call": "get_instances(service='basket-api')"
+       },
+       "fix": {
+        "i": 14,
+        "t": 13,
+        "call": "run_maintenance(service='basket-api', action='sync_clock')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 14,
+      "t": 13,
+      "call": "run_maintenance(service='basket-api', action='sync_clock')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "med-r10-2009",
+    "family": "R10",
+    "salt": "",
+    "seed": 2009,
+    "difficulty": "medium",
+    "template": "saas",
+    "score": 0.8688924299643586,
+    "score_raw": 0.8688924299643586,
+    "R_avail": 0.9481540499405976,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9448685664968415,
+    "U_noop": 0.1079055776241834,
+    "U_oracle": 0.9906344853634841,
+    "spend_mean": 98.0,
+    "spend_noop_mean": 98.0,
+    "n_calls": 32,
+    "t_resolve": 110,
+    "faults": [
+     [
+      "gateway",
+      "bad_config_push"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "gateway",
+      "config_drift"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "gateway",
+        "bad_config_push"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['gateway'], window=10)"
+       },
+       "fix": {
+        "i": 10,
+        "t": 10,
+        "call": "set_config(service='gateway', key='waf_ruleset', value='stable')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 10,
+      "t": 10,
+      "call": "set_config(service='gateway', key='waf_ruleset', value='stable')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "med-r14-2011",
+    "family": "R14",
+    "salt": "",
+    "seed": 2011,
+    "difficulty": "medium",
+    "template": "saas",
+    "score": 0.9738486994094079,
+    "score_raw": 0.9738486994094079,
+    "R_avail": 0.95641449901568,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9757948806895417,
+    "U_noop": 0.5336964499460004,
+    "U_oracle": 0.9959420884202591,
+    "spend_mean": 93.0,
+    "spend_noop_mean": 93.0,
+    "n_calls": 29,
+    "t_resolve": 119,
+    "faults": [
+     [
+      "api-edge",
+      "abusive_client"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "api-edge",
+      "abusive_client"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "api-edge",
+        "abusive_client"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['api-edge', 'auth', 'task-queue', 'usage-svc', 'redis-main'], window=10)"
+       },
+       "fix": {
+        "i": 10,
+        "t": 10,
+        "call": "set_config(service='api-edge', key='block_client', value='data-6b05')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 10,
+      "t": 10,
+      "call": "set_config(service='api-edge', key='block_client', value='data-6b05')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "med-f11-2000",
+    "family": "F11",
+    "salt": "",
+    "seed": 2000,
+    "difficulty": "medium",
+    "template": "saas",
+    "score": 0.9494148653686757,
+    "score_raw": 0.9494148653686757,
+    "R_avail": 0.9156914422811263,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9761123621104737,
+    "U_noop": 0.7316760937567923,
+    "U_oracle": 0.9986178353381634,
+    "spend_mean": 98.0,
+    "spend_noop_mean": 98.0,
+    "n_calls": 41,
+    "t_resolve": 105,
+    "faults": [
+     [
+      "workspace-svc",
+      "bad_canary"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "workspace-svc",
+      "bad_canary"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "workspace-svc",
+        "bad_canary"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['public-api', 'auth', 'workspace-svc', 'accounts', 'billing-svc'], window=15)"
+       },
+       "fix": {
+        "i": 16,
+        "t": 16,
+        "call": "set_flag(flag='workspace-svc-canary', on=False)"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 16,
+      "t": 16,
+      "call": "set_flag(flag='workspace-svc-canary', on=False)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "med-f12-2001",
+    "family": "F12",
+    "salt": "",
+    "seed": 2001,
+    "difficulty": "medium",
+    "template": "media",
+    "score": 0.8402795773578806,
+    "score_raw": 0.8402795773578806,
+    "R_avail": 0.9004659622631346,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9522645228853511,
+    "U_noop": 0.5597825869402998,
+    "U_oracle": 0.9956479637488016,
+    "spend_mean": 68.0,
+    "spend_noop_mean": 68.0,
+    "n_calls": 54,
+    "t_resolve": 107,
+    "faults": [
+     [
+      "discover",
+      "thread_starvation"
+     ]
+    ],
+    "fixed": [
+     true
+    ],
+    "resolved": [
+     [
+      "queue-api",
+      "thread_starvation"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "discover",
+        "thread_starvation"
+       ],
+       "visible_at": -10,
+       "evidence": {
+        "i": 9,
+        "t": 8,
+        "call": "get_traces(endpoint='/queue-api', n=5)"
+       },
+       "fix": {
+        "i": 21,
+        "t": 21,
+        "call": "set_circuit_breaker(service='queue-api', dep='discover', mode='fallback')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 21,
+      "t": 21,
+      "call": "set_circuit_breaker(service='queue-api', dep='discover', mode='fallback')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-r1-2023",
+    "family": "R1",
+    "salt": "",
+    "seed": 2023,
+    "difficulty": "hard",
+    "template": "media",
+    "score": 0.8587534291102579,
+    "score_raw": 0.8587534291102579,
+    "R_avail": 0.931255715183763,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9423898882648571,
+    "U_noop": 0.41762508043240265,
+    "U_oracle": 0.9811274560703375,
+    "spend_mean": 66.0,
+    "spend_noop_mean": 66.0,
+    "n_calls": 79,
+    "t_resolve": 108,
+    "faults": [
+     [
+      "redis-media",
+      "duplicate_charges"
+     ],
+     [
+      "library-api",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "library-api",
+      "bad_deploy"
+     ],
+     [
+      "profiles",
+      "replica_lag_stale_reads"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-media",
+        "duplicate_charges"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 11,
+        "t": 10,
+        "call": "get_metrics(services=['postgres-media', 'redis-media', 'discover', 'event-consumer', 'origin-storage'], window=15)"
+       },
+       "fix": {
+        "i": 55,
+        "t": 60,
+        "call": "set_config(service='profiles', key='read_from', value='primary')"
+       }
+      },
+      {
+       "fault": [
+        "library-api",
+        "bad_deploy"
+       ],
+       "visible_at": 40,
+       "evidence": {
+        "i": 44,
+        "t": 45,
+        "call": "get_metrics(services=['library-api'], window=8)"
+       },
+       "fix": {
+        "i": 49,
+        "t": 50,
+        "call": "rollback(service='library-api', version='v2.3.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 49,
+      "t": 50,
+      "call": "rollback(service='library-api', version='v2.3.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-r3-2024",
+    "family": "R3",
+    "salt": "",
+    "seed": 2024,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.8449602658796496,
+    "score_raw": 0.8449602658796496,
+    "R_avail": 0.9082671097994159,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9455310616245561,
+    "U_noop": 0.5707586958636609,
+    "U_oracle": 0.9833822090542474,
+    "spend_mean": 83.0,
+    "spend_noop_mean": 83.0,
+    "n_calls": 30,
+    "t_resolve": 53,
+    "faults": [
+     [
+      "postgres-main",
+      "migration_lock"
+     ],
+     [
+      "order-svc",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "catalog-svc",
+      "bad_deploy"
+     ],
+     [
+      "order-svc",
+      "cert_expiry"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "postgres-main",
+        "migration_lock"
+       ],
+       "visible_at": -10,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['frontdoor', 'purchase-api', 'order-svc', 'postgres-main', 'catalog-svc'], window=15)"
+       },
+       "fix": {
+        "i": 9,
+        "t": 8,
+        "call": "run_maintenance(service='postgres-main', action='cancel_migration')"
+       }
+      },
+      {
+       "fault": [
+        "order-svc",
+        "cert_expiry"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 23,
+        "t": 35,
+        "call": "run_maintenance(service='order-svc', action='rotate_cert')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 9,
+      "t": 8,
+      "call": "run_maintenance(service='postgres-main', action='cancel_migration')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-r8-2025",
+    "family": "R8",
+    "salt": "",
+    "seed": 2025,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.7875285375974499,
+    "score_raw": 0.7875285375974499,
+    "R_avail": 0.8125475626624167,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.8255050671143866,
+    "U_noop": 0.1490402222513354,
+    "U_oracle": 0.9815636042014666,
+    "spend_mean": 81.0,
+    "spend_noop_mean": 81.0,
+    "n_calls": 60,
+    "t_resolve": 96,
+    "faults": [
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "stock-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "stock-svc",
+      "bad_config_push"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "order-svc",
+        "mail_backlog_ramp"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 15,
+        "t": 14,
+        "call": "set_config(service='order-svc', key='send_rate_per_s', value=20)"
+       }
+      },
+      {
+       "fault": [
+        "stock-svc",
+        "config_drift"
+       ],
+       "visible_at": 41,
+       "evidence": {
+        "i": 40,
+        "t": 64,
+        "call": "get_metrics(services=['stock-svc', 'checkout'], window=15)"
+       },
+       "fix": {
+        "i": 48,
+        "t": 72,
+        "call": "set_flag(flag='pricing-v2', on=False)"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 15,
+      "t": 14,
+      "call": "set_config(service='order-svc', key='send_rate_per_s', value=20)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-r9-2026",
+    "family": "R9",
+    "salt": "",
+    "seed": 2026,
+    "difficulty": "hard",
+    "template": "saas",
+    "score": 0.0,
+    "score_raw": 0.0,
+    "R_avail": 0.0,
+    "R_fixed": 0.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.5499999999999999,
+    "P_cost": 0.0,
+    "U": 0.0,
+    "U_noop": 0.0,
+    "U_oracle": 0.9567891651704344,
+    "spend_mean": 78.0,
+    "spend_noop_mean": 78.0,
+    "n_calls": 68,
+    "t_resolve": null,
+    "faults": [
+     [
+      "cache-cluster",
+      "cache_invalidation_loop"
+     ],
+     [
+      "billing",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     false,
+     false
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [
+     "collateral",
+     "loop_not_broken",
+     "missed_event"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "cache-cluster",
+        "cache_invalidation_loop"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['saas-db', 'cache-cluster', 'metering', 'report-svc', 'alerts-api'], window=15)"
+       },
+       "fix": {
+        "i": 17,
+        "t": 16,
+        "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+       }
+      },
+      {
+       "fault": [
+        "billing",
+        "cert_expiry"
+       ],
+       "visible_at": -10,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events(since=0)"
+       },
+       "fix": null
+      }
+     ],
+     "first_intervention": {
+      "i": 17,
+      "t": 16,
+      "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-r12-2010",
+    "family": "R12",
+    "salt": "",
+    "seed": 2010,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.8362203444584229,
+    "score_raw": 0.8362203444584229,
+    "R_avail": 0.8937005740973716,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.938532533000418,
+    "U_noop": 0.551502768962914,
+    "U_oracle": 0.9845670135824277,
+    "spend_mean": 76.0,
+    "spend_noop_mean": 76.0,
+    "n_calls": 57,
+    "t_resolve": 77,
+    "faults": [
+     [
+      "order-svc",
+      "duplicate_events"
+     ],
+     [
+      "catalog",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "catalog",
+      "bad_deploy"
+     ],
+     [
+      "order-svc",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "order-svc",
+        "duplicate_events"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['edge-api', 'purchase-api', 'order-svc', 'warehouse-api', 'orders-queue'], window=20)"
+       },
+       "fix": {
+        "i": 40,
+        "t": 40,
+        "call": "rollback(service='order-svc', version='v2.10.0')"
+       }
+      },
+      {
+       "fault": [
+        "catalog",
+        "bad_deploy"
+       ],
+       "visible_at": 48,
+       "evidence": {
+        "i": 47,
+        "t": 55,
+        "call": "get_metrics(services=['catalog', 'finder', 'edge-api'], window=6)"
+       },
+       "fix": {
+        "i": 49,
+        "t": 57,
+        "call": "rollback(service='catalog', version='v1.5.1')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 40,
+      "t": 40,
+      "call": "rollback(service='order-svc', version='v2.10.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-r13-2011",
+    "family": "R13",
+    "salt": "",
+    "seed": 2011,
+    "difficulty": "hard",
+    "template": "saas",
+    "score": 0.3335723369167169,
+    "score_raw": 0.8335723369167168,
+    "R_avail": 0.7226205615278614,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.49999999999999994,
+    "P_cost": 0.0,
+    "U": 0.777282787901394,
+    "U_noop": 0.27920432254991245,
+    "U_oracle": 0.9684712654921078,
+    "spend_mean": 93.0,
+    "spend_noop_mean": 93.0,
+    "n_calls": 71,
+    "t_resolve": 116,
+    "faults": [
+     [
+      "pg-main",
+      "stuck_failover"
+     ],
+     [
+      "reports",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "pg-main",
+      "stuck_failover"
+     ],
+     [
+      "reports",
+      "cert_expiry"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "symptom_fix",
+     "collateral",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "pg-main",
+        "stuck_failover"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_topology()"
+       },
+       "fix": {
+        "i": 46,
+        "t": 60,
+        "call": "set_config(service='pg-main', key='cluster_manager', value='maintenance')"
+       }
+      },
+      {
+       "fault": [
+        "reports",
+        "cert_expiry"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 54,
+        "t": 78,
+        "call": "run_maintenance(service='reports', action='rotate_cert')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 17,
+      "t": 17,
+      "call": "failover_db()"
+     },
+     "first_intervention_necessary": false
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-f9-2012",
+    "family": "F9",
+    "salt": "",
+    "seed": 2012,
+    "difficulty": "hard",
+    "template": "saas",
+    "score": 0.7531774534463467,
+    "score_raw": 0.9031774534463467,
+    "R_avail": 0.8386290890772445,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.15000000000000002,
+    "P_cost": 0.0,
+    "U": 0.8036146650988374,
+    "U_noop": 0.0,
+    "U_oracle": 0.9582480211639999,
+    "spend_mean": 95.0,
+    "spend_noop_mean": 95.0,
+    "n_calls": 44,
+    "t_resolve": 73,
+    "faults": [
+     [
+      "redis-main",
+      "cache_stampede"
+     ],
+     [
+      "invoicing",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "invoicing",
+      "cert_expiry"
+     ],
+     [
+      "redis-main",
+      "cache_stampede"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "collateral"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-main",
+        "cache_stampede"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 16,
+        "t": 15,
+        "call": "run_maintenance(service='redis-main', action='warm_cache')"
+       }
+      },
+      {
+       "fault": [
+        "invoicing",
+        "cert_expiry"
+       ],
+       "visible_at": -20,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 37,
+        "t": 55,
+        "call": "run_maintenance(service='invoicing', action='rotate_cert')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 16,
+      "t": 15,
+      "call": "run_maintenance(service='redis-main', action='warm_cache')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-f10-2013",
+    "family": "F10",
+    "salt": "",
+    "seed": 2013,
+    "difficulty": "hard",
+    "template": "eshop",
+    "score": 0.9099084077544436,
+    "score_raw": 0.9599084077544436,
+    "R_avail": 0.9331806795907396,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.05,
+    "P_cost": 0.0,
+    "U": 0.9539011759046988,
+    "U_noop": 0.5289258634177851,
+    "U_oracle": 0.9843310403373212,
+    "spend_mean": 79.0,
+    "spend_noop_mean": 79.0,
+    "n_calls": 39,
+    "t_resolve": 115,
+    "faults": [
+     [
+      "fulfillment-worker",
+      "poison_message"
+     ],
+     [
+      "warehouse-api",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "fulfillment-worker",
+      "poison_message"
+     ],
+     [
+      "warehouse-api",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "symptom_fix",
+     "collateral"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "fulfillment-worker",
+        "poison_message"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['web-gw', 'purchase-api', 'orders-api', 'jobs-queue', 'fulfillment-worker'], window=20)"
+       },
+       "fix": {
+        "i": 12,
+        "t": 12,
+        "call": "set_config(key='dlq_enabled', service='fulfillment-worker', value=True)"
+       }
+      },
+      {
+       "fault": [
+        "warehouse-api",
+        "bad_deploy"
+       ],
+       "visible_at": 48,
+       "evidence": {
+        "i": 27,
+        "t": 52,
+        "call": "get_deploys(service='warehouse-api')"
+       },
+       "fix": {
+        "i": 29,
+        "t": 54,
+        "call": "rollback(service='warehouse-api', version='v1.5.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 11,
+      "t": 10,
+      "call": "set_config(service='jobs-queue', key='dlq_enabled', value=True)"
+     },
+     "first_intervention_necessary": false
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-f14-2014",
+    "family": "F14",
+    "salt": "",
+    "seed": 2014,
+    "difficulty": "hard",
+    "template": "media",
+    "score": 0.6510670515515419,
+    "score_raw": 0.6510670515515419,
+    "R_avail": 0.7517784192525698,
+    "R_fixed": 0.6666666666666666,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.8319396684709472,
+    "U_noop": 0.36862368470283036,
+    "U_oracle": 0.9849169592939699,
+    "spend_mean": 89.23636363636363,
+    "spend_noop_mean": 80.0,
+    "n_calls": 65,
+    "t_resolve": 113,
+    "faults": [
+     [
+      "upload",
+      "bad_deploy"
+     ],
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "thumbnails",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     false
+    ],
+    "resolved": [
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "thumbnails",
+      "thread_starvation"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "premature_resolve",
+     "missed_event"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "upload",
+        "bad_deploy"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['upload', 'media-edge', 'encoder-coord', 'origin-storage'], window=15)"
+       },
+       "fix": {
+        "i": 9,
+        "t": 9,
+        "call": "rollback(service='upload', version='v2.7.0')"
+       }
+      },
+      {
+       "fault": [
+        "encoder-coord",
+        "under_provisioned"
+       ],
+       "visible_at": -5,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 21,
+        "t": 34,
+        "call": "scale(service='encoder-coord', replicas=6)"
+       }
+      },
+      {
+       "fault": [
+        "thumbnails",
+        "config_drift"
+       ],
+       "visible_at": 38,
+       "evidence": {
+        "i": 33,
+        "t": 56,
+        "call": "get_metrics(services=['queue-api', 'library-api', 'profiles', 'thumbnails', 'discover'], window=8)"
+       },
+       "fix": null
+      }
+     ],
+     "first_intervention": {
+      "i": 9,
+      "t": 9,
+      "call": "rollback(service='upload', version='v2.7.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "har-r2-2015",
+    "family": "R2",
+    "salt": "",
+    "seed": 2015,
+    "difficulty": "hard",
+    "template": "media",
+    "score": 0.8830209649100154,
+    "score_raw": 0.8830209649100154,
+    "R_avail": 0.9717016081833592,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.953224107963741,
+    "U_noop": 0.2175000000000008,
+    "U_oracle": 0.9746502421810447,
+    "spend_mean": 103.0,
+    "spend_noop_mean": 103.0,
+    "n_calls": 30,
+    "t_resolve": 56,
+    "faults": [
+     [
+      "media-db",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "metadata",
+      "disk_full"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "media-db",
+      "migration_lock"
+     ],
+     [
+      "metadata",
+      "disk_full"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "media-db",
+        "replica_lag_stale_reads"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['media-edge', 'playlist', 'metadata', 'media-db', 'redis-media'], window=20)"
+       },
+       "fix": {
+        "i": 19,
+        "t": 22,
+        "call": "run_maintenance(action='kill_long_queries', service='media-db')"
+       }
+      },
+      {
+       "fault": [
+        "metadata",
+        "disk_full"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 10,
+        "t": 10,
+        "call": "run_maintenance(service='metadata', action='prune_logs')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 10,
+      "t": 10,
+      "call": "run_maintenance(service='metadata', action='prune_logs')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "exp-r9-2030",
+    "family": "R9",
+    "salt": "",
+    "seed": 2030,
+    "difficulty": "expert",
+    "template": "saas",
+    "score": 0.09999999999999998,
+    "score_raw": 0.19999999999999998,
+    "R_avail": 0.0,
+    "R_fixed": 0.6666666666666666,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.1,
+    "P_cost": 0.0,
+    "U": 0.0,
+    "U_noop": 0.0,
+    "U_oracle": 0.9501717842877098,
+    "spend_mean": 80.0,
+    "spend_noop_mean": 80.0,
+    "n_calls": 87,
+    "t_resolve": null,
+    "faults": [
+     [
+      "redis-main",
+      "cache_invalidation_loop"
+     ],
+     [
+      "auth-svc",
+      "clock_skew"
+     ],
+     [
+      "tenant-svc",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     false,
+     true,
+     true
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [
+     "collateral",
+     "loop_not_broken"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-main",
+        "cache_invalidation_loop"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['workspace-svc', 'reports', 'metering', 'redis-main', 'jobs-runner'], window=15)"
+       },
+       "fix": {
+        "i": 18,
+        "t": 17,
+        "call": "set_config(service='redis-main', key='timeout_ms', value=1500)"
+       }
+      },
+      {
+       "fault": [
+        "auth-svc",
+        "clock_skew"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 37,
+        "t": 42,
+        "call": "get_logs(grep='session', level='ALL', limit=30, service='auth-svc')"
+       },
+       "fix": {
+        "i": 56,
+        "t": 62,
+        "call": "run_maintenance(service='auth-svc', action='sync_clock')"
+       }
+      },
+      {
+       "fault": [
+        "tenant-svc",
+        "bad_deploy"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['gateway', 'tenant-svc', 'billing', 'pg-main', 'auth-svc'], window=15)"
+       },
+       "fix": {
+        "i": 76,
+        "t": 95,
+        "call": "rollback(service='tenant-svc', version='v3.4.1')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 18,
+      "t": 17,
+      "call": "set_config(service='redis-main', key='timeout_ms', value=1500)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "exp-f14-2031",
+    "family": "F14",
+    "salt": "",
+    "seed": 2031,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.959139252158061,
+    "score_raw": 0.959139252158061,
+    "R_avail": 0.9318987535967682,
+    "R_fixed": 1.0,
+    "R_diag": 1.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9093399929053597,
+    "U_noop": 0.28,
+    "U_oracle": 0.9553308666594424,
+    "spend_mean": 97.65454545454546,
+    "spend_noop_mean": 89.0,
+    "n_calls": 38,
+    "t_resolve": 64,
+    "faults": [
+     [
+      "upload-svc",
+      "bad_deploy"
+     ],
+     [
+      "transcode",
+      "under_provisioned"
+     ],
+     [
+      "postgres-media",
+      "replica_lag_stale_reads"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "postgres-media",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "transcode",
+      "under_provisioned"
+     ],
+     [
+      "upload-svc",
+      "bad_deploy"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "upload-svc",
+        "bad_deploy"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_deploys()"
+       },
+       "fix": {
+        "i": 19,
+        "t": 20,
+        "call": "rollback(service='upload-svc', version='v1.8.0')"
+       }
+      },
+      {
+       "fault": [
+        "transcode",
+        "under_provisioned"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 31,
+        "t": 42,
+        "call": "scale(service='transcode', replicas=6)"
+       }
+      },
+      {
+       "fault": [
+        "postgres-media",
+        "replica_lag_stale_reads"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['frontline', 'upload-svc', 'transcode', 'postgres-media', 'metadata'], window=15)"
+       },
+       "fix": {
+        "i": 20,
+        "t": 25,
+        "call": "run_maintenance(service='postgres-media', action='kill_long_queries')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 19,
+      "t": 20,
+      "call": "rollback(service='upload-svc', version='v1.8.0')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "exp-r3-2032",
+    "family": "R3",
+    "salt": "",
+    "seed": 2032,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.866323910565524,
+    "score_raw": 0.866323910565524,
+    "R_avail": 0.9438731842758735,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9308949204212197,
+    "U_noop": 0.16870046320510346,
+    "U_oracle": 0.9762183267418891,
+    "spend_mean": 86.0,
+    "spend_noop_mean": 86.0,
+    "n_calls": 29,
+    "t_resolve": 40,
+    "faults": [
+     [
+      "postgres-media",
+      "migration_lock"
+     ],
+     [
+      "event-consumer",
+      "expired_cert_dismissed_alert"
+     ],
+     [
+      "playlist-svc",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "accounts",
+      "bad_deploy"
+     ],
+     [
+      "accounts",
+      "migration_lock"
+     ],
+     [
+      "event-consumer",
+      "cert_expiry"
+     ],
+     [
+      "playlist-svc",
+      "cert_expiry"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "postgres-media",
+        "migration_lock"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['stream-gw', 'library-api', 'accounts', 'postgres-media', 'playlist-svc'], window=15)"
+       },
+       "fix": {
+        "i": 8,
+        "t": 7,
+        "call": "run_maintenance(service='postgres-media', action='cancel_migration')"
+       }
+      },
+      {
+       "fault": [
+        "event-consumer",
+        "expired_cert_dismissed_alert"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 11,
+        "t": 12,
+        "call": "run_maintenance(service='event-consumer', action='update_ca_bundle')"
+       }
+      },
+      {
+       "fault": [
+        "playlist-svc",
+        "cert_expiry"
+       ],
+       "visible_at": -12,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events()"
+       },
+       "fix": {
+        "i": 15,
+        "t": 18,
+        "call": "run_maintenance(service='playlist-svc', action='rotate_cert')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 8,
+      "t": 7,
+      "call": "run_maintenance(service='postgres-media', action='cancel_migration')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "exp-r8-2033",
+    "family": "R8",
+    "salt": "",
+    "seed": 2033,
+    "difficulty": "expert",
+    "template": "saas",
+    "score": 0.564215104680898,
+    "score_raw": 0.564215104680898,
+    "R_avail": 0.6070251744681633,
+    "R_fixed": 0.6666666666666666,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.6070868173503754,
+    "U_noop": 0.04103154970713552,
+    "U_oracle": 0.973538620998176,
+    "spend_mean": 120.0,
+    "spend_noop_mean": 120.0,
+    "n_calls": 78,
+    "t_resolve": 110,
+    "faults": [
+     [
+      "notify-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "public-api",
+      "progressive_gray"
+     ],
+     [
+      "billing-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     false,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "billing-svc",
+      "thread_starvation"
+     ],
+     [
+      "notify-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "public-api",
+      "thread_starvation"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "premature_resolve",
+     "silent_harm_missed"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "notify-svc",
+        "mail_backlog_ramp"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 67,
+        "t": 88,
+        "call": "set_config(service='notify-svc', key='send_rate_per_s', value=2)"
+       }
+      },
+      {
+       "fault": [
+        "public-api",
+        "progressive_gray"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 2,
+        "t": 1,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 61,
+        "t": 78,
+        "call": "run_maintenance(service='public-api', action='restart_networkd')"
+       }
+      },
+      {
+       "fault": [
+        "billing-svc",
+        "config_drift"
+       ],
+       "visible_at": -8,
+       "evidence": {
+        "i": 9,
+        "t": 9,
+        "call": "get_metrics(services=['billing-svc', 'notify-svc', 'redis-main', 'auth', 'invoice-worker'], window=20)"
+       },
+       "fix": {
+        "i": 17,
+        "t": 17,
+        "call": "set_flag(flag='bulk-export', on=False)"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 17,
+      "t": 17,
+      "call": "set_flag(flag='bulk-export', on=False)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "exp-r12-2034",
+    "family": "R12",
+    "salt": "",
+    "seed": 2034,
+    "difficulty": "expert",
+    "template": "eshop",
+    "score": 0.8017381308045659,
+    "score_raw": 0.8017381308045659,
+    "R_avail": 0.8362302180076099,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0,
+    "P_cost": 0.0,
+    "U": 0.9502773616257155,
+    "U_noop": 0.7227009417737048,
+    "U_oracle": 0.9948465961058707,
+    "spend_mean": 100.0,
+    "spend_noop_mean": 100.0,
+    "n_calls": 52,
+    "t_resolve": null,
+    "faults": [
+     [
+      "orders-api",
+      "duplicate_events"
+     ],
+     [
+      "orders-db",
+      "pool_sync_recycle"
+     ],
+     [
+      "finder",
+      "memory_leak"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": null,
+    "data_loss": [],
+    "tags": [],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "orders-api",
+        "duplicate_events"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['orders-api', 'checkout-svc', 'orders-db', 'inventory', 'finder'], window=20)"
+       },
+       "fix": {
+        "i": 15,
+        "t": 14,
+        "call": "set_flag(flag='order-events-retry', on=False)"
+       }
+      },
+      {
+       "fault": [
+        "orders-db",
+        "pool_sync_recycle"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 36,
+        "t": 51,
+        "call": "set_config(service='orders-api', key='conn_lifetime_jitter', value='on')"
+       }
+      },
+      {
+       "fault": [
+        "finder",
+        "memory_leak"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 5,
+        "t": 4,
+        "call": "get_metrics(services=['orders-api', 'checkout-svc', 'orders-db', 'inventory', 'finder'], window=20)"
+       },
+       "fix": {
+        "i": 18,
+        "t": 17,
+        "call": "rollback(service='finder', version='v3.7.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 15,
+      "t": 14,
+      "call": "set_flag(flag='order-events-retry', on=False)"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "exp-r13-2035",
+    "family": "R13",
+    "salt": "",
+    "seed": 2035,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.7418037823174929,
+    "score_raw": 0.8418037823174929,
+    "R_avail": 0.903006303862488,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.1,
+    "P_cost": 0.0,
+    "U": 0.8741668566895485,
+    "U_noop": 0.17978269017946125,
+    "U_oracle": 0.9487520357310397,
+    "spend_mean": 90.0,
+    "spend_noop_mean": 90.0,
+    "n_calls": 48,
+    "t_resolve": 76,
+    "faults": [
+     [
+      "media-db",
+      "stuck_failover"
+     ],
+     [
+      "user-svc",
+      "clock_skew"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "media-db",
+      "disk_full"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ],
+     [
+      "user-svc",
+      "clock_skew"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "collateral"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "media-db",
+        "stuck_failover"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_topology()"
+       },
+       "fix": {
+        "i": 25,
+        "t": 31,
+        "call": "set_config(service='media-db', key='cluster_manager', value='maintenance')"
+       }
+      },
+      {
+       "fault": [
+        "user-svc",
+        "clock_skew"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 10,
+        "t": 9,
+        "call": "get_logs(service='user-svc', level='ERROR', limit=30)"
+       },
+       "fix": {
+        "i": 14,
+        "t": 13,
+        "call": "run_maintenance(service='user-svc', action='sync_clock')"
+       }
+      },
+      {
+       "fault": [
+        "upload",
+        "bad_deploy"
+       ],
+       "visible_at": -7,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['ingest-gateway', 'upload', 'user-svc', 'media-db', 'metadata'], window=10)"
+       },
+       "fix": {
+        "i": 36,
+        "t": 48,
+        "call": "rollback(service='upload', version='v1.3.0')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 14,
+      "t": 13,
+      "call": "run_maintenance(service='user-svc', action='sync_clock')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "exp-r11-2036",
+    "family": "R11",
+    "salt": "",
+    "seed": 2036,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.7181594694648207,
+    "score_raw": 0.8181594694648207,
+    "R_avail": 0.8635991157747013,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.1,
+    "P_cost": 0.0,
+    "U": 0.8297402037537809,
+    "U_noop": 0.0,
+    "U_oracle": 0.9607932530239487,
+    "spend_mean": 99.0,
+    "spend_noop_mean": 99.0,
+    "n_calls": 53,
+    "t_resolve": 92,
+    "faults": [
+     [
+      "redis-media",
+      "redis_maxmemory"
+     ],
+     [
+      "media-db",
+      "replica_lag_stale_reads"
+     ],
+     [
+      "cdn-origin",
+      "external_dependency"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "cdn-origin",
+      "external_dependency"
+     ],
+     [
+      "media-db",
+      "migration_lock"
+     ],
+     [
+      "redis-media",
+      "config_drift"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "collateral",
+     "over_investigation"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "redis-media",
+        "redis_maxmemory"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 12,
+        "t": 11,
+        "call": "get_metrics(services=['profiles', 'redis-media', 'upload', 'transcode', 'thumbnails'], window=10)"
+       },
+       "fix": {
+        "i": 24,
+        "t": 25,
+        "call": "set_config(service='redis-media', key='maxmemory_policy', value='volatile-lru')"
+       }
+      },
+      {
+       "fault": [
+        "media-db",
+        "replica_lag_stale_reads"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_metrics(services=['media-edge', 'queue-api', 'cdn-origin', 'media-db', 'metadata'], window=15)"
+       },
+       "fix": {
+        "i": 25,
+        "t": 27,
+        "call": "set_config(service='metadata', key='read_from', value='primary')"
+       }
+      },
+      {
+       "fault": [
+        "cdn-origin",
+        "external_dependency"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 3,
+        "t": 2,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 29,
+        "t": 36,
+        "call": "set_circuit_breaker(dep='cdn-origin', mode='fallback', service='queue-api')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 24,
+      "t": 25,
+      "call": "set_config(service='redis-media', key='maxmemory_policy', value='volatile-lru')"
+     },
+     "first_intervention_necessary": true
+    },
+    "run": 3
+   },
+   {
+    "scenario": "exp-f9-2037",
+    "family": "F9",
+    "salt": "",
+    "seed": 2037,
+    "difficulty": "expert",
+    "template": "media",
+    "score": 0.6173448797264983,
+    "score_raw": 0.7673448797264983,
+    "R_avail": 0.7789081328774973,
+    "R_fixed": 1.0,
+    "R_diag": 0.0,
+    "M_dataloss": 1.0,
+    "P_collateral": 0.15000000000000002,
+    "P_cost": 0.0,
+    "U": 0.7423280033406958,
+    "U_noop": 0.0,
+    "U_oracle": 0.9530366573505086,
+    "spend_mean": 93.0,
+    "spend_noop_mean": 93.0,
+    "n_calls": 49,
+    "t_resolve": 83,
+    "faults": [
+     [
+      "edge-cache",
+      "cache_stampede"
+     ],
+     [
+      "accounts",
+      "clock_skew"
+     ],
+     [
+      "blob-origin",
+      "external_dependency"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     true
+    ],
+    "resolved": [
+     [
+      "accounts",
+      "clock_skew"
+     ],
+     [
+      "catalog",
+      "retry_storm"
+     ],
+     [
+      "edge-cache",
+      "cache_stampede"
+     ],
+     [
+      "queue-api",
+      "external_dependency"
+     ]
+    ],
+    "data_loss": [],
+    "tags": [
+     "symptom_fix",
+     "collateral"
+    ],
+    "trajectory": {
+     "faults": [
+      {
+       "fault": [
+        "edge-cache",
+        "cache_stampede"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 4,
+        "t": 3,
+        "call": "get_events(since=0)"
+       },
+       "fix": {
+        "i": 19,
+        "t": 19,
+        "call": "run_maintenance(service='edge-cache', action='warm_cache')"
+       }
+      },
+      {
+       "fault": [
+        "accounts",
+        "clock_skew"
+       ],
+       "visible_at": -9,
+       "evidence": {
+        "i": 14,
+        "t": 13,
+        "call": "get_logs(limit=40, level='ERROR', service='accounts')"
+       },
+       "fix": {
+        "i": 20,
+        "t": 22,
+        "call": "run_maintenance(service='accounts', action='sync_clock')"
+       }
+      },
+      {
+       "fault": [
+        "blob-origin",
+        "external_dependency"
+       ],
+       "visible_at": 43,
+       "evidence": {
+        "i": 45,
+        "t": 79,
+        "call": "get_events(since=40)"
+       },
+       "fix": {
+        "i": 39,
+        "t": 67,
+        "call": "set_circuit_breaker(service='queue-api', dep='blob-origin', mode='fallback')"
+       }
+      }
+     ],
+     "first_intervention": {
+      "i": 18,
+      "t": 17,
+      "call": "set_config(service='catalog', key='max_retries', value=0)"
+     },
+     "first_intervention_necessary": false
+    },
+    "run": 3
+   }
+  ]
+ }
+}

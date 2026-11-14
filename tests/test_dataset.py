@@ -87,13 +87,13 @@ def test_family_fallbacks():
 def test_split_leakage_guard(tmp_path):
     bad = bd.forbidden_seeds()
     assert {1000, 2000} <= bad and not bad & {x.seed for x in suite("train")}
-    sc = Scenario(2000, "easy")      # a judge-fast seed
+    sc = Scenario(2005, "medium")      # a judge-fast seed
     env = run_env("reference", sc)
     logsink.write_episode(tmp_path, "leak", env, env.finalize())
     with pytest.raises(SystemExit, match="evaluation suite"):
         bd.main([str(tmp_path), "--out", str(tmp_path / "x.jsonl")])
     with pytest.raises(SystemExit):        # salted scenario (heldout style) is refused as well
-        bd.check_leak(Scenario(10050, "easy", "somesalt"), bad)
+        bd.check_leak(Scenario(10050, "medium", "somesalt"), bad)
 
 
 def test_chat_template_roundtrip():

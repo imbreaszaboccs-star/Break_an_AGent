@@ -7,7 +7,7 @@ from oncall import policies, scenarios
 from oncall.scenarios import Scenario, suite
 from oncall.sim import Env
 
-PICKS = [("easy", 1003), ("medium", 1011), ("hard", 1021), ("hard", 1027)]
+PICKS = [("medium", 1003), ("medium", 1011), ("hard", 1021), ("hard", 1026), ("expert", 1030), ("expert", 1035)]
 
 
 def digest(env, breakdown):
@@ -87,7 +87,7 @@ def test_metric_noise_is_keyed_by_call_not_by_history():
 
 
 def test_invalid_calls_cost_one_tick_and_change_nothing():
-    env = Env(Scenario(1000, "easy"))
+    env = Env(Scenario(1000, "medium"))
     t0 = env.t
     for tool, args in [("nope", {}), ("get_metrics", {"services": []}), ("scale", {"service": "zzz", "replicas": 3}),
                        ("get_logs", {"service": env.sc.entry, "limit": 9999}), ("wait", {"minutes": 0}),
@@ -98,7 +98,7 @@ def test_invalid_calls_cost_one_tick_and_change_nothing():
 
 
 def test_garbage_argument_types_are_rejected_not_raised():
-    env = Env(Scenario(1000, "easy"))
+    env = Env(Scenario(1000, "medium"))
     for tool, args in [("set_flag", {"flag": [], "on": True}), ("run_maintenance", {"service": {}, "action": []}),
                        ("get_runbook", {"topic": []}), ("set_circuit_breaker", {"service": "a", "dep": [], "mode": "x"}),
                        ("resolve_incident", {"root_causes": [{"service": [], "fault_class": {}}]}),
@@ -107,45 +107,73 @@ def test_garbage_argument_types_are_rejected_not_raised():
 
 
 def test_episode_end_conditions():
-    env = Env(Scenario(1000, "easy"))
+    env = Env(Scenario(1000, "medium"))
     assert env.call("resolve_incident", root_causes=[], summary="x")["ok"]
     assert env.call("get_status") == {"ok": False, "t": 0, "error": "episode over"}
-    env = Env(Scenario(1000, "easy"))
+    env = Env(Scenario(1000, "medium"))
     while not env.done:
         env.call("wait", minutes=30)
     assert env.t >= scenarios.T and env.call("get_status")["error"] == "episode over"
     assert env.finalize() is env.finalize()
 
 
+R_CLASSES = ("duplicate_charges", "replica_lag_stale_reads", "migration_lock", "pool_sync_recycle", "progressive_gray",
+             "clock_skew", "expired_cert_dismissed_alert", "mail_backlog_ramp", "cache_invalidation_loop", "bad_config_push",
+             "redis_maxmemory", "duplicate_events", "stuck_failover", "abusive_client")
+V1_HARD = ("cache_stampede", "poison_message", "bad_canary", "thread_starvation", "under_provisioned", "cert_expiry")   # F9-F12, F14, F6
+SILENT_OR_GRAY = R_CLASSES[:7] + ("duplicate_events", "abusive_client", "mail_backlog_ramp")
+
+
 def test_suites():
     dev, judge, fast = suite("dev"), suite("judge"), suite("judge-fast")
     assert [len(s) for s in (dev, judge, fast)] == [30, 24, 12]
     assert {s.id for s in fast} <= {s.id for s in judge}
-    for s in (dev, judge):      # every report label F1..F14 and every fault class appears
-        assert {sc.family for sc in s} == set(scenarios.LABELS)
-        assert {f["fault_class"] for sc in s for f in sc.faults} == set(scenarios.FAMILIES)
-    assert [sc.difficulty for sc in dev].count("hard") == 10 and [sc.difficulty for sc in judge].count("hard") == 12
+    count = lambda s, d: [x.difficulty for x in s].count(d)
+    assert [count(dev, d) for d in ("medium", "hard", "expert")] == [10, 10, 10]
+    assert [count(judge, d) for d in ("medium", "hard", "expert")] == [6, 10, 8]
+    assert [count(fast, d) for d in ("medium", "hard", "expert")] == [3, 5, 4]
+    for s in (dev, judge):      # every R1..R14, the v1 hard mechanisms (F9-F12, F14, F6 bomb, F8 second fault, F13 message) appear
+        classes = {f["fault_class"] for sc in s for f in sc.faults}
+        assert set(R_CLASSES) | set(V1_HARD) <= classes, (set(R_CLASSES) | set(V1_HARD)) - classes
+        assert {f["role"] for sc in s for f in sc.faults} >= {"primary", "concurrent", "second", "bomb", "cascade"}
+        assert any(sc.misleading for sc in s)
+        assert {sc.family for sc in s} <= set(scenarios.LABELS) and {"F9", "F10", "F14", "R1", "R3", "R9", "R12", "R13"} <= {sc.family for sc in s}
     for sc in dev + judge:
         roles = [f["role"] for f in sc.faults]
+        classes = [f["fault_class"] for f in sc.faults]
         assert roles[0] == "primary" and -8 <= sc.faults[0]["onset"] <= -3
-        if sc.difficulty == "easy":
-            assert len(sc.faults) == 1 and sc.herring is None and sc.misleading is None
-            assert sc.faults[0]["fault_class"] in ("bad_deploy", "retry_storm", "external_dependency", "disk_full")
-        if sc.difficulty == "medium":     # exactly one fault and one trap
-            assert len(sc.faults) == 1 and (bool(sc.herring) or sc.family in ("F11", "F12"))
-            assert bool(sc.misleading) == (sc.family == "F13")
-        if sc.difficulty == "hard":
-            assert ("second" in roles) != ("bomb" in roles) and sc.misleading is None
-            assert sc.faults[0]["fault_class"] in ("cache_stampede", "poison_message", "bad_deploy", "memory_leak")
+        assert sc.id.startswith(sc.difficulty[:3]) and sc.family.lower() in sc.id
+        assert sc.difficulty != "easy" and len(sc.faults) >= 1
+        if sc.difficulty == "medium":     # exactly one mechanism and one trap (a deploy herring, a chat message, or the mechanism's own)
+            assert len(sc.faults) == 1 and sc.faults[0]["role"] == "primary"
+            assert bool(sc.herring) or sc.family in ("R4", "R5", "R7", "R14", "F12")
+            assert bool(sc.misleading) == (sc.family in ("F13", "R11"))
+        if sc.difficulty == "hard":       # two causes with a silent / gray / periodic one, or multi-step + a mid-shift second fault / bomb
+            assert len(sc.faults) >= 2 and sc.misleading is None
+            assert (any(c in SILENT_OR_GRAY for c in classes) and "concurrent" in roles) or "second" in roles or "bomb" in roles
+        if sc.difficulty == "expert":     # three causes incl. a silent / gray one, and a trap
+            assert len(sc.faults) >= 3 and any(c in SILENT_OR_GRAY for c in classes) and (sc.herring or sc.family == "R14")
         for f in sc.faults:
             if f["role"] == "second":
                 assert 40 <= f["onset"] <= 50
             if f["role"] == "bomb":
                 assert 55 <= f["onset"] <= 75 and f["warn_t"] < 0
+            if f["role"] == "concurrent":
+                assert f["onset"] == sc.faults[0]["onset"]
         if sc.family == "F14":
             assert [f["fault_class"] for f in sc.faults[:2]] == [sc.faults[0]["fault_class"], "under_provisioned"]
             assert sc.faults[0]["cascade"]
+        assert {c for c in classes if c in ("retry_storm",)} == set() or not {c for c in classes} & set(scenarios.DB_FAULTS)
     assert [sc.id for sc in suite("dev")] == [sc.id for sc in dev]
+
+
+def test_easy_is_gone():
+    with pytest.raises(ValueError):
+        Scenario(1000, "easy")
+    assert set(scenarios.SLOTS) == {"medium", "hard", "expert"}
+    for name in ("dev", "judge", "judge-fast", "train"):
+        assert {sc.difficulty for sc in suite(name)} <= {"medium", "hard", "expert"}
+        assert not any(sc.id.startswith("eas") for sc in suite(name))
 
 
 def test_heldout_needs_salt(monkeypatch):

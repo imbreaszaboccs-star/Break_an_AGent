@@ -170,15 +170,52 @@ Scénáře se skládají kompozičně ze 3 ortogonálních os: **Kořenová př�
 jako deprecation warning, mezi nimi ale i `TLS cert expires in 60m` nebo `disk > 88 %`).
 Reference i frontier agent tak mají identické vodítko.
 
-**Obtížnost:**
-- `easy` (4 v judge): 1 porucha (F1, F3, F5, F7), bez pastí — sanity check, že agent rozumí nástrojům.
-- `medium` (8 v judge): 1 porucha + kognitivní past (red-herring deploy, F11 canary, F12 starvation, F13 misleading message).
-- `hard` (12 v judge): vícefázové plánování (F9 stampede, F10 poison queue), odmaskování druhé chyby (F14), kombinace s tikající bombou (F6) a adaptací (F8).
+**Obtížnost (v2 — úroveň `easy` zrušena):**
+- `medium` (6 v judge): 1 mechanismus + 1 past (red-herring deploy, zavádějící zpráva týmu, hlasitý upstream symptom, souběžná nesouvisející anomálie).
+- `hard` (10 v judge): 2 souběžné kořenové příčiny, z toho ≥ 1 tichá (data integrity / gray / periodická), NEBO vícefázový mechanismus + druhá porucha v t≈40–50 / tikající bomba.
+- `expert` (8 v judge): 3 interagující příčiny vč. kauzálního řetězce nebo samoudržující smyčky + tichá/gray složka + past.
+- v1 „easy“ rodiny (F1, F3, F5, F7) se vyskytují jen jako součást těžší kompozice.
+
+### v2: realistická přestavba (2026-11-14)
+
+v1 byla pro silné modely příliš snadná (gemini-4-argon 0.96, Kimi 0.87 vs reference 0.98): poruchy s jednou
+příčinou, hlasité signály, logy pojmenovávaly příčinu. Existující benchmarky, kde frontier modely dosahují 10–50 %
+(ITBench-AA, OpenRCA 2.0, AIOpsLab), jsou těžké kvůli tichým poruchám integrity dat se zelenými dashboardy,
+zavádějícím upstream symptomům, gray (částečným) selháním a více souběžným příčinám. v2 přidává přesně to:
+
+- **Realistická telemetrie:** logy nepojmenovávají příčinu, verze jen v `get_deploys`, 6–10 alertů na symptomy,
+  health checky jen liveness (zelené i při gray failure), metriky po 1 min.
+- **Nové nástroje:** `get_instances` (per-replika), `drain_instance`, `get_business_metrics` (objednávky, duplicitní
+  platby, doručené e-maily, úspěšnost loginu, stale reads), nové údržbové akce a konfigurační klíče.
+- **Tichá škoda v SLI:** duplicitní platba, zastaralé čtení, nedoručený e-mail, ztracená session = neúspěšný request
+  i při HTTP 200.
+- **14 mechanismů podle ověřených postmortemů** (primární zdroje):
+
+| # | Mechanismus | Reálný incident |
+|---|---|---|
+| R1 | duplicitní platby z nulového zůstatku po resyncu Redis repliky | Twilio 2013 |
+| R2 | replica lag → stale reads; failover na zaostávající repliku = ztráta dat | GitHub 2018, Honeycomb 2023 |
+| R3 | migrace zamkne „málo používanou“ tabulku → vyčerpané pooly, nízké DB CPU | Pulumi 2023 |
+| R4 | synchronní recyklace spojení po minor upgradu DB → špičky každých 15 min | Clerk 2025 |
+| R5 | instance gatewaye postupně ztrácí LB route, health checky zelené | Netlify 2021 |
+| R6 | posun hodin na jedné instanci auth → přerušované 401 | Cloudflare 2017 (leap second) |
+| R7 | expirovaný TLS cert mail senderu, alert vypadá jako planý poplach | Postmark 2024, Let's Encrypt 2021 |
+| R8 | backlog e-mailů; drain plnou rychlostí spustí throttling příjemců | Postmark 2022 |
+| R9 | smyčka invalidace cache; samotný revert nestačí, nejdřív odlehčit | Facebook 2010 |
+| R10 | regex pushnutý konfigurací (ne deployem) → CPU gatewaye 100 % | Cloudflare 2019 |
+| R11 | snížený maxmemory Redis → vyhozené sessions → login storm | GitLab production#482 |
+| R12 | duplicitní eventy → dvojí expedice, vypadá jako retry zákazníků | CircleCI 2025 |
+| R13 | failover je správně, ale cluster manager ho blokuje bez maintenance módu | GoCardless 2017 |
+| R14 | jeden klient vyčerpá spojení gatewaye, vypadá jako externí výpadek | Healthchecks.io 2025 |
+
+Vzory bez primárního zdroje (Stripe idempotency incident, Kafka poison message, DKIM/SPF) se netvrdí.
+**Cílové skóre modelů je hypotéza, ne cíl ladění:** simulace se neladí proti konkrétnímu modelu; mechanika se mění
+jen když je nerealistická nebo nefér (reference řeší každý scénář ≥ 0.8 z dostupných informací).
 
 **Splity:**
-- `dev` (veřejné seedy, 30 scénářů pro vývoj a CI exploit testy),
-- `judge-fast` (pevná podmnožina 12 seedů pro rychlé ověření),
-- `judge` (pevný stratifikovaný seznam **24 seedů**: 4 easy, 8 medium, 12 hard — publikovaný pro hlavní report a úzké bootstrap CI),
+- `dev` (veřejné seedy, 30 scénářů: 10 medium / 10 hard / 10 expert, pro vývoj a CI exploit testy),
+- `judge-fast` (pevná podmnožina 12 seedů: 3 / 5 / 4, pro rychlé ověření),
+- `judge` (pevný stratifikovaný seznam **24 seedů**: 6 medium, 10 hard, 8 expert — publikovaný pro hlavní report a úzké bootstrap CI),
 - `heldout` (seedy z tajného salt, 100 scénářů — jen pro finální reporty a eval malého modelu).
 
 **Fairness invariant (testováno):** každá porucha emituje ≥ 2 pozorovatelné signály

@@ -2,6 +2,7 @@ from functools import partial
 
 import pytest
 
+from helpers import with_class
 from oncall import policies, scoring
 from oncall.scenarios import Scenario, suite
 from oncall.sim import Env
@@ -24,12 +25,11 @@ def delayed(delay):
     return partial(policies.oracle, delay=delay)
 
 
-@pytest.mark.parametrize("seed,diff", [(1000, "easy"), (1003, "easy"), (1005, "easy"), (1006, "easy"), (1011, "medium"),
-                                       (1014, "medium"), (1021, "hard"), (1027, "hard")])
-def test_fixing_earlier_scores_at_least_as_much(seed, diff):
+@pytest.mark.parametrize("sc", DEV[:16], ids=lambda s: s.id)       # (a delayed second fault shifts the later scenarios' timeline)
+def test_fixing_earlier_scores_at_least_as_much(sc):
     scores = []
     for d in (0, 3, 8, 15):
-        env = Env(Scenario(seed, diff))
+        env = Env(sc)
         delayed(d)(env.call)
         scores.append(env.finalize()["score"])
     assert scores == sorted(scores, reverse=True), scores
@@ -100,7 +100,7 @@ def test_collateral_only_for_non_fault_nodes():
 
 
 def test_masked_fix_and_tags():
-    sc = next(s for s in DEV if s.faults[0]["fault_class"] == "memory_leak" and s.difficulty == "medium")
+    sc, _ = with_class("memory_leak", roles=("primary",), diff="medium")
     env = Env(sc)
     env.call("restart", service=sc.faults[0]["node"])
     env.call("resolve_incident", root_causes=[{"service": sc.faults[0]["node"], "fault_class": "memory_leak"}])
@@ -116,10 +116,10 @@ def test_herring_and_wrong_order_tags():
     v = env.call("get_deploys", service=sc.herring["node"])["result"]["deploys"][sc.herring["node"]]["history"]
     env.call("rollback", service=sc.herring["node"], version=v[-2]["version"])
     assert "herring_followed" in env.finalize()["tags"]
-    sc = next(s for s in DEV if s.faults[0]["fault_class"] == "retry_storm")
+    sc, i = with_class("retry_storm")
     env = Env(sc)
-    env.call("scale", service=sc.faults[0]["node"], replicas=8)
-    env.call("set_config", service=sc.faults[0]["node"], key="max_retries", value=1)
+    env.call("scale", service=sc.faults[i]["node"], replicas=8)
+    env.call("set_config", service=sc.faults[i]["node"], key="max_retries", value=1)
     assert "wrong_order" in env.finalize()["tags"]
 
 
