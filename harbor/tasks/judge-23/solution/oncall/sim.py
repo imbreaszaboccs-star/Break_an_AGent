@@ -11,9 +11,10 @@ SLO_MS = 800
 MAX_CALLS = 150
 INF = 9.99
 CONFIG_KEYS = ("max_retries", "timeout_ms", "pool_size", "rate_limit_rps", "log_level", "dlq_enabled")
-MAINT = {"rotate_cert": ("app", "db", "cache"), "prune_logs": ("app", "db", "cache"), "purge_dlq": ("app",),
-         "warm_cache": ("cache",), "vacuum_db": ("db",), "rebalance_shards": ("db",), "compact_wal": ("db",),
-         "flush_dns": ("app", "db", "cache")}
+HERD = 5.0     # thundering herd: concurrent misses on cold keys multiply the db queries per miss
+MAINT = {"rotate_cert": ("app", "db", "cache", "queue"), "prune_logs": ("app", "db", "cache", "queue"),
+         "purge_dlq": ("app", "queue"), "warm_cache": ("cache",), "vacuum_db": ("db",), "rebalance_shards": ("db",),
+         "compact_wal": ("db",), "flush_dns": ("app", "db", "cache", "queue")}
 HARMFUL = ("vacuum_db", "rebalance_shards", "compact_wal")
 OBS_COST = {"get_status": 1, "get_events": 1, "get_topology": 1, "get_metrics": 1, "get_logs": 1,
             "get_traces": 2, "get_deploys": 1, "get_config": 1, "get_flags": 1, "get_runbook": 1}
@@ -28,8 +29,13 @@ RUNBOOKS = {
     "retry_storm": "Dependency saturated while its clients show high retry rates: reduce client retries first (set_config max_retries), scaling clients or restarting the dependency makes it worse (connection limits, cold start).",
     "circuit_breaker": "closed = normal; open = fail fast (critical edges fail); fallback = serve degraded response. Use fallback for a failing external dependency that has a fallback.",
     "schema_migration": "Deploys with has_schema_migration and reversible=false cannot be rolled back past without data loss.",
-    "cache_stampede": "After a cache flush the hit rate is 0 and the database sees all traffic; wait for hit rate to recover or warm_cache.",
+    "cache_stampede": "After a cache flush the hit rate is near 0 and the database sees all traffic. If the database saturates, the hit rate cannot recover by itself: relieve it (warm_cache, or throttle), wait for the hit rate to recover, then remove the throttle.",
     "maintenance": "vacuum_db, rebalance_shards and compact_wal on a busy database halve its capacity for several minutes.",
+    "cert_expiry": "Certificates expire at a fixed time: rotate_cert before the expiry avoids TLS handshake failures; rotating after it ends them.",
+    "disk_full": "A disk near 100% makes writes fail. Freeing space (prune_logs) is not durable while debug logging keeps filling it: lower the log level too. Restarting does not free disk.",
+    "poison_message": "A message that crashes its consumer blocks the queue head: new replicas crash on it too. Move it to the dead-letter queue (dlq_enabled) instead of rolling back or scaling.",
+    "canary": "A canary serves a small share of traffic: look at p99 against p50 and at get_deploys / get_flags, not only at the average error rate. Turn the canary flag off or roll back.",
+    "thread_starvation": "A slow dependency holds worker threads of its caller (worker_util > 1) even with 0% errors: cut it off with a circuit breaker in fallback mode instead of fixing the caller.",
     "capacity": "Scaling adds cost; clients of a database also add connections (replicas x pool_size) and can exhaust max_connections.",
 }
 NOISE = (("INFO", "GET /healthz 200 {a}ms"), ("INFO", "request completed status=200 dur={b}ms"),
@@ -69,6 +75,8 @@ class Node:
         self.cfg = {"max_retries": 1 if sp.kind == "app" and sp.name in clients else 0, "timeout_ms": sp.timeout_ms, "pool_size": sp.pool_size,
                     "rate_limit_rps": 0, "log_level": "INFO", "dlq_enabled": False}
         self.mem, self.hit = sp.mem_base, sp.hit_base
+        self.disk, self.canary, self.rotated = sp.disk, None, False
+        self.cert_exp = 30000 + 137 * len(sp.name)       # tick at which the TLS certificate expires
         self.releases = [dict(d) for d in deploys]       # release order (for rollback ordering)
         self.dlog = [dict(d) for d in deploys]           # what get_deploys shows
         self.version = self.releases[-1]["version"] if self.releases else "n/a"
@@ -90,6 +98,9 @@ class World:
         self.err = {n: 0.0 for n in sc.order}
         self.rec, self.offered, self.good, self.spend = [], [], [], []
         self.fault_err, self.fault_lat, self.lat_mult, self.tick_flags = {}, {}, {}, {}
+        self.cap_mult, self.drop, self.p99_add = {}, {}, {}
+        self.lag, self.bp = 0.0, 0.0                      # queue backlog (rate-ticks) and the enqueue rejection share
+        self.q_nom = sc.share[sc.queue] * sc.params["base_rps"]
         self.faults = [F.build(s) for s in sc.faults]
         self.seed_key = f"{sc.seed}|{sc.salt}"
 
@@ -119,32 +130,46 @@ class World:
         self.flag_audit.append({"t": t, "flag": name, "on": on, "by": by})
 
     def weight(self, e):
-        return e.fanout * ((1 - self.nodes[self.sc.cache].hit) if e.via_cache else 1)
+        if not e.via_cache:
+            return e.fanout
+        miss = 1 - self.nodes[self.sc.cache].hit
+        return e.fanout * miss * (1 + HERD * max(0.0, miss - 0.25))
+
+    def throttled(self):
+        """True while traffic is held back to protect the db: entry rate limit or a breaker on a cache-miss path."""
+        return (self.nodes[self.sc.entry].cfg["rate_limit_rps"] > 0
+                or any(self.cb[(e.caller, e.callee)] != "closed" for e in self.sc.edges if e.via_cache))
 
     # ---- one tick -----------------------------------------------------------------------------
     def step(self):
         sc, t = self.sc, self.t
         nodes, order = self.nodes, self.sc.order
         self.fault_err, self.fault_lat, self.lat_mult, self.tick_flags = {}, {}, {}, {}
+        self.cap_mult, self.drop, self.p99_add = {}, {}, {}
+        cache = nodes[sc.cache]          # hit rate recovers only while the db is healthy (else metastable)
+        cache.hit = min(cache.sp.hit_base, cache.hit + 0.08 * max(0.0, 1 - 2 * self.err[sc.db]))
         h = sc.herring
         if h and t == h["t"]:
             self.deploy(h["node"], h["version"], t, by="release-bot")
             self.event(t, "warn", "WARN", h["node"], f"{h['node']} {h['version']}: deploy finished with 2 warnings "
                                                    f"(deprecated API usage)")
+        m = sc.misleading
+        if m and t == m["t"]:
+            self.event(t, "message", "info", "team-chat", m["text"])
         for i, (wt, svc, text) in enumerate(sc.warns):
             if wt == t:
                 self.event(t, "warn", "WARN", svc, f"{svc}: {text}")
                 self.alerts[("warn", i)] = {"severity": "WARN", "service": svc, "message": text, "since": t, "until": t + 20}
         for f in self.faults:
             f.apply(self, t)
+            if f.spec["role"] == "second" and t == f.onset:
+                self.event(t, "message", "info", "support", "support: new customer reports of failed or very slow requests")
         for fl in self.flags.values():
             if fl["on"] and fl["effect"]:
                 node, ms = fl["effect"]
                 self.fault_lat[node] = self.fault_lat.get(node, 0.0) + ms
         for nd in nodes.values():
             nd.ready_n = nd.replicas if t >= nd.warm_until else min(nd.ready_n, nd.replicas)
-            if nd.kind == "cache":
-                nd.hit = min(nd.sp.hit_base, nd.hit + 0.08)
         # traffic
         p = sc.params
         offered = p["base_rps"] * (1 + .05 * math.sin(2 * math.pi * (t + p["phase"]) / 1440))
@@ -158,21 +183,29 @@ class World:
         load = {n: 0.0 for n in order}
         load[sc.entry] = offered - shed
         retries = {n: 0.0 for n in order}
+        bp_in = self.bp
         for n in order:
+            if nodes[n].kind == "queue":     # asynchronous: the worker consumes what it can, the rest piles up as lag
+                wk = nodes[self.out[n][0].callee]
+                take = min(self.lag + load[n] * (1 - bp_in), wk.ready_n * wk.sp.cap * self.cap_mult.get(wk.name, 1.0))
+                self.lag += load[n] * (1 - bp_in) - take
+                load[wk.name] += take
+                self.bp = min(1.0, max(0.0, (self.lag / self.q_nom - 3) / 3))     # rejects enqueues beyond 3 min of lag
+                continue
             r = nodes[n].cfg["max_retries"]
             for e in self.out[n]:
                 if self.cb[(n, e.callee)] != "closed":
                     continue
-                base = load[n] * self.weight(e)
+                base = load[n] * (1 - self.drop.get(n, 0.0)) * self.weight(e)
                 extra = base * r * self.err[e.callee]
                 load[e.callee] += base + extra
                 retries[n] += extra
         # latency + errors, bottom-up
-        p50, p99, err, rec = {}, {}, {}, {}
+        p50, p99, err, rec, xt = {}, {}, {}, {}, {}
         for n in reversed(order):
             nd = nodes[n]
             sp = nd.sp
-            cap = nd.ready_n * sp.cap * (0.5 if t < nd.cap_penalty_until else 1.0)
+            cap = nd.ready_n * sp.cap * (0.5 if t < nd.cap_penalty_until else 1.0) * self.cap_mult.get(n, 1.0)
             if nd.kind == "db":     # ponytail: db goodput drops while it is erroring (thrash) -> storms are self-sustaining
                 cap *= 1 - 0.5 * self.err[n]
             ld = load[n]
@@ -183,6 +216,8 @@ class World:
                 overload = 1 - 1 / util if util > 1 else 0.0
             fe = self.fault_err.get(n, 0.0)
             own = comb(overload, fe)
+            if nd.kind == "queue":
+                own = comb(own, bp_in)
             conn = 0.0
             if nd.kind == "db":
                 demand = sum(nodes[c].ready_n * nodes[c].cfg["pool_size"] for c in self.clients
@@ -192,20 +227,22 @@ class World:
                 own = comb(own, conn)
             lat = (sp.base_ms / max(0.05, 1 - min(util, 0.99)) * self.lat_mult.get(n, 1.0)
                    + self.fault_lat.get(n, 0.0))
-            prod, to, ce, to_callee = 1.0, 0.0, {}, ""
-            for e in self.out[n]:
+            prod, to, ce, to_callee, xtail = 1.0, 0.0, {}, "", 0.0
+            for e in ([] if nd.kind == "queue" else self.out[n]):
                 c, mode, w = e.callee, self.cb[(n, e.callee)], self.weight(e)
                 if mode == "closed":
                     lat += w * p50[c]
+                    xtail = max(xtail, min(1.0, w) * xt[c])      # a callee's extra tail (canary, ...) reaches its callers
                     ce[c] = err[c]
                     if e.critical:
                         ts = slow_frac(p50[c], p99[c], nd.cfg["timeout_ms"])
-                        prod *= 1 - w * comb(err[c], ts)
+                        prod *= 1 - min(1.0, w * comb(err[c], ts))
                         if ts > to:
                             to, to_callee = ts, c
                 elif e.critical and (mode == "open" or not e.fallback_ok):
-                    prod *= 1 - w
-            p50[n], p99[n] = lat, lat * sp.tail
+                    prod *= 1 - min(1.0, w)
+            xt[n] = self.p99_add.get(n, 0.0) + xtail
+            p50[n], p99[n] = lat, lat * sp.tail + xt[n]
             wu = 0.0
             if nd.kind == "app":
                 wu = ld * lat / 1000 / (nd.ready_n * sp.threads) if nd.ready_n > 0 else INF
@@ -214,8 +251,10 @@ class World:
             err[n] = 1 - (1 - own) * prod
             conns = (min(sp.max_conn, sp.max_conn * (0.2 + 0.8 * min(1.0, util))) if nd.kind == "db"
                      else nd.ready_n * nd.cfg["pool_size"] * min(1.0, util) * .5)
-            rec[n] = {"rps": ld, "err": err[n], "p50": lat, "p99": lat * sp.tail, "util": util,
-                      "mem": nd.mem, "conns": conns, "wu": wu, "disk": sp.disk, "retries": retries[n],
+            rec[n] = {"rps": ld, "err": err[n], "p50": lat, "p99": p99[n], "util": util,
+                      "mem": nd.mem, "conns": conns, "wu": wu, "disk": nd.disk, "retries": retries[n],
+                      "lag": self.lag / self.q_nom if n in (sc.queue, sc.worker) else 0.0,
+                      "bp": bp_in if nd.kind == "queue" else 0.0,
                       "hit": nd.hit, "ver": nd.version, "flag": self.tick_flags.get(n, ""), "ce": ce,
                       "to": (to_callee, to), "conn": conn, "overload": overload, "cold": nd.ready_n == 0,
                       "own": own}
@@ -274,6 +313,8 @@ class World:
                     out.append((tt, "ERROR", msg))
             if r["to"][1] > .02 and rng.random() < .8:
                 out.append((tt, "ERROR", f"deadline exceeded after {nd.cfg['timeout_ms']}ms calling {r['to'][0]}"))
+            if r["bp"] > .05:
+                out.append((tt, "ERROR", f"enqueue rejected: consumer lag {r['lag']:.1f}m exceeds the backpressure threshold"))
             if r["conn"] > .05:
                 out.append((tt, "ERROR", f"too many connections: pool exhausted (max_connections={nd.sp.max_conn})"))
             if r["overload"] > .05 and nd.kind != "app":
@@ -415,8 +456,8 @@ class Env:
                 d["replica_in_sync"] = nd.sp.in_sync
             nodes.append(d)
         edges = [{"caller": e.caller, "callee": e.callee, "fanout": e.fanout, "critical": e.critical,
-                  "fallback_ok": e.fallback_ok, "via_cache": e.via_cache, "circuit_breaker": w.cb[(e.caller, e.callee)]}
-                 for e in w.sc.edges]
+                  "fallback_ok": e.fallback_ok, "via_cache": e.via_cache, "circuit_breaker": w.cb[(e.caller, e.callee)],
+                  "async": w.nodes[e.caller].kind == "queue"} for e in w.sc.edges]
         return 1, {"nodes": nodes, "edges": edges}, None
 
     def t_get_metrics(self, services, window=5):
@@ -441,7 +482,7 @@ class Env:
                         "cpu": round(min(1.0, max(0.0, cpu + .01 * g[4])), 3),
                         "mem": round(r["mem"] + .005 * g[5], 3), "conns": int(r["conns"]),
                         "worker_util": round(min(r["wu"], 99.0) * (1 + .03 * g[6]), 3), "disk": round(r["disk"], 3),
-                        "retries": round(r["retries"] * (1 + .03 * g[7]), 1), "queue_lag": 0,
+                        "retries": round(r["retries"] * (1 + .03 * g[7]), 1), "queue_lag": round(r["lag"], 2),
                         "cache_hit_rate": round(r["hit"], 3) if w.nodes[s].kind == "cache" else None}
                 for m in METRICS:
                     series[m].append(vals[m])
@@ -471,16 +512,20 @@ class Env:
         self._int("n", n, 1, 10)
         rng = self._rng("get_traces", {"endpoint": endpoint, "n": n})
         last = w.rec[w.t - 1 + WARM]
+        poison = next((f.spec["msg_id"] for f in w.faults if f.fault_class == "poison_message" and not f.fixed(w)), None)
         traces = []
         for _ in range(n):
             spans = []
 
             def walk(node, parent, depth):
                 r = last[node]
-                spans.append({"service": node, "parent": parent, "duration_ms": round(r["p50"] * rng.uniform(.6, 1.6), 1),
-                              "status": "error" if rng.random() < r["err"] else "ok"})
+                span = {"service": node, "parent": parent, "duration_ms": round(r["p50"] * rng.uniform(.6, 1.6), 1),
+                        "status": "error" if rng.random() < r["err"] else "ok"}
+                if node == sc.queue:      # the message at the head of the queue (the same one while a poison message blocks it)
+                    span["message_id"] = poison or f"m-{rng.getrandbits(32):08x}"
+                spans.append(span)
                 if depth < 4:
-                    for e in sc.children(node):
+                    for e in ([] if w.nodes[node].kind == "queue" else sc.children(node)):
                         if w.cb[(node, e.callee)] == "closed" and rng.random() < w.weight(e):
                             walk(e.callee, node, depth + 1)
             walk(endpoint[1:], sc.entry, 0)
@@ -494,14 +539,14 @@ class Env:
         if service is not None:
             self._node(service)
             names = [service]
-        return 1, {"as_of": w.t, "deploys": {n: {"current": w.nodes[n].version, "history": w.nodes[n].dlog}
-                                             for n in names}}, None
+        return 1, {"as_of": w.t, "deploys": {n: {"current": w.nodes[n].version, "canary": w.nodes[n].canary,
+                                                 "history": w.nodes[n].dlog} for n in names}}, None
 
     def t_get_config(self, service):
         nd = self._node(service, managed=False)
         res = {"service": service, "kind": nd.kind, "version": nd.version, "replicas": nd.replicas,
                "config": dict(nd.cfg), "worker_threads": nd.sp.threads, "mem_limit_mb": nd.sp.mem_mb,
-               "audit": list(nd.audit)}
+               "audit": list(nd.audit), "cert_expires_at": nd.cert_exp}
         if nd.kind == "db":
             res.update(max_connections=nd.sp.max_conn, replica_in_sync=nd.sp.in_sync)
         return 1, res, None
@@ -548,6 +593,7 @@ class Env:
             if isinstance(value, bool) or not isinstance(value, (int, float)) or not 0 <= value <= 100000:
                 raise ToolError("rate_limit_rps must be a number between 0 and 100000 (0 = off)")
         elif key == "log_level":
+            value = value.upper() if isinstance(value, str) else value
             if value not in ("DEBUG", "INFO", "WARN", "ERROR"):
                 raise ToolError("log_level must be one of DEBUG, INFO, WARN, ERROR")
         elif not isinstance(value, bool):
@@ -593,7 +639,12 @@ class Env:
             if action in HARMFUL:
                 nd.cap_penalty_until = self.w.t + 6
             elif action == "warm_cache":
-                nd.hit = min(nd.sp.hit_base, nd.hit + .3)
+                nd.hit = min(nd.sp.hit_base, nd.hit + .25)
+            elif action == "rotate_cert":
+                nd.rotated, nd.cert_exp = True, self.w.t + 129600
+                self.w.alerts.pop(("cert", service), None)
+            elif action == "prune_logs":
+                nd.disk = min(nd.disk, .4)
         return 3, {"service": service, "action": action, "status": "done"}, eff
 
     def t_wait(self, minutes):

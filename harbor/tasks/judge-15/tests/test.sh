@@ -2,7 +2,7 @@
 # Asks the sim sidecar for the final score. Any failure leaves the reward at 0.
 mkdir -p /logs/verifier
 echo 0 > /logs/verifier/reward.txt
-curl -sS --fail --max-time 240 -X POST -H "Authorization: Bearer ec317c539bbcbb1195373d6a684ccc0a4d6b7a26adbc1956ebdd74bdc1b03043" \
+curl -sS --fail --max-time 240 -X POST -H "Authorization: Bearer 06e4df9a9f5e7de0c1397e2ad8823947735cf998b141f3c7d64132d02a94dbb4" \
   http://oncall-sim:8000/admin/finalize -o /logs/verifier/reward_breakdown.json || exit 0
 python3 - <<'EOF' || echo 0 > /logs/verifier/reward.txt
 import json

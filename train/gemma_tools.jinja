@@ -1,0 +1,40 @@
+{#- Gemma chat template with tool calls as a python list: [fn(arg=value), ...].
+    Gemma 3 has no native tool format; this one is OURS and is used for SFT, GRPO and vLLM serving
+    (vllm serve ... --chat-template train/gemma_tools.jinja --enable-auto-tool-choice --tool-call-parser pythonic).
+    Tool results are user turns wrapped in <tool_response>. System text and tool list are folded into the first user turn.
+    Tool-call `arguments` must be dicts (vLLM parses OpenAI JSON strings before rendering; dataset rows store dicts). -#}
+{%- macro py(v) -%}
+{%- if v is none -%}None
+{%- elif v is boolean -%}{{ 'True' if v else 'False' }}
+{%- elif v is string -%}{{ v | tojson }}
+{%- elif v is mapping -%}{{ '{' }}{%- for k, x in v.items() -%}{{ k | tojson }}: {{ py(x) }}{{ ', ' if not loop.last }}{%- endfor -%}{{ '}' }}
+{%- elif v is number -%}{{ v }}
+{%- else -%}{{ '[' }}{%- for x in v -%}{{ py(x) }}{{ ', ' if not loop.last }}{%- endfor -%}{{ ']' }}
+{%- endif -%}
+{%- endmacro -%}
+{%- set ns = namespace(used=false) -%}
+{%- set sys = messages[0].content if messages and messages[0].role == 'system' else '' -%}
+{%- set prefix -%}
+{%- if sys -%}{{ sys }}{{ '\n\n' }}{%- endif -%}
+{%- if tools -%}
+You can call the functions below. To call functions, reply ONLY with a python list of calls, e.g. [get_status(), get_logs(service="api", limit=20)]. Argument values are python literals. Function results come back in <tool_response> blocks in the next user turn.{{ '\n' }}Functions (JSON schema):{{ '\n' }}
+{%- for t in tools -%}{{ (t.function if t.function is defined else t) | tojson }}{{ '\n' }}{%- endfor -%}
+{{ '\n' }}
+{%- endif -%}
+{%- endset -%}
+{{- bos_token -}}
+{%- for m in messages -%}
+{%- if m.role == 'system' and loop.first -%}
+{%- elif m.role == 'user' -%}
+{{- '<start_of_turn>user\n' -}}{%- if not ns.used -%}{{- prefix -}}{%- set ns.used = true -%}{%- endif -%}{{- m.content -}}{{- '<end_of_turn>\n' -}}
+{%- elif m.role == 'assistant' -%}
+{{- '<start_of_turn>model\n' -}}{{- m.content or '' -}}
+{%- if m.tool_calls -%}{{- '[' -}}{%- for tc in m.tool_calls -%}{%- set f = tc.function if tc.function is defined else tc -%}{{- f.name -}}({%- for k, v in f.arguments.items() -%}{{- k -}}={{- py(v) -}}{{- ', ' if not loop.last -}}{%- endfor -%}){{- ', ' if not loop.last -}}{%- endfor -%}{{- ']' -}}{%- endif -%}
+{{- '<end_of_turn>\n' -}}
+{%- elif m.role == 'tool' -%}
+{%- if loop.previtem is not defined or loop.previtem.role != 'tool' -%}{{- '<start_of_turn>user\n' -}}{%- endif -%}
+{{- '<tool_response>' -}}{{- m.content -}}{{- '</tool_response>' -}}
+{%- if loop.nextitem is defined and loop.nextitem.role == 'tool' -%}{{- '\n' -}}{%- else -%}{{- '<end_of_turn>\n' -}}{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+{%- if add_generation_prompt -%}{{- '<start_of_turn>model\n' -}}{%- endif -%}

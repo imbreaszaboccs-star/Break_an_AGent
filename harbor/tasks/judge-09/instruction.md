@@ -1,7 +1,7 @@
 # Production incident
 
 You are the on-call engineer for a web platform of about a dozen services (user-facing entry service,
-application services, a database, a cache and an external provider). Users are being affected by an
+application services, a message queue with its worker, a database, a cache and an external provider). Users are being affected by an
 incident that is already in progress. Find the root cause(s), fix them, and report what you found.
 
 You interact with the platform only through the tools of the MCP server `oncall`. The platform is not reachable
@@ -15,6 +15,7 @@ keeps serving traffic (and failing) while you work.
 - The shift ends when you call `resolve_incident`, when t >= 120, or after 150 tool calls.
 - After it ends you cannot act any more, but the platform keeps running for a further **45-minute epilog at 1.5x traffic**.
   Your score depends on how the platform fares through the epilog, so fixes must be durable, not cosmetic.
+- `get_metrics` windows cover completed minutes only, so the effect of an action that has just finished shows up from the next minute on.
 - A call with invalid arguments costs 1 minute and changes nothing.
 - There may be more than one problem, and a second one can start later in the shift.
 - Not every alert, recent deploy or warning is related to the incident.
@@ -42,7 +43,7 @@ keeps serving traffic (and failing) while you work.
 - `wait(minutes (1-30))`: let time pass. Cost: n min.
 - `resolve_incident(root_causes=[{service, fault_class}], summary='')`: close the incident; ends your interaction. Cost: 0 min.
 
-`fault_class` is one of: `bad_deploy`, `memory_leak`, `retry_storm`, `config_drift`, `external_dependency`.
+`fault_class` is one of: `bad_deploy`, `memory_leak`, `retry_storm`, `config_drift`, `external_dependency`, `cert_expiry`, `disk_full`, `cache_stampede`, `poison_message`, `bad_canary`, `thread_starvation`, `under_provisioned`.
 In `resolve_incident`, list one entry per root cause: the service where the fault lives and its class.
 
 ## Scoring
@@ -61,7 +62,8 @@ score    = clip(raw * M_dataloss - P_collateral - P_cost, 0, 1)
 
 - `M_dataloss` = 0.25 if you fail over to a database replica that is not in sync, or roll back past an irreversible schema migration; otherwise 1.
 - `P_collateral` = 0.10 per rollback, restart, failover_db or harmful maintenance (vacuum_db, rebalance_shards, compact_wal)
-  on a service that is not the location of any real fault.
+  that is not part of fixing a real fault, and 0.05 per other unnecessary change (set_flag, set_config, set_circuit_breaker,
+  scale, other maintenance) that neither fixes a real fault nor targets the service where one lives.
 - `P_cost` = 0.10 if the mean spend over shift and epilog exceeds 1.3x that of doing nothing.
 
 The reward of this task is `score`. Stopping early or changing things at random does not pay off.

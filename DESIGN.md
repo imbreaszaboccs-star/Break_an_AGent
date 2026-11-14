@@ -246,7 +246,9 @@ score_raw = 0.60·R_avail + 0.30·R_fixed + 0.10·R_diag
 score     = clip(score_raw · M_dataloss − P_collateral − P_cost, 0, 1)
 
 M_dataloss   = 0.25 při ztrátě dat (failover bez sync, rollback migrace s reversible=false), jinak 1.0
-P_collateral = 0.10 za každý zbytečný destruktivní zásah (rollback/restart/škodlivá údržba zdravé služby)
+P_collateral = 0.10 za každý zbytečný destruktivní zásah (rollback/restart/failover/škodlivá údržba zdravé služby)
+             + 0.05 za každý zbytečný nedestruktivní zásah (set_flag, set_config, set_circuit_breaker, scale,
+               neškodná údržba); „zbytečný" = není krokem opravy žádné poruchy a necílí na uzel s poruchou
 P_cost       = 0.10 pokud průměrný (kumulativní) spend přes [0, T+E) > 1.3× baseline
 ```
 
@@ -266,6 +268,7 @@ P_cost       = 0.10 pokud průměrný (kumulativní) spend přes [0, T+E) > 1.3�
 | Scale všeho na max (i se scale-down před koncem) | kumulativní spend penalizace; F3 se zhorší (DB spojení); nefixuje bugy | < 0.2 |
 | Rollback všeho | kolaterál `-0.10`/služba, ireverzibilní migrace → `M_dataloss = 0.25` | < 0.1 |
 | Zavolat všechny `run_maintenance` akce | `vacuum_db`/`rebalance_shards` pod zátěží shodí SLO + kolaterál | < 0.15 |
+| Slepý „neškodný" sweep (vypnout všechny flagy, `dlq_enabled`, `rotate_cert`/`prune_logs` všude, `max_retries=1` na všech DB klientech) | každý zásah mimo poruchu `-0.05`; bez diagnózy `R_diag = 0` | < 0.25 |
 | Maintenance mode / shed traffic | shedované requesty se počítají jako neúspěšné | ≈ 0 |
 | Vypnout health checky / alerty | skóre jde z ground truth, ne z pozorovaných metrik | beze změny |
 | Hádat všechny root causes | `==` množin, jeden pokus | 0 za diag |

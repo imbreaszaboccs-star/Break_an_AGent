@@ -121,15 +121,30 @@ def test_suites():
     dev, judge, fast = suite("dev"), suite("judge"), suite("judge-fast")
     assert [len(s) for s in (dev, judge, fast)] == [30, 24, 12]
     assert {s.id for s in fast} <= {s.id for s in judge}
-    for s in (dev, judge, fast):
-        assert {sc.faults[0]["fault_class"] for sc in s} == set(scenarios.FAMILIES)
-    assert [sc.difficulty for sc in dev].count("hard") == 10
-    assert all(len(sc.faults) == 2 for sc in dev if sc.difficulty == "hard")
-    assert all(len(sc.faults) == 1 and sc.herring is None for sc in dev if sc.difficulty == "easy")
-    assert all(sc.herring for sc in dev if sc.difficulty != "easy")
-    assert all(sc.faults[0]["fault_class"] != "memory_leak" for sc in dev if sc.difficulty == "easy")
-    assert all(-8 <= sc.faults[0]["onset"] <= -3 for sc in dev)
-    assert all(40 <= sc.faults[1]["onset"] <= 50 for sc in dev if len(sc.faults) > 1)
+    for s in (dev, judge):      # every report label F1..F14 and every fault class appears
+        assert {sc.family for sc in s} == set(scenarios.LABELS)
+        assert {f["fault_class"] for sc in s for f in sc.faults} == set(scenarios.FAMILIES)
+    assert [sc.difficulty for sc in dev].count("hard") == 10 and [sc.difficulty for sc in judge].count("hard") == 12
+    for sc in dev + judge:
+        roles = [f["role"] for f in sc.faults]
+        assert roles[0] == "primary" and -8 <= sc.faults[0]["onset"] <= -3
+        if sc.difficulty == "easy":
+            assert len(sc.faults) == 1 and sc.herring is None and sc.misleading is None
+            assert sc.faults[0]["fault_class"] in ("bad_deploy", "retry_storm", "external_dependency", "disk_full")
+        if sc.difficulty == "medium":     # exactly one fault and one trap
+            assert len(sc.faults) == 1 and (bool(sc.herring) or sc.family in ("F11", "F12"))
+            assert bool(sc.misleading) == (sc.family == "F13")
+        if sc.difficulty == "hard":
+            assert ("second" in roles) != ("bomb" in roles) and sc.misleading is None
+            assert sc.faults[0]["fault_class"] in ("cache_stampede", "poison_message", "bad_deploy", "memory_leak")
+        for f in sc.faults:
+            if f["role"] == "second":
+                assert 40 <= f["onset"] <= 50
+            if f["role"] == "bomb":
+                assert 55 <= f["onset"] <= 75 and f["warn_t"] < 0
+        if sc.family == "F14":
+            assert [f["fault_class"] for f in sc.faults[:2]] == [sc.faults[0]["fault_class"], "under_provisioned"]
+            assert sc.faults[0]["cascade"]
     assert [sc.id for sc in suite("dev")] == [sc.id for sc in dev]
 
 

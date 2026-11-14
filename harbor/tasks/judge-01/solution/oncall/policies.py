@@ -3,6 +3,8 @@
 `oracle` is privileged (it reads the truth through `call.__self__`, so it only works on a local
 `Env.call`). `reference` uses nothing but `call`.
 """
+import math
+import re
 from functools import lru_cache
 from random import Random
 
@@ -25,13 +27,13 @@ def stop_early(call):
 
 
 def oracle(call, delay=0):
-    """Fix every fault as early as physically possible (effect lands at max(t=cost, onset))."""
+    """Fix every fault as early as physically possible, in order of when each fix step may start."""
     env = call.__self__
-    for f in sorted(env.w.faults, key=lambda f: f.onset):
-        tool, args = f.fix_action()
-        start = max(0, f.oracle_start(ACT_COST[tool])) + delay
-        while env.t < start:
-            call("wait", minutes=min(30, start - env.t))
+    steps = sorted(((t, i, tool, args) for i, (t, tool, args) in enumerate(
+        step for f in env.w.faults for step in f.fix_plan())), key=lambda s: s[:2])
+    for t, _, tool, args in steps:
+        while env.t < t + delay:
+            call("wait", minutes=min(30, t + delay - env.t))
         call(tool, **args)
     call("resolve_incident", summary="oracle",
          root_causes=[{"service": f.node, "fault_class": f.fault_class} for f in env.w.faults])
@@ -79,6 +81,24 @@ def exploit_shed_traffic(call):
     call("resolve_incident", root_causes=[], summary="traffic shed, incident mitigated")
 
 
+def exploit_blind_sweep(call):
+    """Undiagnosed, non-destructive fixes everywhere: flags off, dlq on, warm cache, retries 1, rotate/prune all."""
+    topo = _topo(call)
+    kind = {n["name"]: n["kind"] for n in topo["nodes"]}
+    seq = [("set_flag", {"flag": f["name"], "on": False}) for f in call("get_flags")["result"]["flags"] if f["on"]]
+    seq += [("run_maintenance", {"service": n, "action": "warm_cache"}) for n in kind if kind[n] == "cache"]
+    seq += [("set_config", {"service": e["callee"], "key": "dlq_enabled", "value": True}) for e in topo["edges"] if e["async"]]
+    seq += [("set_config", {"service": e["caller"], "key": "max_retries", "value": 1})
+            for e in topo["edges"] if kind[e["callee"]] == "db"]
+    seq += [("set_config", {"service": n, "key": "log_level", "value": "INFO"}) for n in kind if kind[n] == "app"]
+    seq += [("run_maintenance", {"service": n, "action": a}) for a in ("rotate_cert", "prune_logs", "purge_dlq")
+            for n in kind if kind[n] != "external"]
+    for tool, args in seq:
+        if over(call(tool, **args)):
+            return
+    call("resolve_incident", root_causes=[], summary="swept")
+
+
 def exploit_guess_all(call):
     nodes = [n["name"] for n in _topo(call)["nodes"]]
     call("resolve_incident", summary="",
@@ -111,13 +131,27 @@ def reference(call):
     names = list(kind)
     db = next(n for n in names if kind[n] == "db")
     cache = next(n for n in names if kind[n] == "cache")
+    queue = next(n for n in names if kind[n] == "queue")
     edges = topo["edges"]
     mode = {(e["caller"], e["callee"]): e["circuit_breaker"] for e in edges}
     found, ignore = [], set()
     state = {"t": 0}
+    scaled, certs, certs_done = {}, {}, set()        # autoscaler scale-ins and certificate WARNs seen in get_events
 
     def tick(r):
         state["t"] = r["t"]
+        return r
+
+    def read_events(since=0):
+        r = tick(call("get_events", since=since))
+        if r["ok"]:
+            for e in r["result"]["events"]:
+                a = re.search(r"autoscaler: (\S+) scaled in (\d+) -> (\d+)", e["text"])
+                c = re.search(r"TLS certificate for (\S+) expires at t=(\d+)", e["text"])
+                if a:
+                    scaled[a[1]] = int(a[2])
+                if c:
+                    certs[c[1]] = int(c[2])
         return r
 
     def fetch():
@@ -144,11 +178,11 @@ def reference(call):
             for i in (-2, -1):
                 keep, lat = 1.0, m[n]["p50"][i]
                 for e in edges:
-                    if e["caller"] == n and mode[(n, e["callee"])] == "closed":
+                    if e["caller"] == n and mode[(n, e["callee"])] == "closed" and not e["async"]:
                         w = e["fanout"] * ((1 - hit[i]) if e["via_cache"] else 1)
                         lat -= w * m[e["callee"]]["p50"][i]
                         if e["critical"]:
-                            keep *= 1 - w * m[e["callee"]]["error_rate"][i]
+                            keep *= 1 - min(1.0, w * m[e["callee"]]["error_rate"][i])
                 own_e += (1 - (1 - m[n]["error_rate"][i]) / max(keep, 1e-6)) / 2
                 own_l += lat / 2
             mem = m[n]["mem"]
@@ -158,7 +192,7 @@ def reference(call):
 
     def prev_version(n):
         d = call("get_deploys", service=n)["result"]["deploys"][n]
-        rel = [x for x in d["history"] if "rollback" not in x["by"]]
+        rel = [x for x in d["history"] if "rollback" not in x["by"] and "canary_weight" not in x]
         vs = [x["version"] for x in rel]
         if d["current"] not in vs or vs.index(d["current"]) == 0:
             return None
@@ -166,7 +200,10 @@ def reference(call):
             return None
         return vs[vs.index(d["current"]) - 1]
 
-    def act(info):
+    def last2(m, n, key):
+        return m[n][key][-1], m[n][key][-2]
+
+    def act(m, info):
         for n in names:                                   # 1. failing external dependency -> fallback
             if kind[n] == "external" and n not in ignore and info[n]["err"] > .12:
                 for e in edges:
@@ -176,7 +213,61 @@ def reference(call):
                 found.append((n, "external_dependency"))
                 ignore.add(n)
                 return True
-        for n in names:                                   # 2. slow node with no slow dependency -> recent flag
+        for n in names:                                   # 2. disk almost full: free space AND stop the debug flood
+            if kind[n] != "external" and n not in ignore and m[n]["disk"][-1] > .9:
+                ignore.add(n)
+                call("run_maintenance", service=n, action="prune_logs")
+                cfg = call("get_config", service=n)["result"]["config"]
+                if str(cfg["log_level"]).upper() == "DEBUG":
+                    call("set_config", service=n, key="log_level", value="INFO")
+                found.append((n, "disk_full"))
+                return True
+        if queue not in ignore and min(last2(m, queue, "queue_lag")) >= 2:     # 3. consumer lag: poison message?
+            wk = next(e["callee"] for e in edges if e["caller"] == queue)
+            lines = call("get_logs", service=wk, level="ERROR", grep="crashed processing", limit=5)["result"]["lines"]
+            ignore.add(queue)
+            if lines:
+                call("set_config", service=wk, key="dlq_enabled", value=True)
+                found.append((wk, "poison_message"))
+                ignore.add(wk)
+                return True
+        hit = m[cache]["cache_hit_rate"]
+        if cache not in ignore and hit[-1] is not None and max(hit[-2:]) < .3:      # 4. stampede: warm until the db relaxes
+            for _ in range(math.ceil((.7 - hit[-1]) / .25)):
+                call("run_maintenance", service=cache, action="warm_cache")
+            found.append((cache, "cache_stampede"))
+            ignore.add(cache)
+            return True
+        for n in names:                                   # 5. starved caller: cut off its slow, error-free dependency
+            if kind[n] == "app" and n not in ignore and min(last2(m, n, "worker_util")) > 1.0:
+                slow = [e for e in edges if e["caller"] == n and mode[(n, e["callee"])] == "closed" and e["fallback_ok"]
+                        and not e["critical"] and not e["async"] and m[e["callee"]]["p99"][-1] > 1500
+                        and m[e["callee"]]["error_rate"][-1] < .05]
+                if slow:
+                    e = max(slow, key=lambda e: m[e["callee"]]["p99"][-1])
+                    call("set_circuit_breaker", service=n, dep=e["callee"], mode="fallback")
+                    mode[(n, e["callee"])] = "fallback"
+                    found.append((e["callee"], "thread_starvation"))
+                    ignore.update((n, e["callee"]))
+                    return True
+        for n in names:                                   # 6. canary: tiny error rate but p99 >> p50
+            p50, p99 = sum(m[n]["p50"][-2:]) / 2, sum(m[n]["p99"][-2:]) / 2
+            if kind[n] == "app" and n not in ignore and p99 > 1000 and p99 > 8 * max(p50, 1) and m[n]["error_rate"][-1] > .01:
+                ignore.add(n)
+                if call("get_deploys", service=n)["result"]["deploys"][n]["canary"]:
+                    flags = [f["name"] for f in call("get_flags")["result"]["flags"] if f["name"] == f"{n}-canary" and f["on"]]
+                    if flags:
+                        call("set_flag", flag=flags[0], on=False)
+                        found.append((n, "bad_canary"))
+                        return True
+        for n in names:                                   # 6b. saturated node that the autoscaler shrank -> scale back
+            if (kind[n] == "app" and n in scaled and n not in ignore and info[n]["err"] > .12
+                    and min(last2(m, n, "cpu")) > .9):
+                call("scale", service=n, replicas=scaled[n])
+                found.append((n, "under_provisioned"))
+                ignore.add(n)
+                return True
+        for n in names:                                   # 7. slow node with no slow dependency -> recent flag
             if kind[n] == "app" and n not in ignore and info[n]["lat"] > 200:
                 ignore.add(n)
                 recent = [a for a in call("get_flags")["result"]["audit"] if a["on"] and a["t"] >= state["t"] - 60]
@@ -184,7 +275,7 @@ def reference(call):
                     call("set_flag", flag=max(recent, key=lambda a: a["t"])["flag"], on=False)
                     found.append((n, "config_drift"))
                     return True
-        if info[db]["err"] > .12 and db not in ignore:    # 3. saturated db -> client with a retry storm
+        if info[db]["err"] > .12 and db not in ignore:    # 8. saturated db -> client with a retry storm
             clients = sorted((e["caller"] for e in edges if e["callee"] == db), key=lambda c: -info[c]["retries"])
             for x in clients:
                 if info[x]["retries"] < 5:
@@ -196,7 +287,7 @@ def reference(call):
                     found.append((x, "retry_storm"))
                     ignore.update((x, db))
                     return True
-        for n in names:                                   # 4. memory ramp / sawtooth -> rollback the leaking release
+        for n in names:                                   # 9. memory ramp / sawtooth -> rollback the leaking release
             if kind[n] == "app" and n not in ignore and info[n]["mem"]:
                 ignore.add(n)
                 v = prev_version(n)
@@ -204,11 +295,16 @@ def reference(call):
                     call("rollback", service=n, version=v)
                     found.append((n, "memory_leak"))
                     return True
-        for n in sorted(names, key=lambda n: -info[n]["err"]):   # 5. own errors: timeout drift or bad deploy
+        for n in sorted(names, key=lambda n: -info[n]["err"]):   # 11. own errors: cert, timeout drift or bad deploy
             if kind[n] != "app" or n in ignore or info[n]["err"] <= .12:
                 continue
             ignore.add(n)
             cfg = call("get_config", service=n)["result"]
+            if cfg["cert_expires_at"] <= state["t"]:
+                call("run_maintenance", service=n, action="rotate_cert")
+                found.append((n, "cert_expiry"))
+                certs_done.add(n)
+                return True
             tm = [a for a in cfg["audit"] if a["key"] == "timeout_ms" and a["t"] >= state["t"] - 60 and a["new"] < a["old"]]
             if tm:
                 call("set_config", service=n, key="timeout_ms", value=tm[-1]["old"])
@@ -219,21 +315,30 @@ def reference(call):
                 call("rollback", service=n, version=v)
                 found.append((n, "bad_deploy"))
                 return True
+        for n in list(certs):                             # 12. WARN triage: a certificate that expires soon
+            if n not in certs_done:
+                certs_done.add(n)
+                if call("get_config", service=n)["result"]["cert_expires_at"] <= certs[n]:
+                    call("run_maintenance", service=n, action="rotate_cert")
+                    found.append((n, "cert_expiry"))
+                    return True
         return False
 
+    if not read_events()["ok"]:
+        return
     cycle, seen = 0, 0
     while state["t"] < 150:
         m = fetch()
         if m is None:
             return
-        if act(analyse(m)):
+        if act(m, analyse(m)):
             tick(call("wait", minutes=3))
             continue
         if state["t"] >= 60:
             break
         cycle += 1
         tick(call("wait", minutes=1))
-        ev = tick(call("get_events", since=max(1, seen)))
+        ev = read_events(since=max(1, seen))
         if not ev["ok"]:
             return
         new = [e for e in ev["result"]["events"] if e["severity"] == "CRIT" and e["t"] >= seen]
@@ -248,7 +353,7 @@ POLICIES = {
     "noop": noop, "stop_early": stop_early, "oracle": oracle, "reference": reference,
     "exploit_restart_all": exploit_restart_all, "exploit_scale_max": exploit_scale_max,
     "exploit_rollback_all": exploit_rollback_all, "exploit_maintenance_all": exploit_maintenance_all,
-    "exploit_shed_traffic": exploit_shed_traffic, "exploit_guess_all": exploit_guess_all,
+    "exploit_shed_traffic": exploit_shed_traffic, "exploit_blind_sweep": exploit_blind_sweep, "exploit_guess_all": exploit_guess_all,
     "exploit_summary_injection": exploit_summary_injection, "exploit_fuzz": exploit_fuzz,
 }
 EXPLOITS = tuple(n for n in POLICIES if n.startswith("exploit_"))

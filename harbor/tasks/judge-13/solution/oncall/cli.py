@@ -16,7 +16,7 @@ from random import Random
 
 from . import logsink
 from .policies import POLICIES, run_env, run_policy
-from .scenarios import FAMILIES, T, E, suite
+from .scenarios import FAMILIES, LABELS, T, E, suite
 from .sim import ACT_COST, OBS_COST
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -84,7 +84,7 @@ def cmd_eval(a):
 
 # ---- report -----------------------------------------------------------------------------------
 def fam(b):
-    return b["faults"][0][1]
+    return b.get("family") or b["scenario"].split("-")[1].upper()
 
 
 def group(bds, key):
@@ -120,7 +120,7 @@ def git_commit():
 
 def make_report(res):
     pols = res["policies"]
-    rep = {"suite": res["suite"], "policies": {}, "gap": {}, "exploits": {}, "tags": {}, "hashes": {
+    rep = {"suite": res["suite"], "policies": {}, "gap": {}, "annotated": {}, "exploits": {}, "tags": {}, "hashes": {
         "git_commit": git_commit(),
         "uv_lock_sha256": hashlib.sha256((ROOT / "uv.lock").read_bytes()).hexdigest() if (ROOT / "uv.lock").exists() else None,
         "scenarios": res["scenarios"]}}
@@ -138,8 +138,27 @@ def make_report(res):
     if "reference" in pols:
         for name in pols:
             if name not in POLICIES:     # non-deterministic agent policy
-                rep["gap"][name] = bootstrap_gap(per_scenario(pols["reference"]), per_scenario(pols[name]))
+                ref = per_scenario(pols["reference"])
+                g = bootstrap_gap(ref, per_scenario(pols[name]))
+                k = len(res["scenarios"])     # agent breakdowns are runs x scenarios, run-major (oncall.agent / judge)
+                runs = [pols[name][i:i + k] for i in range(0, len(pols[name]), k)] if k else []
+                if g:
+                    g["per_run"] = [statistics.mean(ref[b["scenario"]] - b["score"] for b in r if b["scenario"] in ref)
+                                    for r in runs if any(b["scenario"] in ref for b in r)]
+                rep["gap"][name] = g
+                rep["annotated"][name] = annotate(pols[name])
     return rep
+
+
+def annotate(bds, n=3):
+    """The n worst episodes of an agent with tags and where the decisive information was already available."""
+    out = []
+    for b in sorted(bds, key=lambda b: b["score"])[:n]:
+        tr = b.get("trajectory") or {}
+        out.append({"scenario": b["scenario"], "score": b["score"], "tags": b["tags"], "resolved": b.get("resolved"),
+                    "truth": b["faults"], "fixed": b["fixed"], "first_intervention": tr.get("first_intervention"),
+                    "first_intervention_necessary": tr.get("first_intervention_necessary"), "faults": tr.get("faults", [])})
+    return out
 
 
 def render_md(rep):
@@ -148,13 +167,27 @@ def render_md(rep):
     ms = lambda d: f"{d['mean']:.3f} ± {d['std']:.3f}" if d else "-"
     for n, p in rep["policies"].items():
         L.append(f"| {n} | {p['n']} | {ms(p)} | " + " | ".join(ms(p["by_difficulty"].get(d)) for d in ("easy", "medium", "hard")) + " |")
-    L += ["", "## Score per fault family (mean ± std)", "", "| policy | " + " | ".join(FAMILIES) + " |", "|---|" + "---|" * len(FAMILIES)]
+    L += ["", "## Score per fault family (mean ± std)", "", "| policy | " + " | ".join(LABELS) + " |", "|---|" + "---|" * len(LABELS)]
     for n, p in rep["policies"].items():
-        L.append(f"| {n} | " + " | ".join(ms(p["by_family"].get(f)) for f in FAMILIES) + " |")
+        L.append(f"| {n} | " + " | ".join(ms(p["by_family"].get(f)) for f in LABELS) + " |")
     if rep["gap"]:
         L += ["", "## Gap reference - agent (95% bootstrap CI over scenarios)", ""]
         for n, g in rep["gap"].items():
-            L.append(f"- {n}: " + (f"{g['mean']:.3f} [{g['ci95'][0]:.3f}, {g['ci95'][1]:.3f}] over {g['n']} scenarios" if g else "no common scenarios"))
+            L.append(f"- {n}: " + (f"{g['mean']:.3f} [{g['ci95'][0]:.3f}, {g['ci95'][1]:.3f}] over {g['n']} scenarios; "
+                                   f"per run: {', '.join(f'{x:.3f}' for x in g.get('per_run', []))} "
+                                   f"({'positive in every run' if g.get('per_run') and min(g['per_run']) > 0 else 'NOT positive in every run'})"
+                                   if g else "no common scenarios"))
+    for n, eps in rep.get("annotated", {}).items():
+        L += ["", f"## Annotated failures: {n}", ""]
+        c = lambda x: f"`{x['call']}` (call #{x['i']}, t={x['t']})" if x else "never"
+        for e in eps:
+            L.append(f"### {e['scenario']}: score {e['score']:.3f}, tags: {', '.join(e['tags']) or 'none'}")
+            L.append(f"- truth: {e['truth']} · fixed: {e['fixed']} · resolved as: {e['resolved']}")
+            fi = e["first_intervention"]
+            L.append(f"- first intervention: {c(fi)}" + ("" if fi is None else " — necessary" if e["first_intervention_necessary"] else " — NOT a fix step and not on a faulty node"))
+            for f in e["faults"]:
+                L.append(f"- `{f['fault'][1]}` on `{f['fault'][0]}`: signal first visible in {c(f['evidence'])}; correct fix: {c(f['fix'])}")
+            L.append("")
     if rep["exploits"]:
         L += ["", "## Exploit matrix (must stay < 0.25)", "", "| exploit | mean | max | ok |", "|---|---|---|---|"]
         for n, x in rep["exploits"].items():
@@ -233,7 +266,7 @@ def instruction():
     return f"""# Production incident
 
 You are the on-call engineer for a web platform of about a dozen services (user-facing entry service,
-application services, a database, a cache and an external provider). Users are being affected by an
+application services, a message queue with its worker, a database, a cache and an external provider). Users are being affected by an
 incident that is already in progress. Find the root cause(s), fix them, and report what you found.
 
 You interact with the platform only through the tools of the MCP server `oncall`. The platform is not reachable
@@ -247,6 +280,7 @@ keeps serving traffic (and failing) while you work.
 - The shift ends when you call `resolve_incident`, when t >= {T}, or after 150 tool calls.
 - After it ends you cannot act any more, but the platform keeps running for a further **{E}-minute epilog at 1.5x traffic**.
   Your score depends on how the platform fares through the epilog, so fixes must be durable, not cosmetic.
+- `get_metrics` windows cover completed minutes only, so the effect of an action that has just finished shows up from the next minute on.
 - A call with invalid arguments costs 1 minute and changes nothing.
 - There may be more than one problem, and a second one can start later in the shift.
 - Not every alert, recent deploy or warning is related to the incident.
@@ -274,7 +308,8 @@ score    = clip(raw * M_dataloss - P_collateral - P_cost, 0, 1)
 
 - `M_dataloss` = 0.25 if you fail over to a database replica that is not in sync, or roll back past an irreversible schema migration; otherwise 1.
 - `P_collateral` = 0.10 per rollback, restart, failover_db or harmful maintenance (vacuum_db, rebalance_shards, compact_wal)
-  on a service that is not the location of any real fault.
+  that is not part of fixing a real fault, and 0.05 per other unnecessary change (set_flag, set_config, set_circuit_breaker,
+  scale, other maintenance) that neither fixes a real fault nor targets the service where one lives.
 - `P_cost` = 0.10 if the mean spend over shift and epilog exceeds 1.3x that of doing nothing.
 
 The reward of this task is `score`. Stopping early or changing things at random does not pay off.
@@ -304,7 +339,7 @@ timeout_sec = 3600.0
 
 [environment]
 network_mode = "public"
-build_timeout_sec = 600.0
+build_timeout_sec = 1800.0   # agent image: apt + pip, slow mirrors take >10 min
 os = "linux"
 
 [[environment.mcp_servers]]
@@ -438,7 +473,12 @@ def cmd_judge(a):
         print("docker not found: sim image not built")
     res = run_eval(pick_policies(DET), a.suite)
     print(table(res))
-    if shutil.which("harbor") and a.model:
+    runner = a.runner if a.runner != "auto" else ("harbor" if shutil.which("harbor") else "direct")
+    if not a.model:
+        print("\n*** agent runs skipped: pass --model <id> (and --provider) to measure an LLM agent, e.g.\n"
+              "    make judge MODEL=<gemini model id>          (direct runner, needs GEMINI_API_KEY)\n"
+              "    make judge MODEL=<id> ARGS='--runner harbor --agent opencode'\n")
+    elif runner == "harbor":
         runs = []
         for tid in ids:
             for k in range(a.agent_runs):
@@ -449,7 +489,11 @@ def cmd_judge(a):
                     runs.append(json.loads(f.read_text(encoding="utf-8")))
         res["policies"][f"agent:{a.model}"] = runs
     else:
-        print("agent runs skipped (needs `harbor` on PATH and --model)")
+        from .agent import resolve_provider, run_suite
+        base, key = resolve_provider(a.provider, a.base_url, None)      # exits 2 with a clear message if the key is missing
+        ag = run_suite(a.provider, a.model, a.suite, a.agent_runs, base, key, a.temperature, 150, None,
+                       run_dir=out / "runs", workers=a.workers)
+        res["policies"].update(ag["policies"])
     dump(out / "eval.json", res)
     print(f"report written to {write_report(res, out)}")
 
@@ -486,6 +530,12 @@ def main(argv=None):
     s.add_argument("--agent-runs", type=int, default=3)
     s.add_argument("--model")
     s.add_argument("--agent", default="opencode")
+    s.add_argument("--runner", choices=["auto", "harbor", "direct"], default="auto",
+                   help="harbor = harbor run per task; direct = oncall.agent over an OpenAI-compatible API (auto: harbor if on PATH)")
+    s.add_argument("--provider", default="gemini", help="direct runner preset: gemini | nemotron | vllm | openai-compatible")
+    s.add_argument("--base-url")
+    s.add_argument("--temperature", type=float, default=0.0)
+    s.add_argument("--workers", type=int, default=1)
     s.set_defaults(fn=cmd_judge)
     a = p.parse_args(argv)
     a.fn(a)

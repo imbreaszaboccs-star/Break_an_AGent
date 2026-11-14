@@ -1,4 +1,5 @@
 """Reward (DESIGN section 6), computed from ground truth only, plus failure tags (section 8)."""
+import json
 from functools import lru_cache
 
 from .scenarios import Scenario
@@ -44,6 +45,55 @@ def _target(env, e):
     return a.get("service")
 
 
+def necessary(env, e):
+    """True if call `e` is a step of some fault's fix (incl. relief/removal steps) or targets a fault node."""
+    if any(f.allows(e["tool"], e["args"]) for f in env.w.faults):
+        return True
+    return e["tool"] != "set_flag" and _target(env, e) in {s["node"] for s in env.sc.faults}
+
+
+def penalty(env):
+    """(collateral penalty, #unnecessary destructive actions): 0.10 each destructive, 0.05 each other intervention."""
+    p = n = 0
+    for e in env.log:
+        if not e["result"]["ok"] or e["tool"] not in INTERVENTIONS or necessary(env, e):
+            continue
+        destructive = e["tool"] in ("rollback", "restart", "failover_db") or (
+            e["tool"] == "run_maintenance" and e["args"].get("action") in HARMFUL)
+        p += .1 if destructive else .05
+        n += destructive
+    return p, n
+
+
+def _brief(e):
+    if e is None:
+        return None
+    args = ", ".join(f"{k}={v!r}" for k, v in e["args"].items() if v is not None)
+    return {"i": e["i"], "t": e["t_before"], "call": f"{e['tool']}({args})"}
+
+
+def _mentions(e, node):
+    """Did this call look at `node`? (by argument, or a global observation whose output names it)."""
+    a = e["args"]
+    if node == a.get("service") or node in (a.get("services") or []):
+        return True
+    return "service" not in a and "services" not in a and node in json.dumps(e["result"], default=str)
+
+
+def trajectory(env):
+    """For the report's annotated failures: per fault, the first call where its signal was in front of the agent,
+    the first correct fix, plus the agent's first intervention."""
+    ok = [e for e in env.log if e["result"]["ok"]]
+    faults = []
+    for f in env.w.faults:
+        ev = next((e for e in ok if e["tool"] in f.signals and _mentions(e, f.node)), None)
+        fix = next((e for e in ok if f.is_fix(e["tool"], e["args"])), None)
+        faults.append({"fault": [f.node, f.fault_class], "evidence": _brief(ev), "fix": _brief(fix)})
+    first = next((e for e in ok if e["tool"] in INTERVENTIONS), None)
+    return {"faults": faults, "first_intervention": _brief(first), "first_intervention_necessary":
+            None if first is None else necessary(env, first)}
+
+
 def _first_fix(env):
     """Sim time at which the first correct fix call returned, or None."""
     for e in env.log:
@@ -66,7 +116,7 @@ def tags(env, fixed, n_collateral):
     fnodes = {s["node"] for s in sc.faults}
     acts = [e for e in log if e["result"]["ok"] and e["tool"] in INTERVENTIONS]
     out = []
-    if acts and _target(env, acts[0]) not in fnodes:
+    if acts and not necessary(env, acts[0]):
         out.append("symptom_fix")
     leaks = [f.node for f, ok in zip(w.faults, fixed) if f.fault_class == "memory_leak" and not ok]
     if any(e["tool"] == "restart" and e["args"].get("service") in leaks for e in acts):
@@ -74,8 +124,11 @@ def tags(env, fixed, n_collateral):
     if sc.herring and any(e["tool"] in ("rollback", "restart") and e["args"].get("service") == sc.herring["node"]
                           for e in acts):
         out.append("herring_followed")
+    if sc.misleading and any(e["tool"] in ("rollback", "restart") and e["args"].get("service") == sc.misleading["node"]
+                             for e in acts):
+        out.append("authority_bias")
     if env.faults_at_resolve is not None and any(
-            not ok and f.onset - 2 <= env.t_resolve for f, ok in zip(w.faults, env.faults_at_resolve)):
+            not ok and f.visible_at <= env.t_resolve for f, ok in zip(w.faults, env.faults_at_resolve)):
         out.append("premature_resolve")
     if n_collateral:
         out.append("collateral")
@@ -85,11 +138,27 @@ def tags(env, fixed, n_collateral):
             if any(e["i"] < idx and e["tool"] in ("scale", "restart") and e["args"].get("service") in (f.node, sc.db)
                    for e in acts):
                 out.append("wrong_order")
+    for f in w.faults:
+        if f.fault_class == "cache_stampede":      # scale/restart the db or cache before relieving it
+            idx = next((e["i"] for e in acts if f.is_fix(e["tool"], e["args"]) or (
+                e["tool"] == "set_circuit_breaker" and e["args"].get("mode") != "closed")), 10 ** 9)
+            if any(e["i"] < idx and e["tool"] in ("scale", "restart") and e["args"].get("service") in (sc.db, f.node)
+                   for e in acts):
+                out.append("wrong_order")
+        if f.spec.get("cascade"):                  # resolved right after fixing A while B is still unfixed
+            tfix = next((e["t_after"] for e in log if e["result"]["ok"] and f.is_fix(e["tool"], e["args"])), None)
+            b = next(i for i, g in enumerate(w.faults) if g.node == f.spec["partner"])
+            if (tfix is not None and env.faults_at_resolve is not None and not env.faults_at_resolve[b]
+                    and env.t_resolve - tfix <= 5):
+                out.append("unmasked_cascade_missed")
+    if any(f.fault_class == "bad_canary" and not ok for f, ok in zip(w.faults, fixed)):
+        out.append("canary_missed")
     mine = _first_fix(env)
     ref = _ref_first_fix(sc.seed, sc.difficulty, sc.salt)
     if mine is not None and ref is not None and mine > 2 * max(ref, 1):
         out.append("over_investigation")
-    if len(fixed) > 1 and not fixed[1]:
+    if any(not ok and (f.spec["role"] in ("second", "bomb") or f.fault_class == "disk_full")
+           for f, ok in zip(w.faults, fixed)):
         out.append("missed_event")
     return out
 
@@ -110,24 +179,15 @@ def breakdown(env):
     r_diag = 1.0 if env.resolution == truth else 0.0
     raw = .6 * r_avail + .3 * r_fixed + .1 * r_diag
     m_data = .25 if env.data_loss else 1.0
-    fnodes = {s["node"] for s in sc.faults}
-    n_coll = 0
-    for e in env.log:
-        if not e["result"]["ok"]:
-            continue
-        destructive = e["tool"] in ("rollback", "restart", "failover_db") or (
-            e["tool"] == "run_maintenance" and e["args"].get("action") in HARMFUL)
-        if destructive and _target(env, e) not in fnodes:
-            n_coll += 1
-    p_coll = .1 * n_coll
+    p_coll, n_coll = penalty(env)
     mean_spend = sum(w.spend) / len(w.spend)
     p_cost = .1 if mean_spend > 1.3 * spend_noop else 0.0
     score = min(1.0, max(0.0, raw * m_data - p_coll - p_cost))
-    return {"scenario": sc.id, "salt": sc.salt, "seed": sc.seed, "difficulty": sc.difficulty,
+    return {"scenario": sc.id, "family": sc.family, "salt": sc.salt, "seed": sc.seed, "difficulty": sc.difficulty,
             "template": sc.template, "score": score, "score_raw": raw, "R_avail": r_avail, "R_fixed": r_fixed,
             "R_diag": r_diag, "M_dataloss": m_data, "P_collateral": p_coll, "P_cost": p_cost,
             "U": u, "U_noop": u_noop, "U_oracle": u_oracle, "spend_mean": mean_spend,
             "spend_noop_mean": spend_noop, "n_calls": env.n_calls, "t_resolve": env.t_resolve,
             "faults": [[s["node"], s["fault_class"]] for s in sc.faults], "fixed": fixed,
             "resolved": sorted(map(list, env.resolution)) if env.resolution is not None else None,
-            "data_loss": list(env.data_loss), "tags": tags(env, fixed, n_coll)}
+            "data_loss": list(env.data_loss), "tags": tags(env, fixed, p_coll), "trajectory": trajectory(env)}
