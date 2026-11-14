@@ -182,3 +182,35 @@ def test_auth_error_aborts_suite_early(fake, monkeypatch):
     with pytest.raises(SystemExit, match="401"):
         agent.run_suite("openai-compatible", "m", "dev", 1, f.url, None, 0.0, 10, None)
     assert len(f.requests) == 1
+
+
+def test_rate_limit_outage_is_excluded_not_scored_and_resume_fills_it(monkeypatch, tmp_path):
+    """An API outage must never be scored as an agent failure; --resume reruns only what is missing."""
+    monkeypatch.setattr(agent.time, "sleep", lambda s: None)
+    monkeypatch.setattr(agent, "suite", lambda name: [SC, Scenario(1004, "medium")])
+    down, fakes_seen = {"on": True}, []
+    calls = {"n": 0}
+
+    def run_agent_spy(sc, **kw):
+        fakes_seen.append(sc.seed)
+        if down["on"] and sc.seed == 1004:
+            return None, None, {"stop": "api_error:429:HTTP 429: Too Many Requests", "turns": 0, "messages": []}
+        calls["n"] += 1
+        env = Env(sc)
+        env.call("resolve_incident", root_causes=[], summary="")
+        return env, env.finalize(), {"stop": "resolved", "turns": 1, "messages": [{"role": "system", "content": ""}]}
+    monkeypatch.setattr(agent, "run_agent", run_agent_spy)
+    monkeypatch.setattr(agent.logsink, "write_episode", lambda d, ep, env, bd: (
+        __import__("pathlib").Path(d).mkdir(parents=True, exist_ok=True),
+        (__import__("pathlib").Path(d) / f"{ep}.jsonl").write_text(json.dumps({"type": "final", "breakdown": bd}) + "\n")) if bd else None)
+    run_dir = tmp_path / "r"
+    res = agent.run_suite("openai-compatible", "m", "dev", 1, "http://unused", None, 0.0, 10, None, run_dir=run_dir, log=lambda *_: None)
+    name = "agent:openai-compatible:m"
+    assert [b["scenario"] for b in res["policies"][name]] == [SC.id]       # outage excluded, not scored 0
+    assert len(res["excluded"]) == 1 and res["excluded"][0].startswith("api_error:429")
+    assert fakes_seen.count(1004) == agent.EPISODE_RETRIES + 1              # episode restarted before giving up
+    down["on"], calls["n"] = False, 0
+    res = agent.run_suite("openai-compatible", "m", "dev", 1, "http://unused", None, 0.0, 10, None, run_dir=run_dir, log=lambda *_: None)
+    assert sorted(b["scenario"] for b in res["policies"][name]) == sorted([SC.id, Scenario(1004, "medium").id])
+    assert calls["n"] == 1 and "excluded" not in res                        # only the missing episode was rerun
+    assert all(b["run"] == 1 for b in res["policies"][name])

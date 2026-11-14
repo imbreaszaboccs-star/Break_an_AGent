@@ -141,7 +141,10 @@ def make_report(res):
                 ref = per_scenario(pols["reference"])
                 g = bootstrap_gap(ref, per_scenario(pols[name]))
                 k = len(res["scenarios"])     # agent breakdowns are runs x scenarios, run-major (oncall.agent / judge)
-                runs = [pols[name][i:i + k] for i in range(0, len(pols[name]), k)] if k else []
+                if all("run" in b for b in pols[name]):      # explicit run index (oncall.agent), robust to excluded episodes
+                    runs = [[b for b in pols[name] if b["run"] == r] for r in sorted({b["run"] for b in pols[name]})]
+                else:
+                    runs = [pols[name][i:i + k] for i in range(0, len(pols[name]), k)] if k else []
                 if g:
                     g["per_run"] = [statistics.mean(ref[b["scenario"]] - b["score"] for b in r if b["scenario"] in ref)
                                     for r in runs if any(b["scenario"] in ref for b in r)]

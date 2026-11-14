@@ -55,7 +55,7 @@ Legenda: `[ ]` todo · `[~]` rozpracováno · `[x]` hotovo (ověřeno testem/př
 ## M8 — Nemotron
 - [x] preset `nemotron` v agent runneru
 - [x] běh `nvidia/nemotron-3.5-super-vl-120b-a12b` na judge-fast × 3 (thinking on, T=1.0, top_p 0.95) → [results/nemotron-judge-fast/report.md](results/nemotron-judge-fast/report.md)
-- [ ] plný judge × 3 (po vyhodnocení judge-fast)
+- [x] plný judge × 3 (24 scénářů) → [results/nemotron-judge/report.md](results/nemotron-judge/report.md)
 
 ## Log
 - 2026-11-13: audit — kód (`triage_env`, 4 typy poruch, stdio MCP, replay trace) neodpovídá DESIGN.md; zvolen rozsah M1–M4.
@@ -72,3 +72,5 @@ Legenda: `[ ]` todo · `[~]` rozpracováno · `[x]` hotovo (ověřeno testem/př
 - 2026-11-14: **Harbor ověřen end-to-end** (0.26, Docker Desktop/Windows): oracle 0.97317 = lokální baseline, nop 0.0; layout výstupu `<job>/<task>__<id>/verifier/reward_breakdown.json` sedí s `oncall judge`. `build_timeout_sec` 600 → 1800 (build agent image trval 7,5 min). Přidán test, že `harbor/tasks/*/solution/oncall` není zastaralý vůči `src/`.
 - 2026-11-14: M8 start — NVIDIA klíč od uživatele (jen v env proměnné, nikde v repu; doporučeno ho po testech zrotovat). Agent runner: preset `extra` (Nemotron `enable_thinking`), `--extra-body`, `--limit`, ukládání `reasoning_content` do transkriptu, timeout 600 s. Smoke test (eas-f1-2000, 4 tahy): paralelní tool cally fungují, správný rollback bad deploye, ~5 s/tah.
 - 2026-11-14: **Nemotron judge-fast × 3 hotovo** — 0.789 ± 0.215 (easy 0.934 / medium 0.857 / hard 0.695) vs reference 0.977. **Gap 0.188, 95% CI [0.115, 0.267], kladný v každém běhu (0.181 / 0.222 / 0.162).** Nejslabší F10 (0.63), F9 (0.64), F12 (0.74), F14 (0.74); tagy: over_investigation 11, collateral 9, symptom_fix 5, missed_event 3. Replay 36 zaznamenaných sekvencí akcí → shodné skóre na bit. Oprava anotací: signál se počítá až od `visible_at` poruchy; „porucha přišla až po resolve" se vypisuje explicitně; v anotacích max 1 epizoda na scénář.
+- 2026-11-14: plný judge × 3 s 3 workery → 61/72 epizod skončilo na HTTP 429 (rate limit NVIDIA) a **runner je bodoval jako selhání agenta** (průměr 0.204 = artefakt). Opraveno: delší backoff na 429 (Retry-After, ~15 min / request), restart epizody po infra chybě (2×, cooldown), epizody s infra chybou se **vyřazují, nikdy neboduje**, `--resume <run dir>` doplní jen chybějící; per-run gap podle explicitního `run` indexu. Test `test_rate_limit_outage_is_excluded_not_scored_and_resume_fills_it`. Resume běží se 2 workery.
+- 2026-11-14: **Nemotron judge × 3 hotovo (hlavní číslo)** — 72/72 epizod, 0 vyřazených, 1 restart po 429. Nemotron 0.840 ± 0.183 (easy 0.891 / medium 0.904 / hard 0.781) vs reference 0.979. **Gap 0.138, 95% CI [0.088, 0.200], kladný v každém běhu (0.104 / 0.152 / 0.159).** Nejslabší F9 (0.59), F14 (0.79), F10 (0.83). Replay 72 sekvencí → shodné skóre na bit. Log runneru se teď flushuje (dřív prázdný při zápisu do souboru).

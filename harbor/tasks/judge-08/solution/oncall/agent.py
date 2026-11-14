@@ -7,6 +7,7 @@ An extra policy: the evaluation never depends on it. stdlib + oncall only.
 """
 import argparse
 import asyncio
+import functools
 import json
 import os
 import re
@@ -71,7 +72,7 @@ def tool_schemas():
 
 
 # ---- chat completions over urllib -----------------------------------------------------------------
-def chat(base_url, api_key, body, timeout=600, retries=6):
+def chat(base_url, api_key, body, timeout=600, retries=10):
     url = base_url.rstrip("/") + "/chat/completions"
     headers = {"Content-Type": "application/json"}
     if api_key:
@@ -94,7 +95,8 @@ def chat(base_url, api_key, body, timeout=600, retries=6):
             err = ApiError(f"{type(e).__name__}: {e}")
         if attempt == retries:
             raise err
-        time.sleep(min(retry_after if retry_after is not None else 2 ** attempt, 60))
+        # ponytail: ~15 min of patience per request; free tiers 429 in bursts. Episode-level retry sits on top (run_suite).
+        time.sleep(min(retry_after if retry_after is not None else 2 * 2 ** attempt, 120))
 
 
 # ---- the loop ---------------------------------------------------------------------------------------
@@ -206,7 +208,24 @@ def slug(s):
     return re.sub(r"[^A-Za-z0-9._-]+", "_", s)
 
 
-def run_suite(provider, model, suite_name, runs, base_url, api_key, temperature, max_turns, seed, run_dir=None, log=print, workers=1,
+EPISODE_RETRIES, COOLDOWN = 2, 120
+
+
+def _infra(stop):
+    """API/transport failure (not the agent's doing). 400/401/403/404 are config errors and abort instead."""
+    return stop.startswith("api_error") and not stop.startswith("api_error:40")
+
+
+def _finished(run_dir, ep):
+    """Breakdown of an episode that already finished without an infrastructure error, else None."""
+    tr, log_f = Path(run_dir) / f"{ep}.messages.json", Path(run_dir) / f"{ep}.jsonl"
+    if not (tr.exists() and log_f.exists()) or _infra(json.loads(tr.read_text(encoding="utf-8"))["stop"]):
+        return None
+    rows = [json.loads(x) for x in log_f.read_text(encoding="utf-8").splitlines() if x.strip()]
+    return next((x["breakdown"] for x in rows if x.get("type") == "final"), None)
+
+
+def run_suite(provider, model, suite_name, runs, base_url, api_key, temperature, max_turns, seed, run_dir=None, log=functools.partial(print, flush=True), workers=1,
               extra=None, limit=None):
     """Same JSON shape as `oncall eval`: runs x scenarios breakdowns under policy `agent:<provider>:<model>`."""
     scs = suite(suite_name)[:limit]
@@ -219,19 +238,32 @@ def run_suite(provider, model, suite_name, runs, base_url, api_key, temperature,
 
     def one(job):
         r, sc = job
+        ep = f"{slug(name)}-r{r + 1}-{sc.id}"
         if abort.is_set():
             return None, "skipped"
-        env, bd, tr = run_agent(sc, base_url=base_url, model=model, api_key=api_key, temperature=temperature, extra=extra,
-                                max_turns=max_turns, seed=None if seed is None else seed + r)
+        done = _finished(run_dir, ep) if run_dir else None
+        if done:                                          # --resume: keep episodes that already finished cleanly
+            log(f"run {r + 1}/{runs} {sc.id}: score={done['score']:.3f} (kept from {run_dir})")
+            return {**done, "run": r + 1}, "kept"
+        for attempt in range(EPISODE_RETRIES + 1):
+            env, bd, tr = run_agent(sc, base_url=base_url, model=model, api_key=api_key, temperature=temperature, extra=extra,
+                                    max_turns=max_turns, seed=None if seed is None else seed + r)
+            if not _infra(tr["stop"]) or attempt == EPISODE_RETRIES:
+                break
+            log(f"run {r + 1}/{runs} {sc.id}: infrastructure error ({tr['stop'][:50]}), restarting the episode "
+                f"after {COOLDOWN * (attempt + 1)}s")
+            time.sleep(COOLDOWN * (attempt + 1))
         if run_dir:
-            ep = f"{slug(name)}-r{r + 1}-{sc.id}"
             logsink.write_episode(run_dir, ep, env, bd)
             # ponytail: LLM messages go in a sibling file (logsink rows are fixed); *.messages.json is not globbed as a rollout.
             (Path(run_dir) / f"{ep}.messages.json").write_text(json.dumps(tr, indent=1, default=str), encoding="utf-8")
         if tr["stop"].startswith("api_error:40"):         # 400/401/403/404: every later request would fail too
             abort.set()
+        if _infra(tr["stop"]):                            # never score an API outage as an agent failure
+            log(f"run {r + 1}/{runs} {sc.id}: EXCLUDED, infrastructure error: {tr['stop'][:60]}")
+            return None, tr["stop"]
         log(f"run {r + 1}/{runs} {sc.id}: score={bd['score']:.3f} stop={tr['stop'][:60]} turns={tr['turns']}")
-        return bd, tr["stop"]
+        return {**bd, "run": r + 1}, tr["stop"]
 
     jobs = [(r, sc) for r in range(runs) for sc in scs]
     with ThreadPoolExecutor(max(1, workers)) as ex:
@@ -240,6 +272,10 @@ def run_suite(provider, model, suite_name, runs, base_url, api_key, temperature,
                 sys.exit(f"error: API rejected the request ({stop}); aborting")
             if bd:
                 res["policies"][name].append(bd)
+            elif stop != "skipped":
+                res.setdefault("excluded", []).append(stop[:80])
+    if res.get("excluded"):
+        log(f"WARNING: {len(res['excluded'])} episodes excluded for infrastructure errors; rerun with --resume to fill them in")
     return res
 
 
@@ -252,6 +288,7 @@ def main(argv=None):
     p.add_argument("--runs", type=int, default=3)
     p.add_argument("--out")
     p.add_argument("--run-dir")
+    p.add_argument("--resume", help="existing run dir: keep its cleanly finished episodes, rerun the rest")
     p.add_argument("--base-url", help="override the provider's base URL (required for openai-compatible)")
     p.add_argument("--api-key-env", help="name of the env var holding the key (overrides the preset)")
     p.add_argument("--temperature", type=float, default=0.0)
@@ -262,7 +299,7 @@ def main(argv=None):
     p.add_argument("--limit", type=int, help="only the first N scenarios of the suite (smoke runs)")
     a = p.parse_args(argv)
     base, key = resolve_provider(a.provider, a.base_url, a.api_key_env)
-    run_dir = Path(a.run_dir) / stamp() if a.run_dir else None
+    run_dir = Path(a.resume) if a.resume else Path(a.run_dir) / stamp() if a.run_dir else None
     res = run_suite(a.provider, a.model, a.suite, a.runs, base, key, a.temperature, a.max_turns, a.seed, run_dir, workers=a.workers,
                     extra=a.extra_body, limit=a.limit)
     print(table(res))

@@ -47,22 +47,25 @@ Reference per difficulty (judge): easy 0.978, medium 0.980, hard 0.978 (min 0.94
 Scoring note: `P_collateral` is 0.10 per unnecessary destructive action and 0.05 per unnecessary other change
 (a change is necessary if it is a step of a real fix or targets a faulty service), so blind sweeps do not pay.
 
-## Frontier agent: Nemotron on judge-fast (12 scenarios x 3 runs)
+## Frontier agent: Nemotron on the judge suite (24 scenarios x 3 runs)
 
 `nvidia/nemotron-3.5-super-vl-120b-a12b` (NVIDIA API, thinking on, temperature 1.0, top_p 0.95) through the direct
-runner. Full report: [results/nemotron-judge-fast/report.md](results/nemotron-judge-fast/report.md).
+runner. Full report: [results/nemotron-judge/report.md](results/nemotron-judge/report.md).
 
 | policy | all | easy | medium | hard |
 |---|---|---|---|---|
-| reference | 0.977 | 0.976 | 0.979 | 0.977 |
-| Nemotron (36 episodes) | 0.789 ± 0.215 | 0.934 | 0.857 | 0.695 |
+| reference | 0.979 | 0.978 | 0.980 | 0.978 |
+| Nemotron (72 episodes) | 0.840 ± 0.183 | 0.891 | 0.904 | 0.781 |
 | noop / stop_early | 0.000 | 0.000 | 0.000 | 0.000 |
 
-**Gap reference - Nemotron: 0.188, 95% bootstrap CI [0.115, 0.267]; positive in every run (0.181 / 0.222 / 0.162).**
-Weakest families: F10 poison message + second fault (0.63), F9 cache stampede (0.64), F12 thread starvation (0.74),
-F14 unmasked cascade (0.74). Typical failure: the agent fixes the first fault and resolves before the mid-shift second
-fault appears (`missed_event`), or touches a healthy node first (`symptom_fix`, `collateral`). Replaying the 36
-recorded action sequences on a fresh simulator reproduces every score bit for bit.
+**Gap reference - Nemotron: 0.138, 95% bootstrap CI [0.088, 0.200]; positive in every run (0.104 / 0.152 / 0.159).**
+Weakest families: F9 cache stampede (0.59), F14 unmasked cascade (0.79), F10 poison message + second fault (0.83).
+Failure tags over 72 episodes: over_investigation 19, collateral 13, symptom_fix 7, missed_event 5, premature_resolve 2.
+Typical failures (annotated in the report with the tool call where the evidence was already on screen): fixing the
+first fault and resolving before the mid-shift second fault arrives; seeing a memory ramp in `get_metrics` and not
+acting on it; never inspecting a third affected service. Replaying the 72 recorded action sequences on a fresh
+simulator reproduces every score bit for bit. An earlier pilot on judge-fast (12 x 3) gave a gap of 0.188
+[0.115, 0.267] ([report](results/nemotron-judge-fast/report.md)).
 
 ## Harbor
 
