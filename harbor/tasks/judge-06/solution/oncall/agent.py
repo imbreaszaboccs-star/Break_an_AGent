@@ -27,7 +27,9 @@ from .sim import MAX_CALLS, Env
 # base_url_env: env var that overrides base_url; key_env: env var holding the API key (None = no key).
 PROVIDERS = {
     "gemini": {"base_url": "https://generativelanguage.googleapis.com/v1beta/openai/", "key_env": "GEMINI_API_KEY"},
-    "nemotron": {"base_url": "https://integrate.api.nvidia.com/v1", "key_env": "NVIDIA_API_KEY"},
+    # extra: merged into every request body (provider-specific knobs); --extra-body overrides it.
+    "nemotron": {"base_url": "https://integrate.api.nvidia.com/v1", "key_env": "NVIDIA_API_KEY",
+                 "extra": {"chat_template_kwargs": {"enable_thinking": True}, "max_tokens": 16384}},
     "vllm": {"base_url": "http://localhost:8000/v1", "base_url_env": "VLLM_BASE_URL", "key_env": None},
     "openai-compatible": {"base_url": None, "key_env": None},     # needs --base-url [--api-key-env]
 }
@@ -69,7 +71,7 @@ def tool_schemas():
 
 
 # ---- chat completions over urllib -----------------------------------------------------------------
-def chat(base_url, api_key, body, timeout=120, retries=6):
+def chat(base_url, api_key, body, timeout=600, retries=6):
     url = base_url.rstrip("/") + "/chat/completions"
     headers = {"Content-Type": "application/json"}
     if api_key:
@@ -111,7 +113,7 @@ def _parse_args(raw):
     return args, None
 
 
-def run_agent(scenario, *, base_url, model, api_key=None, temperature=0.0, max_turns=150, seed=None, url=None):
+def run_agent(scenario, *, base_url, model, api_key=None, temperature=0.0, max_turns=150, seed=None, url=None, extra=None):
     """Run one episode. Returns (env_or_none, breakdown_or_none, transcript).
 
     Local mode (url=None): env is the Env and breakdown comes from env.finalize().
@@ -128,6 +130,7 @@ def run_agent(scenario, *, base_url, model, api_key=None, temperature=0.0, max_t
         body = {"model": model, "messages": messages, "tools": tool_schemas(), "tool_choice": "auto", "temperature": temperature}
         if seed is not None:
             body["seed"] = seed
+        body.update(extra or {})
         try:
             resp = chat(base_url, api_key, body)
             msg = resp["choices"][0]["message"]
@@ -140,6 +143,10 @@ def run_agent(scenario, *, base_url, model, api_key=None, temperature=0.0, max_t
         tr["usage"]["completion"] += u.get("completion_tokens") or 0
         calls = msg.get("tool_calls") or []
         a_msg = {"role": "assistant", "content": msg.get("content") or ""}
+        reasoning = msg.get("reasoning_content") or msg.get("reasoning")
+        if reasoning:
+            # ponytail: kept in the transcript for analysis/SFT; sent back too, backends ignore unknown fields.
+            a_msg["reasoning_content"] = reasoning
         if calls:
             a_msg["tool_calls"] = [{"id": c.get("id") or f"call_{turn}_{i}", "type": "function",
                                     "function": {"name": (c.get("function") or {}).get("name", ""),
@@ -199,9 +206,11 @@ def slug(s):
     return re.sub(r"[^A-Za-z0-9._-]+", "_", s)
 
 
-def run_suite(provider, model, suite_name, runs, base_url, api_key, temperature, max_turns, seed, run_dir=None, log=print, workers=1):
+def run_suite(provider, model, suite_name, runs, base_url, api_key, temperature, max_turns, seed, run_dir=None, log=print, workers=1,
+              extra=None, limit=None):
     """Same JSON shape as `oncall eval`: runs x scenarios breakdowns under policy `agent:<provider>:<model>`."""
-    scs = suite(suite_name)
+    scs = suite(suite_name)[:limit]
+    extra = PROVIDERS.get(provider, {}).get("extra") if extra is None else extra
     name = f"agent:{provider}:{model}"
     res = {"suite": suite_name, "scenarios": [s.id for s in scs], "policies": {name: []}}
     tool_schemas()      # build once before threads start
@@ -212,7 +221,7 @@ def run_suite(provider, model, suite_name, runs, base_url, api_key, temperature,
         r, sc = job
         if abort.is_set():
             return None, "skipped"
-        env, bd, tr = run_agent(sc, base_url=base_url, model=model, api_key=api_key, temperature=temperature,
+        env, bd, tr = run_agent(sc, base_url=base_url, model=model, api_key=api_key, temperature=temperature, extra=extra,
                                 max_turns=max_turns, seed=None if seed is None else seed + r)
         if run_dir:
             ep = f"{slug(name)}-r{r + 1}-{sc.id}"
@@ -249,10 +258,13 @@ def main(argv=None):
     p.add_argument("--max-turns", type=int, default=150)
     p.add_argument("--seed", type=int, help="sent to the API as `seed` (+ run index)")
     p.add_argument("--workers", type=int, default=1, help="parallel episodes (keep 1 for rate-limited free tiers)")
+    p.add_argument("--extra-body", type=json.loads, help="JSON merged into every request (default: the provider preset's)")
+    p.add_argument("--limit", type=int, help="only the first N scenarios of the suite (smoke runs)")
     a = p.parse_args(argv)
     base, key = resolve_provider(a.provider, a.base_url, a.api_key_env)
     run_dir = Path(a.run_dir) / stamp() if a.run_dir else None
-    res = run_suite(a.provider, a.model, a.suite, a.runs, base, key, a.temperature, a.max_turns, a.seed, run_dir, workers=a.workers)
+    res = run_suite(a.provider, a.model, a.suite, a.runs, base, key, a.temperature, a.max_turns, a.seed, run_dir, workers=a.workers,
+                    extra=a.extra_body, limit=a.limit)
     print(table(res))
     if a.out:
         dump(a.out, res)

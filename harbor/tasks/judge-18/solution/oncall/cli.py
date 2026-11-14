@@ -153,9 +153,13 @@ def make_report(res):
 def annotate(bds, n=3):
     """The n worst episodes of an agent with tags and where the decisive information was already available."""
     out = []
-    for b in sorted(bds, key=lambda b: b["score"])[:n]:
+    worst = {}
+    for b in sorted(bds, key=lambda b: b["score"]):      # worst episode per scenario, then the n worst scenarios
+        worst.setdefault(b["scenario"], b)
+    for b in list(worst.values())[:n]:
         tr = b.get("trajectory") or {}
         out.append({"scenario": b["scenario"], "score": b["score"], "tags": b["tags"], "resolved": b.get("resolved"),
+                    "t_resolve": b.get("t_resolve"),
                     "truth": b["faults"], "fixed": b["fixed"], "first_intervention": tr.get("first_intervention"),
                     "first_intervention_necessary": tr.get("first_intervention_necessary"), "faults": tr.get("faults", [])})
     return out
@@ -186,7 +190,12 @@ def render_md(rep):
             fi = e["first_intervention"]
             L.append(f"- first intervention: {c(fi)}" + ("" if fi is None else " — necessary" if e["first_intervention_necessary"] else " — NOT a fix step and not on a faulty node"))
             for f in e["faults"]:
-                L.append(f"- `{f['fault'][1]}` on `{f['fault'][0]}`: signal first visible in {c(f['evidence'])}; correct fix: {c(f['fix'])}")
+                late = (f["evidence"] is None and e.get("t_resolve") is not None and f.get("visible_at") is not None
+                        and f["visible_at"] > e["t_resolve"])
+                L.append(f"- `{f['fault'][1]}` on `{f['fault'][0]}`: " + (
+                    f"appeared at t={f['visible_at']}, after the agent had already resolved at t={e['t_resolve']} "
+                    f"(the instruction says faults can arrive mid-shift)" if late else
+                    f"signal first visible in {c(f['evidence'])}; correct fix: {c(f['fix'])}"))
             L.append("")
     if rep["exploits"]:
         L += ["", "## Exploit matrix (must stay < 0.25)", "", "| exploit | mean | max | ok |", "|---|---|---|---|"]

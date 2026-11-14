@@ -86,9 +86,10 @@ def trajectory(env):
     ok = [e for e in env.log if e["result"]["ok"]]
     faults = []
     for f in env.w.faults:
-        ev = next((e for e in ok if e["tool"] in f.signals and _mentions(e, f.node)), None)
+        # evidence only counts once the fault exists (a second fault at t~45 is invisible at t=3)
+        ev = next((e for e in ok if e["t_before"] >= f.visible_at and e["tool"] in f.signals and _mentions(e, f.node)), None)
         fix = next((e for e in ok if f.is_fix(e["tool"], e["args"])), None)
-        faults.append({"fault": [f.node, f.fault_class], "evidence": _brief(ev), "fix": _brief(fix)})
+        faults.append({"fault": [f.node, f.fault_class], "visible_at": f.visible_at, "evidence": _brief(ev), "fix": _brief(fix)})
     first = next((e for e in ok if e["tool"] in INTERVENTIONS), None)
     return {"faults": faults, "first_intervention": _brief(first), "first_intervention_necessary":
             None if first is None else necessary(env, first)}

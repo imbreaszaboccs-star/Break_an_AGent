@@ -54,7 +54,8 @@ Legenda: `[ ]` todo · `[~]` rozpracováno · `[x]` hotovo (ověřeno testem/př
 
 ## M8 — Nemotron
 - [x] preset `nemotron` v agent runneru
-- [ ] běh — **vyžaduje `NVIDIA_API_KEY`**
+- [x] běh `nvidia/nemotron-3.5-super-vl-120b-a12b` na judge-fast × 3 (thinking on, T=1.0, top_p 0.95) → [results/nemotron-judge-fast/report.md](results/nemotron-judge-fast/report.md)
+- [ ] plný judge × 3 (po vyhodnocení judge-fast)
 
 ## Log
 - 2026-11-13: audit — kód (`triage_env`, 4 typy poruch, stdio MCP, replay trace) neodpovídá DESIGN.md; zvolen rozsah M1–M4.
@@ -69,3 +70,5 @@ Legenda: `[ ]` todo · `[~]` rozpracováno · `[x]` hotovo (ověřeno testem/př
 - 2026-11-14: **review fixy (externí code review)**: (1) díra v odměně — slepý „neškodný" sweep (vypnout flagy, `dlq_enabled`, `rotate_cert`, `max_retries=1`…) nebyl penalizován → `necessary()` + 0.05 za zbytečný nedestruktivní zásah, nový `exploit_blind_sweep` (= 0.000), DESIGN §6 upraven; (2) falešný tag `symptom_fix` u canary flagu / F9 rate-limitu; (3) p99 se nepropagovalo do volajících; (4) SFT dataset zahazoval uvažování modelu → bere `<episode>.messages.json`; (5) `make judge` bez modelu tiše přeskočil agenta. Neopraveno záměrně: metriky hned po akci ukazují jen dokončené minuty (jako reálný monitoring) — doplněno do instrukce.
 - 2026-11-14: **M6–M8 kód hotov** — `oncall.agent` (Gemini / Nemotron / vLLM), `train/` (dataset, LoRA SFT, GRPO, Gemma chat template, runbook Verda), `analysis/` (ClickHouse schéma + 5 dotazů + loader), report s anotovanými selháními. Offline testy proti fake OpenAI serveru.
 - 2026-11-14: **Harbor ověřen end-to-end** (0.26, Docker Desktop/Windows): oracle 0.97317 = lokální baseline, nop 0.0; layout výstupu `<job>/<task>__<id>/verifier/reward_breakdown.json` sedí s `oncall judge`. `build_timeout_sec` 600 → 1800 (build agent image trval 7,5 min). Přidán test, že `harbor/tasks/*/solution/oncall` není zastaralý vůči `src/`.
+- 2026-11-14: M8 start — NVIDIA klíč od uživatele (jen v env proměnné, nikde v repu; doporučeno ho po testech zrotovat). Agent runner: preset `extra` (Nemotron `enable_thinking`), `--extra-body`, `--limit`, ukládání `reasoning_content` do transkriptu, timeout 600 s. Smoke test (eas-f1-2000, 4 tahy): paralelní tool cally fungují, správný rollback bad deploye, ~5 s/tah.
+- 2026-11-14: **Nemotron judge-fast × 3 hotovo** — 0.789 ± 0.215 (easy 0.934 / medium 0.857 / hard 0.695) vs reference 0.977. **Gap 0.188, 95% CI [0.115, 0.267], kladný v každém běhu (0.181 / 0.222 / 0.162).** Nejslabší F10 (0.63), F9 (0.64), F12 (0.74), F14 (0.74); tagy: over_investigation 11, collateral 9, symptom_fix 5, missed_event 3. Replay 36 zaznamenaných sekvencí akcí → shodné skóre na bit. Oprava anotací: signál se počítá až od `visible_at` poruchy; „porucha přišla až po resolve" se vypisuje explicitně; v anotacích max 1 epizoda na scénář.

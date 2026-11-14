@@ -1,0 +1,563 @@
+{
+ "suite": "judge-fast",
+ "policies": {
+  "reference": {
+   "n": 12,
+   "mean": 0.9774412876302332,
+   "std": 0.013996283564828791,
+   "by_difficulty": {
+    "easy": {
+     "n": 2,
+     "mean": 0.9756911462364519,
+     "std": 0.003562104137669201
+    },
+    "hard": {
+     "n": 6,
+     "mean": 0.9768138536071554,
+     "std": 0.01959198507177537
+    },
+    "medium": {
+     "n": 4,
+     "mean": 0.9792575093617406,
+     "std": 0.008190539923569794
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 1,
+     "mean": 0.9731723582454134,
+     "std": 0.0
+    },
+    "F10": {
+     "n": 2,
+     "mean": 0.9685482980704296,
+     "std": 0.028661586212660503
+    },
+    "F11": {
+     "n": 1,
+     "mean": 0.9673968027976917,
+     "std": 0.0
+    },
+    "F12": {
+     "n": 1,
+     "mean": 0.984866395532381,
+     "std": 0.0
+    },
+    "F13": {
+     "n": 2,
+     "mean": 0.9823834195584448,
+     "std": 0.003094549939713375
+    },
+    "F14": {
+     "n": 1,
+     "mean": 0.9573367025321781,
+     "std": 0.0
+    },
+    "F3": {
+     "n": 1,
+     "mean": 0.9782099342274905,
+     "std": 0.0
+    },
+    "F6": {
+     "n": 1,
+     "mean": 0.9968332621150805,
+     "std": 0.0
+    },
+    "F9": {
+     "n": 2,
+     "mean": 0.9848082804274073,
+     "std": 0.007290144237446695
+    }
+   }
+  },
+  "noop": {
+   "n": 12,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 6,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F10": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F11": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F12": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F13": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F14": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F3": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F6": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F9": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "stop_early": {
+   "n": 12,
+   "mean": 0.0,
+   "std": 0.0,
+   "by_difficulty": {
+    "easy": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "hard": {
+     "n": 6,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "medium": {
+     "n": 4,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F10": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F11": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F12": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F13": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F14": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F3": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F6": {
+     "n": 1,
+     "mean": 0.0,
+     "std": 0.0
+    },
+    "F9": {
+     "n": 2,
+     "mean": 0.0,
+     "std": 0.0
+    }
+   }
+  },
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "n": 36,
+   "mean": 0.7889419175637896,
+   "std": 0.2151714880862564,
+   "by_difficulty": {
+    "easy": {
+     "n": 6,
+     "mean": 0.9340560449745279,
+     "std": 0.06053783886752776
+    },
+    "hard": {
+     "n": 18,
+     "mean": 0.6952552895254513,
+     "std": 0.26084682985510815
+    },
+    "medium": {
+     "n": 12,
+     "mean": 0.8569147959159279,
+     "std": 0.09800412109936718
+    }
+   },
+   "by_family": {
+    "F1": {
+     "n": 3,
+     "mean": 0.9754682272914108,
+     "std": 0.003976561835192308
+    },
+    "F10": {
+     "n": 6,
+     "mean": 0.6296339256108027,
+     "std": 0.35543118771666427
+    },
+    "F11": {
+     "n": 3,
+     "mean": 0.9223681681749917,
+     "std": 0.0631014942238581
+    },
+    "F12": {
+     "n": 3,
+     "mean": 0.741286714702884,
+     "std": 0.038667914275291995
+    },
+    "F13": {
+     "n": 6,
+     "mean": 0.8820021503929181,
+     "std": 0.08713280610479307
+    },
+    "F14": {
+     "n": 3,
+     "mean": 0.7418356837185126,
+     "std": 0.3378348086161283
+    },
+    "F3": {
+     "n": 3,
+     "mean": 0.892643862657645,
+     "std": 0.06325626656788658
+    },
+    "F6": {
+     "n": 3,
+     "mean": 0.8905760431175156,
+     "std": 0.0
+    },
+    "F9": {
+     "n": 6,
+     "mean": 0.6399260795475372,
+     "std": 0.1622418602860425
+    }
+   }
+  }
+ },
+ "gap": {
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "n": 12,
+   "mean": 0.1884993700664436,
+   "ci95": [
+    0.11506900053804378,
+    0.26664639453204425
+   ],
+   "per_run": [
+    0.18131256437317322,
+    0.22179851598399541,
+    0.16238702984216216
+   ]
+  }
+ },
+ "annotated": {
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": [
+   {
+    "scenario": "har-f10-2017",
+    "score": 0.24764678590948203,
+    "tags": [
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "order-worker",
+      "poison_message"
+     ]
+    ],
+    "t_resolve": 33,
+    "truth": [
+     [
+      "order-worker",
+      "poison_message"
+     ],
+     [
+      "purchase-api",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 15,
+     "t": 14,
+     "call": "set_config(service='order-worker', key='dlq_enabled', value=True)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "order-worker",
+       "poison_message"
+      ],
+      "visible_at": -6,
+      "evidence": {
+       "i": 4,
+       "t": 3,
+       "call": "get_metrics(services=['gateway', 'purchase-api', 'order-svc', 'orders-queue', 'order-worker'], window=10)"
+      },
+      "fix": {
+       "i": 15,
+       "t": 14,
+       "call": "set_config(service='order-worker', key='dlq_enabled', value=True)"
+      }
+     },
+     {
+      "fault": [
+       "purchase-api",
+       "config_drift"
+      ],
+      "visible_at": 44,
+      "evidence": null,
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-f14-2014",
+    "score": 0.3527942803822544,
+    "tags": [
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "upload",
+      "bad_deploy"
+     ]
+    ],
+    "t_resolve": 38,
+    "truth": [
+     [
+      "upload",
+      "bad_deploy"
+     ],
+     [
+      "encoder-coord",
+      "under_provisioned"
+     ],
+     [
+      "thumbnails",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 7,
+     "t": 6,
+     "call": "rollback(service='upload', version='v2.7.0')"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "upload",
+       "bad_deploy"
+      ],
+      "visible_at": -5,
+      "evidence": {
+       "i": 4,
+       "t": 3,
+       "call": "get_metrics(services=['upload', 'media-edge', 'encoder-coord'], window=10)"
+      },
+      "fix": {
+       "i": 7,
+       "t": 6,
+       "call": "rollback(service='upload', version='v2.7.0')"
+      }
+     },
+     {
+      "fault": [
+       "encoder-coord",
+       "under_provisioned"
+      ],
+      "visible_at": -5,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": {
+       "i": 12,
+       "t": 20,
+       "call": "scale(service='encoder-coord', replicas=6)"
+      }
+     },
+     {
+      "fault": [
+       "thumbnails",
+       "config_drift"
+      ],
+      "visible_at": 38,
+      "evidence": null,
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-f9-2016",
+    "score": 0.3885362902644468,
+    "tags": [
+     "symptom_fix",
+     "collateral",
+     "over_investigation"
+    ],
+    "resolved": [
+     [
+      "catalog-svc",
+      "retry_storm"
+     ],
+     [
+      "redis-cache",
+      "cache_stampede"
+     ]
+    ],
+    "t_resolve": 79,
+    "truth": [
+     [
+      "redis-cache",
+      "cache_stampede"
+     ],
+     [
+      "checkout",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "first_intervention": {
+     "i": 19,
+     "t": 18,
+     "call": "set_config(service='catalog-svc', key='max_retries', value=0)"
+    },
+    "first_intervention_necessary": false,
+    "faults": [
+     {
+      "fault": [
+       "redis-cache",
+       "cache_stampede"
+      ],
+      "visible_at": -7,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": {
+       "i": 22,
+       "t": 24,
+       "call": "run_maintenance(service='redis-cache', action='warm_cache')"
+      }
+     },
+     {
+      "fault": [
+       "checkout",
+       "cert_expiry"
+      ],
+      "visible_at": -10,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": {
+       "i": 34,
+       "t": 61,
+       "call": "run_maintenance(service='checkout', action='rotate_cert')"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "exploits": {},
+ "tags": {
+  "reference": {},
+  "noop": {
+   "canary_missed": 1,
+   "missed_event": 6
+  },
+  "stop_early": {
+   "canary_missed": 1,
+   "missed_event": 6,
+   "premature_resolve": 12
+  },
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "collateral": 9,
+   "missed_event": 3,
+   "over_investigation": 11,
+   "symptom_fix": 5
+  }
+ },
+ "hashes": {
+  "git_commit": "6ef3277ffaaeca23df6bdac5e5d3d62b4103bf39",
+  "uv_lock_sha256": "f81f22d9da9bbd58e877f95c5633af61a238b825a62fa9ef3562731db8e62d7d",
+  "scenarios": [
+   "eas-f1-2000",
+   "eas-f3-2001",
+   "med-f12-2004",
+   "med-f13-2005",
+   "med-f13-2006",
+   "med-f11-2007",
+   "har-f9-2012",
+   "har-f10-2013",
+   "har-f14-2014",
+   "har-f6-2015",
+   "har-f9-2016",
+   "har-f10-2017"
+  ]
+ }
+}

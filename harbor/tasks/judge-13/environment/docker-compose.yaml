@@ -12,7 +12,7 @@ services:
       SCENARIO_SEED: "2013"
       SCENARIO_DIFFICULTY: "hard"
       ONCALL_SALT: ""
-      ADMIN_TOKEN_SHA256: "f342eb9f2ad3d7016a653023e315b4e8af4e3718d04c50714a0c8488eda3a3b5"
+      ADMIN_TOKEN_SHA256: "4a039774ede8aa15ed94ef9f0eba1b7caa003996350689794c214b3412b3e381"
     healthcheck:
       test: ["CMD", "python", "-c", "import socket; socket.create_connection(('localhost', 8000), 2)"]
       interval: 2s

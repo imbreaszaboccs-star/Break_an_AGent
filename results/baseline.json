@@ -69,6 +69,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -118,6 +119,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -167,6 +169,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -218,6 +221,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -267,6 +271,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -316,6 +321,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -365,6 +371,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -416,6 +423,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -465,6 +473,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -514,6 +523,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -563,6 +573,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -614,6 +625,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -670,6 +682,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -678,6 +691,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -734,6 +748,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -742,6 +757,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": null
       }
@@ -803,6 +819,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -811,6 +828,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -819,6 +837,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -875,6 +894,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -883,6 +903,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -939,6 +960,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -947,6 +969,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -1003,6 +1026,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -1011,6 +1035,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -1072,6 +1097,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -1080,6 +1106,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -1088,6 +1115,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -1144,6 +1172,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -1152,6 +1181,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -1208,6 +1238,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -1216,6 +1247,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -1272,6 +1304,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -1280,6 +1313,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       }
@@ -1341,6 +1375,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -1349,6 +1384,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -1357,6 +1393,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -1413,6 +1450,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -1421,6 +1459,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": null
       }
@@ -1474,6 +1513,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -1525,6 +1565,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -1576,6 +1617,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -1628,6 +1670,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -1679,6 +1722,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -1730,6 +1774,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -1781,6 +1826,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -1833,6 +1879,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -1884,6 +1931,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -1935,6 +1983,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -1986,6 +2035,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -2038,6 +2088,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -2095,6 +2146,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -2103,6 +2155,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -2160,6 +2213,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -2168,6 +2222,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": null
       }
@@ -2230,6 +2285,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -2238,6 +2294,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -2246,6 +2303,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -2303,6 +2361,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -2311,6 +2370,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -2368,6 +2428,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -2376,6 +2437,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -2433,6 +2495,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -2441,6 +2504,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -2503,6 +2567,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -2511,6 +2576,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -2519,6 +2585,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -2576,6 +2643,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -2584,6 +2652,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -2641,6 +2710,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -2649,6 +2719,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -2706,6 +2777,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -2714,6 +2786,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       }
@@ -2776,6 +2849,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -2784,6 +2858,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -2792,6 +2867,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -2849,6 +2925,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -2857,6 +2934,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": null
       }
@@ -2913,6 +2991,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 4,
         "t": 3,
@@ -2979,6 +3058,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": {
         "i": 4,
         "t": 3,
@@ -3045,6 +3125,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -3111,6 +3192,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -3177,6 +3259,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": {
         "i": 4,
         "t": 3,
@@ -3243,6 +3326,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": {
         "i": 4,
         "t": 3,
@@ -3309,6 +3393,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -3375,6 +3460,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -3441,6 +3527,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 4,
         "t": 3,
@@ -3507,6 +3594,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -3573,6 +3661,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": {
         "i": 4,
         "t": 3,
@@ -3639,6 +3728,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 4,
         "t": 3,
@@ -3714,6 +3804,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -3730,9 +3821,10 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": {
-        "i": 4,
-        "t": 3,
+        "i": 34,
+        "t": 44,
         "call": "get_metrics(services=['gateway', 'auth-svc', 'projects', 'tenants', 'report-svc'], window=15)"
        },
        "fix": {
@@ -3805,6 +3897,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -3821,6 +3914,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -3905,6 +3999,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -3921,6 +4016,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 2,
         "t": 1,
@@ -3937,9 +4033,10 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": {
-        "i": 5,
-        "t": 4,
+        "i": 28,
+        "t": 39,
         "call": "get_metrics(services=['thumbnails', 'upload', 'encoder-coord', 'task-bus', 'job-worker'], window=15)"
        },
        "fix": {
@@ -4012,6 +4109,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -4028,6 +4126,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -4103,6 +4202,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -4119,6 +4219,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -4194,6 +4295,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -4210,9 +4312,10 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": {
-        "i": 5,
-        "t": 4,
+        "i": 40,
+        "t": 46,
         "call": "get_metrics(services=['purchase-api', 'order-svc', 'stock-svc', 'orders-queue', 'order-worker'], window=15)"
        },
        "fix": {
@@ -4294,6 +4397,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -4310,6 +4414,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 2,
         "t": 1,
@@ -4326,6 +4431,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -4401,6 +4507,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -4417,9 +4524,10 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": {
-        "i": 6,
-        "t": 5,
+        "i": 41,
+        "t": 50,
         "call": "get_metrics(services=['cache-main', 'postgres-main', 'payments-gw'], window=15)"
        },
        "fix": {
@@ -4492,6 +4600,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -4508,9 +4617,10 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": {
-        "i": 5,
-        "t": 4,
+        "i": 35,
+        "t": 45,
         "call": "get_metrics(services=['thumb-svc', 'ingest-api', 'transcode-svc', 'task-bus', 'job-worker'], window=15)"
        },
        "fix": {
@@ -4583,6 +4693,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": {
         "i": 5,
         "t": 4,
@@ -4599,6 +4710,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -4683,6 +4795,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 4,
         "t": 3,
@@ -4699,6 +4812,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 2,
         "t": 1,
@@ -4715,9 +4829,10 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": {
-        "i": 4,
-        "t": 3,
+        "i": 38,
+        "t": 50,
         "call": "get_metrics(services=['gateway', 'auth-svc', 'workspace-svc', 'tenants', 'analytics-api'], window=15)"
        },
        "fix": {
@@ -4790,6 +4905,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 4,
         "t": 3,
@@ -4806,6 +4922,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": {
         "i": 3,
         "t": 2,
@@ -4872,6 +4989,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -4929,6 +5047,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -4985,6 +5104,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -5042,6 +5162,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -5098,6 +5219,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -5157,6 +5279,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -5215,6 +5338,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -5272,6 +5396,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -5329,6 +5454,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -5387,6 +5513,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -5444,6 +5571,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -5501,6 +5629,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -5564,6 +5693,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -5572,6 +5702,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -5634,6 +5765,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -5642,6 +5774,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": null
       }
@@ -5709,6 +5842,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -5717,6 +5851,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -5729,6 +5864,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -5793,6 +5929,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -5801,6 +5938,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -5864,6 +6002,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -5872,6 +6011,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -5934,6 +6074,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -5942,6 +6083,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -6009,6 +6151,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -6017,6 +6160,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -6029,6 +6173,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -6093,6 +6238,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -6101,6 +6247,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -6165,6 +6312,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -6173,6 +6321,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -6235,6 +6384,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -6243,6 +6393,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       }
@@ -6311,6 +6462,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -6319,6 +6471,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -6331,6 +6484,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -6395,6 +6549,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -6403,6 +6558,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": null
       }
@@ -6461,6 +6617,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -6518,6 +6675,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -6574,6 +6732,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -6631,6 +6790,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -6687,6 +6847,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -6744,6 +6905,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -6800,6 +6962,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -6857,6 +7020,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -6913,6 +7077,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -6969,6 +7134,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -7025,6 +7191,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -7082,6 +7249,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -7145,6 +7313,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -7153,6 +7322,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -7215,6 +7385,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -7223,6 +7394,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": null
       }
@@ -7291,6 +7463,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -7299,6 +7472,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -7315,6 +7489,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -7377,6 +7552,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -7385,6 +7561,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -7448,6 +7625,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -7456,6 +7634,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -7518,6 +7697,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -7526,6 +7706,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -7594,6 +7775,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -7602,6 +7784,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -7618,6 +7801,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -7680,6 +7864,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -7688,6 +7873,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -7751,6 +7937,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -7759,6 +7946,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -7821,6 +8009,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -7829,6 +8018,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       }
@@ -7896,6 +8086,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -7904,6 +8095,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -7920,6 +8112,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -7982,6 +8175,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -7990,6 +8184,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": null
       }
@@ -8050,6 +8245,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 6,
         "t": 13,
@@ -8116,6 +8312,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -8174,6 +8371,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -8234,6 +8432,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -8293,6 +8492,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -8353,6 +8553,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -8414,6 +8615,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -8474,6 +8676,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 16,
         "t": 43,
@@ -8541,6 +8744,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 6,
         "t": 13,
@@ -8609,6 +8813,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 14,
         "t": 37,
@@ -8677,6 +8882,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -8735,6 +8941,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 6,
         "t": 13,
@@ -8808,6 +9015,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -8816,6 +9024,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -8881,6 +9090,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -8889,6 +9099,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": null
       }
@@ -8959,6 +9170,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 14,
         "t": 37,
@@ -8975,6 +9187,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -8987,6 +9200,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -9053,6 +9267,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 16,
         "t": 43,
@@ -9069,6 +9284,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -9133,6 +9349,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -9141,6 +9358,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -9205,6 +9423,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -9213,6 +9432,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -9283,6 +9503,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 14,
         "t": 37,
@@ -9299,6 +9520,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -9311,6 +9533,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -9378,6 +9601,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": {
         "i": 16,
         "t": 43,
@@ -9394,6 +9618,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -9460,6 +9685,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -9468,11 +9694,8 @@
         "ingest-api",
         "memory_leak"
        ],
-       "evidence": {
-        "i": 14,
-        "t": 37,
-        "call": "get_deploys(service='ingest-api')"
-       },
+       "visible_at": 44,
+       "evidence": null,
        "fix": {
         "i": 15,
         "t": 38,
@@ -9540,6 +9763,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -9548,6 +9772,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       }
@@ -9617,6 +9842,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 10,
         "t": 25,
@@ -9633,6 +9859,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -9645,11 +9872,8 @@
         "auth-svc",
         "memory_leak"
        ],
-       "evidence": {
-        "i": 4,
-        "t": 7,
-        "call": "get_deploys(service='auth-svc')"
-       },
+       "visible_at": 45,
+       "evidence": null,
        "fix": {
         "i": 5,
         "t": 8,
@@ -9719,6 +9943,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 4,
         "t": 7,
@@ -9735,6 +9960,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": null
       }
@@ -9793,6 +10019,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -9849,6 +10076,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -9905,6 +10133,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -9963,6 +10192,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": {
         "i": 35,
@@ -10023,6 +10253,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -10079,6 +10310,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -10135,6 +10367,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -10192,6 +10425,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -10248,6 +10482,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -10304,6 +10539,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -10360,6 +10596,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -10417,6 +10654,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -10479,6 +10717,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -10487,6 +10726,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -10549,6 +10789,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -10557,6 +10798,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": {
         "i": 26,
@@ -10628,6 +10870,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -10636,6 +10879,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -10648,6 +10892,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -10710,6 +10955,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -10718,6 +10964,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": {
         "i": 34,
@@ -10784,6 +11031,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -10792,6 +11040,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": {
         "i": 50,
@@ -10858,6 +11107,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -10866,6 +11116,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -10933,6 +11184,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -10941,6 +11193,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -10953,6 +11206,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": {
         "i": 26,
@@ -11019,6 +11273,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -11027,6 +11282,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -11089,6 +11345,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -11097,6 +11354,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -11159,6 +11417,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -11167,6 +11426,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": {
         "i": 58,
@@ -11238,6 +11498,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -11246,6 +11507,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -11258,6 +11520,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -11320,6 +11583,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -11328,6 +11592,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": {
         "i": 34,
@@ -11391,6 +11656,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -11448,6 +11714,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -11505,6 +11772,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -11563,6 +11831,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -11620,6 +11889,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -11677,6 +11947,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -11734,6 +12005,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -11792,6 +12064,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -11849,6 +12122,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -11906,6 +12180,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -11963,6 +12238,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -12021,6 +12297,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -12082,6 +12359,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": {
         "i": 2,
@@ -12094,6 +12372,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -12157,6 +12436,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -12165,6 +12445,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": null
       }
@@ -12233,6 +12514,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -12241,6 +12523,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -12253,6 +12536,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -12316,6 +12600,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -12324,6 +12609,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -12385,6 +12671,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": {
         "i": 2,
@@ -12397,6 +12684,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -12460,6 +12748,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -12468,6 +12757,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -12536,6 +12826,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -12544,6 +12835,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -12556,6 +12848,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -12619,6 +12912,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -12627,6 +12921,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -12688,6 +12983,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": {
         "i": 2,
@@ -12700,6 +12996,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -12763,6 +13060,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -12771,6 +13069,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       }
@@ -12839,6 +13138,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -12847,6 +13147,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -12859,6 +13160,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -12922,6 +13224,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -12930,6 +13233,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": null
       }
@@ -12988,6 +13292,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -13044,6 +13349,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": {
         "i": 9,
@@ -13104,6 +13410,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -13161,6 +13468,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": {
         "i": 14,
@@ -13221,6 +13529,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -13277,6 +13586,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": {
         "i": 8,
@@ -13337,6 +13647,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -13392,6 +13703,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 2,
         "t": 1,
@@ -13456,6 +13768,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -13512,6 +13825,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -13568,6 +13882,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": {
         "i": 6,
@@ -13628,6 +13943,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 2,
         "t": 1,
@@ -13698,6 +14014,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": {
         "i": 4,
@@ -13710,6 +14027,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -13771,6 +14089,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": {
         "i": 5,
@@ -13783,6 +14102,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": {
         "i": 20,
@@ -13854,6 +14174,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -13862,6 +14183,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -13874,6 +14196,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -13936,6 +14259,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -13944,6 +14268,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": {
         "i": 21,
@@ -14009,6 +14334,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": {
         "i": 4,
@@ -14021,6 +14347,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": {
         "i": 23,
@@ -14087,6 +14414,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": {
         "i": 6,
@@ -14099,6 +14427,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -14166,6 +14495,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -14174,6 +14504,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -14186,6 +14517,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": {
         "i": 20,
@@ -14252,6 +14584,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -14260,6 +14593,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -14322,6 +14656,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": {
         "i": 6,
@@ -14334,6 +14669,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -14395,6 +14731,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": {
         "i": 6,
@@ -14407,6 +14744,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": {
         "i": 25,
@@ -14478,6 +14816,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -14486,6 +14825,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -14498,6 +14838,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -14560,6 +14901,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -14568,6 +14910,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": {
         "i": 24,
@@ -14627,6 +14970,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -14676,6 +15020,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -14725,6 +15070,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -14776,6 +15122,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -14825,6 +15172,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -14874,6 +15222,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -14923,6 +15272,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -14974,6 +15324,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -15023,6 +15374,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -15072,6 +15424,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -15121,6 +15474,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -15172,6 +15526,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -15228,6 +15583,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -15236,6 +15592,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -15292,6 +15649,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -15300,6 +15658,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": null
       }
@@ -15361,6 +15720,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -15369,6 +15729,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -15381,6 +15742,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -15437,6 +15799,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -15445,6 +15808,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -15501,6 +15865,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -15509,6 +15874,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -15565,6 +15931,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -15573,6 +15940,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -15634,6 +16002,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -15642,6 +16011,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -15654,6 +16024,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -15710,6 +16081,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -15718,6 +16090,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -15774,6 +16147,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -15782,6 +16156,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -15838,6 +16213,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -15846,6 +16222,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       }
@@ -15907,6 +16284,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -15915,6 +16293,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 1,
         "t": 0,
@@ -15927,6 +16306,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -15983,6 +16363,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -15991,6 +16372,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": null
       }
@@ -16044,6 +16426,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -16095,6 +16478,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -16146,6 +16530,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -16198,6 +16583,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -16249,6 +16635,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -16300,6 +16687,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -16351,6 +16739,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -16403,6 +16792,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -16454,6 +16844,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -16505,6 +16896,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -16556,6 +16948,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -16608,6 +17001,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -16665,6 +17059,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -16673,6 +17068,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -16730,6 +17126,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -16738,6 +17135,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": null,
        "fix": null
       }
@@ -16800,6 +17198,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -16808,6 +17207,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -16816,6 +17216,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -16873,6 +17274,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -16881,6 +17283,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -16938,6 +17341,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       },
@@ -16946,6 +17350,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -17003,6 +17408,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -17011,6 +17417,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -17073,6 +17480,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -17081,6 +17489,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -17089,6 +17498,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -17146,6 +17556,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -17154,6 +17565,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": null,
        "fix": null
       }
@@ -17211,6 +17623,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -17219,6 +17632,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -17276,6 +17690,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -17284,6 +17699,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       }
@@ -17346,6 +17762,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -17354,6 +17771,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -17362,6 +17780,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -17419,6 +17838,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -17427,6 +17847,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": null,
        "fix": null
       }
@@ -17478,6 +17899,7 @@
         "workspace-svc",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -17527,6 +17949,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -17576,6 +17999,7 @@
         "mail-relay",
         "external_dependency"
        ],
+       "visible_at": -7,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -17631,6 +18055,7 @@
         "cart-svc",
         "disk_full"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -17684,6 +18109,7 @@
         "recs-svc",
         "thread_starvation"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       }
@@ -17733,6 +18159,7 @@
         "accounts",
         "retry_storm"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       }
@@ -17782,6 +18209,7 @@
         "checkout",
         "config_drift"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -17833,6 +18261,7 @@
         "stock-svc",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -17882,6 +18311,7 @@
         "catalog",
         "bad_deploy"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -17931,6 +18361,7 @@
         "billing",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       }
@@ -17980,6 +18411,7 @@
         "cart",
         "config_drift"
        ],
+       "visible_at": -7,
        "evidence": null,
        "fix": null
       }
@@ -18031,6 +18463,7 @@
         "projects",
         "bad_canary"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       }
@@ -18087,6 +18520,7 @@
         "redis-main",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18099,6 +18533,7 @@
         "report-svc",
         "config_drift"
        ],
+       "visible_at": 41,
        "evidence": null,
        "fix": null
       }
@@ -18155,6 +18590,7 @@
         "fulfillment-worker",
         "poison_message"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -18163,6 +18599,7 @@
         "products-api",
         "cert_expiry"
        ],
+       "visible_at": -17,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18228,6 +18665,7 @@
         "upload",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -18236,6 +18674,7 @@
         "encoder-coord",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18248,6 +18687,7 @@
         "thumbnails",
         "config_drift"
        ],
+       "visible_at": 38,
        "evidence": null,
        "fix": null
       }
@@ -18304,6 +18744,7 @@
         "transcode-svc",
         "memory_leak"
        ],
+       "visible_at": -8,
        "evidence": null,
        "fix": null
       },
@@ -18312,6 +18753,7 @@
         "user-svc",
         "cert_expiry"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18372,6 +18814,7 @@
         "redis-cache",
         "cache_stampede"
        ],
+       "visible_at": -7,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18384,6 +18827,7 @@
         "checkout",
         "cert_expiry"
        ],
+       "visible_at": -10,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18444,6 +18888,7 @@
         "order-worker",
         "poison_message"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -18452,6 +18897,7 @@
         "purchase-api",
         "config_drift"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -18513,6 +18959,7 @@
         "ingest-api",
         "bad_deploy"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -18521,6 +18968,7 @@
         "transcode-svc",
         "under_provisioned"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18533,6 +18981,7 @@
         "metadata",
         "cert_expiry"
        ],
+       "visible_at": -8,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18593,6 +19042,7 @@
         "inventory",
         "memory_leak"
        ],
+       "visible_at": -6,
        "evidence": null,
        "fix": null
       },
@@ -18601,6 +19051,7 @@
         "payments-gw",
         "external_dependency"
        ],
+       "visible_at": 47,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18661,6 +19112,7 @@
         "redis-media",
         "cache_stampede"
        ],
+       "visible_at": -9,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18673,6 +19125,7 @@
         "ingest-api",
         "memory_leak"
        ],
+       "visible_at": 44,
        "evidence": null,
        "fix": null
       }
@@ -18729,6 +19182,7 @@
         "notifier",
         "poison_message"
        ],
+       "visible_at": -10,
        "evidence": null,
        "fix": null
       },
@@ -18737,6 +19191,7 @@
         "upload-svc",
         "cert_expiry"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18802,6 +19257,7 @@
         "analytics-api",
         "bad_deploy"
        ],
+       "visible_at": -5,
        "evidence": null,
        "fix": null
       },
@@ -18810,6 +19266,7 @@
         "usage-svc",
         "under_provisioned"
        ],
+       "visible_at": -5,
        "evidence": {
         "i": 107,
         "t": 106,
@@ -18822,6 +19279,7 @@
         "auth-svc",
         "memory_leak"
        ],
+       "visible_at": 45,
        "evidence": null,
        "fix": null
       }
@@ -18878,6 +19336,7 @@
         "playlist-svc",
         "memory_leak"
        ],
+       "visible_at": -9,
        "evidence": null,
        "fix": null
       },
@@ -18886,6 +19345,7 @@
         "profiles",
         "cert_expiry"
        ],
+       "visible_at": -14,
        "evidence": {
         "i": 107,
         "t": 106,
