@@ -87,6 +87,32 @@ Invariant: `max(exploit) < 0.25 < mean(reference) - 0.5`.
 Scoring note: `P_collateral` is 0.10 per unnecessary destructive action (rollback, restart, failover, draining a healthy instance, `flush_redis`)
 and 0.05 per other unnecessary change (a change is necessary if it is a step of a real fix or targets a faulty service), so blind sweeps do not pay.
 
+## v2 results: 7 frontier agents on the v2 judge suite (24 scenarios x 3 runs each)
+
+Direct runner, temperature 1.0, reasoning on where the model supports it. Full report with per-mechanism scores,
+failure tags and annotated failures: [results/v2/judge-agents/report.md](results/v2/judge-agents/report.md).
+
+| policy | all | medium | hard | expert | gap to reference (95% CI) | gap per run | v1 |
+|---|---|---|---|---|---|---|---|
+| reference | 0.969 | 0.977 | 0.968 | 0.963 | | | 0.979 |
+| gemini-4-carbon | 0.871 | 0.934 | 0.880 | 0.812 | 0.098 [0.054, 0.154] | 0.109 / 0.092 / 0.093 | n/a |
+| gemini-4-argon | 0.850 | 0.927 | 0.824 | 0.825 | 0.119 [0.051, 0.211] | 0.120 / 0.115 / 0.122 | 0.960 |
+| Kimi K3.1 Pro | 0.759 | 0.930 | 0.666 | 0.746 | 0.210 [0.130, 0.301] | 0.192 / 0.224 / 0.214 | 0.874 |
+| gemini-3.8-flash | 0.748 | 0.911 | 0.714 | 0.668 | 0.221 [0.142, 0.311] | 0.239 / 0.235 / 0.189 | n/a |
+| DeepSeek 4.1 Flash | 0.724 | 0.905 | 0.646 | 0.687 | 0.244 [0.155, 0.346] | 0.273 / 0.220 / 0.240 | 0.851 |
+| Nemotron 3.5 Super 120B | 0.636 | 0.847 | 0.571 | 0.560 | 0.332 [0.238, 0.431] | 0.338 / 0.268 / 0.392 | 0.840 |
+| gemini-3.1-pro-preview | 0.582 | 0.635 | 0.575 | 0.551 | 0.387 [0.304, 0.470] | 0.387 / 0.377 / 0.396 | n/a |
+| noop / stop_early | 0.000 | 0.000 | 0.000 | 0.000 | | | 0.000 |
+
+Every model is below the reference in every one of its 3 runs (21/21 runs). Versus v1 each model lost 0.09-0.20.
+The hardest real-incident mechanisms across models: R9 cache-invalidation loop (Facebook 2010: 0.05-0.47; models revert
+the config but do not shed load first), R8 mail backlog ramp (Postmark 2022: 0.29-0.88; models drain at full rate),
+R1 duplicate charges (Twilio 2013) and R13 stuck failover (GoCardless 2017). Easiest: R2 replica lag, R10 config push,
+R14 abusive client (most models >= 0.95). Dominant failure tags: over_investigation, premature_resolve,
+silent_harm_missed (harm visible only in business metrics), collateral. Replaying all 504 recorded action sequences on
+a fresh simulator reproduces every score bit for bit. The pre-registered hypothesis "gemini-4-carbon ~0.6" was not met
+(0.871); per the design rule the simulation was not tuned toward it.
+
 ## v1 (before the realism rework): frontier agents on the v1 judge suite (24 scenarios x 3 runs each)
 
 These numbers belong to the v1 scenarios (easy/medium/hard levels, F1-F14 only) and are not comparable with the v2 suites above. Direct runner at temperature 1.0 with reasoning on. Combined report:

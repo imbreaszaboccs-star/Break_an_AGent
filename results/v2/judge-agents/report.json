@@ -546,115 +546,6 @@
     }
    }
   },
-  "agent:gemini:gemini-3.8-flash": {
-   "n": 72,
-   "mean": 0.7478994177376659,
-   "std": 0.25742064727493735,
-   "by_difficulty": {
-    "expert": {
-     "n": 24,
-     "mean": 0.6675141544205333,
-     "std": 0.2642076712636938
-    },
-    "hard": {
-     "n": 30,
-     "mean": 0.7143391670428224,
-     "std": 0.28552079803019237
-    },
-    "medium": {
-     "n": 18,
-     "mean": 0.9110135199852483,
-     "std": 0.06295964312441463
-    }
-   },
-   "by_family": {
-    "F10": {
-     "n": 3,
-     "mean": 0.6885325217817999,
-     "std": 0.3058973775064214
-    },
-    "F11": {
-     "n": 3,
-     "mean": 0.9441222854509369,
-     "std": 0.009643657471623953
-    },
-    "F12": {
-     "n": 3,
-     "mean": 0.8175856543593326,
-     "std": 0.0207579967645059
-    },
-    "F14": {
-     "n": 6,
-     "mean": 0.781236050541032,
-     "std": 0.12224177114475734
-    },
-    "F9": {
-     "n": 6,
-     "mean": 0.7861138988315687,
-     "std": 0.15241052332179839
-    },
-    "R1": {
-     "n": 3,
-     "mean": 0.6924400347033562,
-     "std": 0.13347808336325004
-    },
-    "R10": {
-     "n": 3,
-     "mean": 0.957895011199547,
-     "std": 0.005292444266505493
-    },
-    "R11": {
-     "n": 3,
-     "mean": 0.8071339892145339,
-     "std": 0.12188726176728693
-    },
-    "R12": {
-     "n": 6,
-     "mean": 0.8848447842343995,
-     "std": 0.08347453715553915
-    },
-    "R13": {
-     "n": 6,
-     "mean": 0.7974365681620795,
-     "std": 0.03892594414506541
-    },
-    "R14": {
-     "n": 3,
-     "mean": 0.9757532070970056,
-     "std": 0.0038611956494659524
-    },
-    "R2": {
-     "n": 3,
-     "mean": 0.9560301206041586,
-     "std": 0.014838946320728503
-    },
-    "R3": {
-     "n": 6,
-     "mean": 0.8133197611517253,
-     "std": 0.02189847056841648
-    },
-    "R4": {
-     "n": 3,
-     "mean": 0.8410007153487297,
-     "std": 0.0
-    },
-    "R6": {
-     "n": 3,
-     "mean": 0.9297242464559374,
-     "std": 0.030455960462998297
-    },
-    "R8": {
-     "n": 6,
-     "mean": 0.3857206735302866,
-     "std": 0.33764320161681777
-    },
-    "R9": {
-     "n": 6,
-     "mean": 0.2210123832932293,
-     "std": 0.2524219054832583
-    }
-   }
-  },
   "agent:verda:kimi-k3-1-pro": {
    "n": 72,
    "mean": 0.7588098949450506,
@@ -764,6 +655,115 @@
     }
    }
   },
+  "agent:gemini:gemini-3.8-flash": {
+   "n": 72,
+   "mean": 0.7478994177376659,
+   "std": 0.25742064727493735,
+   "by_difficulty": {
+    "expert": {
+     "n": 24,
+     "mean": 0.6675141544205333,
+     "std": 0.2642076712636938
+    },
+    "hard": {
+     "n": 30,
+     "mean": 0.7143391670428224,
+     "std": 0.28552079803019237
+    },
+    "medium": {
+     "n": 18,
+     "mean": 0.9110135199852483,
+     "std": 0.06295964312441463
+    }
+   },
+   "by_family": {
+    "F10": {
+     "n": 3,
+     "mean": 0.6885325217817999,
+     "std": 0.3058973775064214
+    },
+    "F11": {
+     "n": 3,
+     "mean": 0.9441222854509369,
+     "std": 0.009643657471623953
+    },
+    "F12": {
+     "n": 3,
+     "mean": 0.8175856543593326,
+     "std": 0.0207579967645059
+    },
+    "F14": {
+     "n": 6,
+     "mean": 0.781236050541032,
+     "std": 0.12224177114475734
+    },
+    "F9": {
+     "n": 6,
+     "mean": 0.7861138988315687,
+     "std": 0.15241052332179839
+    },
+    "R1": {
+     "n": 3,
+     "mean": 0.6924400347033562,
+     "std": 0.13347808336325004
+    },
+    "R10": {
+     "n": 3,
+     "mean": 0.957895011199547,
+     "std": 0.005292444266505493
+    },
+    "R11": {
+     "n": 3,
+     "mean": 0.8071339892145339,
+     "std": 0.12188726176728693
+    },
+    "R12": {
+     "n": 6,
+     "mean": 0.8848447842343995,
+     "std": 0.08347453715553915
+    },
+    "R13": {
+     "n": 6,
+     "mean": 0.7974365681620795,
+     "std": 0.03892594414506541
+    },
+    "R14": {
+     "n": 3,
+     "mean": 0.9757532070970056,
+     "std": 0.0038611956494659524
+    },
+    "R2": {
+     "n": 3,
+     "mean": 0.9560301206041586,
+     "std": 0.014838946320728503
+    },
+    "R3": {
+     "n": 6,
+     "mean": 0.8133197611517253,
+     "std": 0.02189847056841648
+    },
+    "R4": {
+     "n": 3,
+     "mean": 0.8410007153487297,
+     "std": 0.0
+    },
+    "R6": {
+     "n": 3,
+     "mean": 0.9297242464559374,
+     "std": 0.030455960462998297
+    },
+    "R8": {
+     "n": 6,
+     "mean": 0.3857206735302866,
+     "std": 0.33764320161681777
+    },
+    "R9": {
+     "n": 6,
+     "mean": 0.2210123832932293,
+     "std": 0.2524219054832583
+    }
+   }
+  },
   "agent:verda:deepseek-4-1-flash-1017": {
    "n": 72,
    "mean": 0.7244626773589257,
@@ -870,6 +870,115 @@
      "n": 6,
      "mean": 0.04814128505714538,
      "std": 0.07969687288724121
+    }
+   }
+  },
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "n": 72,
+   "mean": 0.6362245265346659,
+   "std": 0.31780242434131695,
+   "by_difficulty": {
+    "expert": {
+     "n": 24,
+     "mean": 0.5599956028938418,
+     "std": 0.3077756330749623
+    },
+    "hard": {
+     "n": 30,
+     "mean": 0.5710365277026085,
+     "std": 0.32608868620028125
+    },
+    "medium": {
+     "n": 18,
+     "mean": 0.8465097561091935,
+     "std": 0.22302824724676967
+    }
+   },
+   "by_family": {
+    "F10": {
+     "n": 3,
+     "mean": 0.4765483659618605,
+     "std": 0.47234091934856776
+    },
+    "F11": {
+     "n": 3,
+     "mean": 0.8410283059308268,
+     "std": 0.01271108859946656
+    },
+    "F12": {
+     "n": 3,
+     "mean": 0.8349093851550831,
+     "std": 0.09146407518072472
+    },
+    "F14": {
+     "n": 6,
+     "mean": 0.7357251669394606,
+     "std": 0.22060756408312512
+    },
+    "F9": {
+     "n": 6,
+     "mean": 0.5442831483091213,
+     "std": 0.20403707283814357
+    },
+    "R1": {
+     "n": 3,
+     "mean": 0.3721098791547517,
+     "std": 0.18452996327442064
+    },
+    "R10": {
+     "n": 3,
+     "mean": 0.9623514864294953,
+     "std": 0.008436614911281417
+    },
+    "R11": {
+     "n": 3,
+     "mean": 0.6014023571595043,
+     "std": 0.33730496727579007
+    },
+    "R12": {
+     "n": 6,
+     "mean": 0.7452641437996503,
+     "std": 0.2335101401689163
+    },
+    "R13": {
+     "n": 6,
+     "mean": 0.5795131941582656,
+     "std": 0.16641936281603056
+    },
+    "R14": {
+     "n": 3,
+     "mean": 0.9665943047691751,
+     "std": 0.020999213723106206
+    },
+    "R2": {
+     "n": 3,
+     "mean": 0.962871555434295,
+     "std": 0.0076229579435813655
+    },
+    "R3": {
+     "n": 6,
+     "mean": 0.8273436613087042,
+     "std": 0.09547108614636246
+    },
+    "R4": {
+     "n": 3,
+     "mean": 0.5631391693743968,
+     "std": 0.49273029028407594
+    },
+    "R6": {
+     "n": 3,
+     "mean": 0.9110358849961842,
+     "std": 0.04775944344873938
+    },
+    "R8": {
+     "n": 6,
+     "mean": 0.29417807154558345,
+     "std": 0.3162576737530313
+    },
+    "R9": {
+     "n": 6,
+     "mean": 0.16239158517241842,
+     "std": 0.24518479050679393
     }
    }
   },
@@ -1010,19 +1119,6 @@
     0.12150516536417255
    ]
   },
-  "agent:gemini:gemini-3.8-flash": {
-   "n": 24,
-   "mean": 0.22079438173185467,
-   "ci95": [
-    0.14151157380445034,
-    0.31068090254117814
-   ],
-   "per_run": [
-    0.23861648893372914,
-    0.23465940838121113,
-    0.18910724788062372
-   ]
-  },
   "agent:verda:kimi-k3-1-pro": {
    "n": 24,
    "mean": 0.20988390452446998,
@@ -1036,6 +1132,19 @@
     0.21357461830580388
    ]
   },
+  "agent:gemini:gemini-3.8-flash": {
+   "n": 24,
+   "mean": 0.22079438173185467,
+   "ci95": [
+    0.14151157380445034,
+    0.31068090254117814
+   ],
+   "per_run": [
+    0.23861648893372914,
+    0.23465940838121113,
+    0.18910724788062372
+   ]
+  },
   "agent:verda:deepseek-4-1-flash-1017": {
    "n": 24,
    "mean": 0.2442311221105948,
@@ -1047,6 +1156,19 @@
     0.2729561169798499,
     0.21989399255195038,
     0.23984325679998417
+   ]
+  },
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "n": 24,
+   "mean": 0.3324692729348546,
+   "ci95": [
+    0.2378563061398784,
+    0.43091638068245586
+   ],
+   "per_run": [
+    0.33781932419049604,
+    0.26797681924487754,
+    0.3916116753691904
    ]
   },
   "agent:gemini:gemini-3.1-pro-preview": {
@@ -1623,6 +1745,247 @@
     ]
    }
   ],
+  "agent:verda:kimi-k3-1-pro": [
+   {
+    "scenario": "exp-r9-2030",
+    "score": 0.0,
+    "tags": [
+     "herring_followed",
+     "collateral",
+     "loop_not_broken"
+    ],
+    "resolved": null,
+    "t_resolve": null,
+    "truth": [
+     [
+      "redis-main",
+      "cache_invalidation_loop"
+     ],
+     [
+      "auth-svc",
+      "clock_skew"
+     ],
+     [
+      "tenant-svc",
+      "bad_deploy"
+     ]
+    ],
+    "fixed": [
+     false,
+     true,
+     true
+    ],
+    "first_intervention": {
+     "i": 11,
+     "t": 10,
+     "call": "rollback(service='tenant-svc', version='v3.4.1')"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "redis-main",
+       "cache_invalidation_loop"
+      ],
+      "visible_at": -8,
+      "evidence": {
+       "i": 6,
+       "t": 5,
+       "call": "get_metrics(services=['workspace-svc', 'reports', 'metering', 'redis-main', 'jobs-runner'], window=15)"
+      },
+      "fix": {
+       "i": 31,
+       "t": 34,
+       "call": "set_config(service='redis-main', key='timeout_ms', value=1500)"
+      }
+     },
+     {
+      "fault": [
+       "auth-svc",
+       "clock_skew"
+      ],
+      "visible_at": -8,
+      "evidence": {
+       "i": 21,
+       "t": 24,
+       "call": "get_logs(service='auth-svc', level='ERROR', limit=100)"
+      },
+      "fix": {
+       "i": 71,
+       "t": 90,
+       "call": "run_maintenance(service='auth-svc', action='sync_clock')"
+      }
+     },
+     {
+      "fault": [
+       "tenant-svc",
+       "bad_deploy"
+      ],
+      "visible_at": -8,
+      "evidence": {
+       "i": 5,
+       "t": 4,
+       "call": "get_metrics(services=['gateway', 'tenant-svc', 'pg-main', 'billing', 'auth-svc'], window=15)"
+      },
+      "fix": {
+       "i": 11,
+       "t": 10,
+       "call": "rollback(service='tenant-svc', version='v3.4.1')"
+      }
+     }
+    ]
+   },
+   {
+    "scenario": "har-r8-2025",
+    "score": 0.20100642511578598,
+    "tags": [
+     "premature_resolve",
+     "over_investigation",
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "stock-svc",
+      "progressive_gray"
+     ]
+    ],
+    "t_resolve": 119,
+    "truth": [
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "stock-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     true,
+     false
+    ],
+    "first_intervention": {
+     "i": 20,
+     "t": 19,
+     "call": "set_config(service='order-svc', key='send_rate_per_s', value=1)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "order-svc",
+       "mail_backlog_ramp"
+      ],
+      "visible_at": -5,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events(since=0)"
+      },
+      "fix": {
+       "i": 20,
+       "t": 19,
+       "call": "set_config(service='order-svc', key='send_rate_per_s', value=1)"
+      }
+     },
+     {
+      "fault": [
+       "stock-svc",
+       "config_drift"
+      ],
+      "visible_at": 41,
+      "evidence": {
+       "i": 48,
+       "t": 55,
+       "call": "get_metrics(services=['edge-api', 'checkout', 'order-svc', 'payments-gw', 'stock-svc'], window=15)"
+      },
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-r9-2026",
+    "score": 0.2625281879754809,
+    "tags": [
+     "collateral"
+    ],
+    "resolved": [
+     [
+      "billing",
+      "cert_expiry"
+     ],
+     [
+      "cache-cluster",
+      "bad_config_push"
+     ],
+     [
+      "cache-cluster",
+      "cache_invalidation_loop"
+     ]
+    ],
+    "t_resolve": 119,
+    "truth": [
+     [
+      "cache-cluster",
+      "cache_invalidation_loop"
+     ],
+     [
+      "billing",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     true,
+     true
+    ],
+    "first_intervention": {
+     "i": 22,
+     "t": 21,
+     "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "cache-cluster",
+       "cache_invalidation_loop"
+      ],
+      "visible_at": -7,
+      "evidence": {
+       "i": 17,
+       "t": 16,
+       "call": "get_metrics(services=['cache-cluster', 'projects', 'report-svc', 'metering', 'jobs-queue'], window=15)"
+      },
+      "fix": {
+       "i": 22,
+       "t": 21,
+       "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
+      }
+     },
+     {
+      "fault": [
+       "billing",
+       "cert_expiry"
+      ],
+      "visible_at": -10,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events(since=0)"
+      },
+      "fix": {
+       "i": 28,
+       "t": 30,
+       "call": "run_maintenance(service='billing', action='rotate_cert')"
+      }
+     }
+    ]
+   }
+  ],
   "agent:gemini:gemini-3.8-flash": [
    {
     "scenario": "har-r8-2025",
@@ -1878,247 +2241,6 @@
     ]
    }
   ],
-  "agent:verda:kimi-k3-1-pro": [
-   {
-    "scenario": "exp-r9-2030",
-    "score": 0.0,
-    "tags": [
-     "herring_followed",
-     "collateral",
-     "loop_not_broken"
-    ],
-    "resolved": null,
-    "t_resolve": null,
-    "truth": [
-     [
-      "redis-main",
-      "cache_invalidation_loop"
-     ],
-     [
-      "auth-svc",
-      "clock_skew"
-     ],
-     [
-      "tenant-svc",
-      "bad_deploy"
-     ]
-    ],
-    "fixed": [
-     false,
-     true,
-     true
-    ],
-    "first_intervention": {
-     "i": 11,
-     "t": 10,
-     "call": "rollback(service='tenant-svc', version='v3.4.1')"
-    },
-    "first_intervention_necessary": true,
-    "faults": [
-     {
-      "fault": [
-       "redis-main",
-       "cache_invalidation_loop"
-      ],
-      "visible_at": -8,
-      "evidence": {
-       "i": 6,
-       "t": 5,
-       "call": "get_metrics(services=['workspace-svc', 'reports', 'metering', 'redis-main', 'jobs-runner'], window=15)"
-      },
-      "fix": {
-       "i": 31,
-       "t": 34,
-       "call": "set_config(service='redis-main', key='timeout_ms', value=1500)"
-      }
-     },
-     {
-      "fault": [
-       "auth-svc",
-       "clock_skew"
-      ],
-      "visible_at": -8,
-      "evidence": {
-       "i": 21,
-       "t": 24,
-       "call": "get_logs(service='auth-svc', level='ERROR', limit=100)"
-      },
-      "fix": {
-       "i": 71,
-       "t": 90,
-       "call": "run_maintenance(service='auth-svc', action='sync_clock')"
-      }
-     },
-     {
-      "fault": [
-       "tenant-svc",
-       "bad_deploy"
-      ],
-      "visible_at": -8,
-      "evidence": {
-       "i": 5,
-       "t": 4,
-       "call": "get_metrics(services=['gateway', 'tenant-svc', 'pg-main', 'billing', 'auth-svc'], window=15)"
-      },
-      "fix": {
-       "i": 11,
-       "t": 10,
-       "call": "rollback(service='tenant-svc', version='v3.4.1')"
-      }
-     }
-    ]
-   },
-   {
-    "scenario": "har-r8-2025",
-    "score": 0.20100642511578598,
-    "tags": [
-     "premature_resolve",
-     "over_investigation",
-     "missed_event"
-    ],
-    "resolved": [
-     [
-      "order-svc",
-      "mail_backlog_ramp"
-     ],
-     [
-      "stock-svc",
-      "progressive_gray"
-     ]
-    ],
-    "t_resolve": 119,
-    "truth": [
-     [
-      "order-svc",
-      "mail_backlog_ramp"
-     ],
-     [
-      "stock-svc",
-      "config_drift"
-     ]
-    ],
-    "fixed": [
-     true,
-     false
-    ],
-    "first_intervention": {
-     "i": 20,
-     "t": 19,
-     "call": "set_config(service='order-svc', key='send_rate_per_s', value=1)"
-    },
-    "first_intervention_necessary": true,
-    "faults": [
-     {
-      "fault": [
-       "order-svc",
-       "mail_backlog_ramp"
-      ],
-      "visible_at": -5,
-      "evidence": {
-       "i": 2,
-       "t": 1,
-       "call": "get_events(since=0)"
-      },
-      "fix": {
-       "i": 20,
-       "t": 19,
-       "call": "set_config(service='order-svc', key='send_rate_per_s', value=1)"
-      }
-     },
-     {
-      "fault": [
-       "stock-svc",
-       "config_drift"
-      ],
-      "visible_at": 41,
-      "evidence": {
-       "i": 48,
-       "t": 55,
-       "call": "get_metrics(services=['edge-api', 'checkout', 'order-svc', 'payments-gw', 'stock-svc'], window=15)"
-      },
-      "fix": null
-     }
-    ]
-   },
-   {
-    "scenario": "har-r9-2026",
-    "score": 0.2625281879754809,
-    "tags": [
-     "collateral"
-    ],
-    "resolved": [
-     [
-      "billing",
-      "cert_expiry"
-     ],
-     [
-      "cache-cluster",
-      "bad_config_push"
-     ],
-     [
-      "cache-cluster",
-      "cache_invalidation_loop"
-     ]
-    ],
-    "t_resolve": 119,
-    "truth": [
-     [
-      "cache-cluster",
-      "cache_invalidation_loop"
-     ],
-     [
-      "billing",
-      "cert_expiry"
-     ]
-    ],
-    "fixed": [
-     true,
-     true
-    ],
-    "first_intervention": {
-     "i": 22,
-     "t": 21,
-     "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
-    },
-    "first_intervention_necessary": true,
-    "faults": [
-     {
-      "fault": [
-       "cache-cluster",
-       "cache_invalidation_loop"
-      ],
-      "visible_at": -7,
-      "evidence": {
-       "i": 17,
-       "t": 16,
-       "call": "get_metrics(services=['cache-cluster', 'projects', 'report-svc', 'metering', 'jobs-queue'], window=15)"
-      },
-      "fix": {
-       "i": 22,
-       "t": 21,
-       "call": "set_config(service='cache-cluster', key='timeout_ms', value=1000)"
-      }
-     },
-     {
-      "fault": [
-       "billing",
-       "cert_expiry"
-      ],
-      "visible_at": -10,
-      "evidence": {
-       "i": 2,
-       "t": 1,
-       "call": "get_events(since=0)"
-      },
-      "fix": {
-       "i": 28,
-       "t": 30,
-       "call": "run_maintenance(service='billing', action='rotate_cert')"
-      }
-     }
-    ]
-   }
-  ],
   "agent:verda:deepseek-4-1-flash-1017": [
    {
     "scenario": "har-r8-2025",
@@ -2334,6 +2456,227 @@
        "i": 78,
        "t": 103,
        "call": "rollback(service='tenant-svc', version='v3.4.1')"
+      }
+     }
+    ]
+   }
+  ],
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": [
+   {
+    "scenario": "exp-r8-2033",
+    "score": 0.0,
+    "tags": [
+     "collateral",
+     "silent_harm_missed",
+     "gray_missed",
+     "over_investigation"
+    ],
+    "resolved": null,
+    "t_resolve": null,
+    "truth": [
+     [
+      "notify-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "public-api",
+      "progressive_gray"
+     ],
+     [
+      "billing-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     false,
+     false,
+     true
+    ],
+    "first_intervention": {
+     "i": 23,
+     "t": 24,
+     "call": "drain_instance(service='public-api', instance='public-api-3')"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "notify-svc",
+       "mail_backlog_ramp"
+      ],
+      "visible_at": -8,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": null
+     },
+     {
+      "fault": [
+       "public-api",
+       "progressive_gray"
+      ],
+      "visible_at": -8,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": null
+     },
+     {
+      "fault": [
+       "billing-svc",
+       "config_drift"
+      ],
+      "visible_at": -8,
+      "evidence": {
+       "i": 4,
+       "t": 3,
+       "call": "get_metrics(services=['public-api', 'saas-db', 'redis-main', 'billing-svc', 'projects'], window=10)"
+      },
+      "fix": {
+       "i": 53,
+       "t": 78,
+       "call": "set_flag(flag='bulk-export', on=False)"
+      }
+     }
+    ]
+   },
+   {
+    "scenario": "har-r8-2025",
+    "score": 0.0,
+    "tags": [
+     "premature_resolve",
+     "silent_harm_missed",
+     "over_investigation",
+     "missed_event"
+    ],
+    "resolved": [
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "stock-svc",
+      "external_dependency"
+     ]
+    ],
+    "t_resolve": 118,
+    "truth": [
+     [
+      "order-svc",
+      "mail_backlog_ramp"
+     ],
+     [
+      "stock-svc",
+      "config_drift"
+     ]
+    ],
+    "fixed": [
+     false,
+     false
+    ],
+    "first_intervention": {
+     "i": 23,
+     "t": 27,
+     "call": "set_config(service='order-svc', key='send_rate_per_s', value=1)"
+    },
+    "first_intervention_necessary": true,
+    "faults": [
+     {
+      "fault": [
+       "order-svc",
+       "mail_backlog_ramp"
+      ],
+      "visible_at": -5,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": {
+       "i": 23,
+       "t": 27,
+       "call": "set_config(service='order-svc', key='send_rate_per_s', value=1)"
+      }
+     },
+     {
+      "fault": [
+       "stock-svc",
+       "config_drift"
+      ],
+      "visible_at": 41,
+      "evidence": {
+       "i": 36,
+       "t": 56,
+       "call": "get_metrics(services=['stock-svc'], window=10)"
+      },
+      "fix": null
+     }
+    ]
+   },
+   {
+    "scenario": "har-r9-2026",
+    "score": 0.0,
+    "tags": [
+     "symptom_fix",
+     "collateral",
+     "loop_not_broken",
+     "over_investigation"
+    ],
+    "resolved": null,
+    "t_resolve": null,
+    "truth": [
+     [
+      "cache-cluster",
+      "cache_invalidation_loop"
+     ],
+     [
+      "billing",
+      "cert_expiry"
+     ]
+    ],
+    "fixed": [
+     false,
+     true
+    ],
+    "first_intervention": {
+     "i": 26,
+     "t": 25,
+     "call": "set_config(service='accounts', key='max_retries', value=0)"
+    },
+    "first_intervention_necessary": false,
+    "faults": [
+     {
+      "fault": [
+       "cache-cluster",
+       "cache_invalidation_loop"
+      ],
+      "visible_at": -7,
+      "evidence": {
+       "i": 12,
+       "t": 11,
+       "call": "get_metrics(services=['cache-cluster', 'projects', 'billing'], window=10)"
+      },
+      "fix": null
+     },
+     {
+      "fault": [
+       "billing",
+       "cert_expiry"
+      ],
+      "visible_at": -10,
+      "evidence": {
+       "i": 2,
+       "t": 1,
+       "call": "get_events()"
+      },
+      "fix": {
+       "i": 49,
+       "t": 75,
+       "call": "run_maintenance(service='billing', action='rotate_cert')"
       }
      }
     ]
@@ -2638,15 +2981,6 @@
    "premature_resolve": 9,
    "silent_harm_missed": 2
   },
-  "agent:gemini:gemini-3.8-flash": {
-   "collateral": 16,
-   "loop_not_broken": 4,
-   "missed_event": 5,
-   "over_investigation": 55,
-   "premature_resolve": 15,
-   "silent_harm_missed": 9,
-   "symptom_fix": 8
-  },
   "agent:verda:kimi-k3-1-pro": {
    "collateral": 20,
    "herring_followed": 2,
@@ -2655,6 +2989,15 @@
    "over_investigation": 25,
    "premature_resolve": 13,
    "silent_harm_missed": 8,
+   "symptom_fix": 8
+  },
+  "agent:gemini:gemini-3.8-flash": {
+   "collateral": 16,
+   "loop_not_broken": 4,
+   "missed_event": 5,
+   "over_investigation": 55,
+   "premature_resolve": 15,
+   "silent_harm_missed": 9,
    "symptom_fix": 8
   },
   "agent:verda:deepseek-4-1-flash-1017": {
@@ -2667,6 +3010,17 @@
    "premature_resolve": 5,
    "silent_harm_missed": 5,
    "symptom_fix": 7
+  },
+  "agent:nemotron:nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "collateral": 30,
+   "config_push_missed": 1,
+   "gray_missed": 1,
+   "loop_not_broken": 4,
+   "missed_event": 6,
+   "over_investigation": 34,
+   "premature_resolve": 16,
+   "silent_harm_missed": 13,
+   "symptom_fix": 9
   },
   "agent:gemini:gemini-3.1-pro-preview": {
    "authority_bias": 2,
@@ -2682,7 +3036,7 @@
   }
  },
  "hashes": {
-  "git_commit": "bbab5dce1824d4a9fa143d6a3a7a9beba2d29e51",
+  "git_commit": "d880657835f5c4a1b97ba3027b292f78ba3343ef",
   "uv_lock_sha256": "f81f22d9da9bbd58e877f95c5633af61a238b825a62fa9ef3562731db8e62d7d",
   "scenarios": [
    "med-r4-2005",
